@@ -16,7 +16,6 @@ const DynamicRouter = () => {
   return (
     <Routes>
       {routes.map(({ path, component: Component }) => {
-        console.log(path, Component);
         return (
           <Route
             key={path}

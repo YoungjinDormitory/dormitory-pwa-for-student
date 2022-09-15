@@ -36,8 +36,8 @@ function MenuCreator({ sourceMap }: Props) {
           open={open}
           onClose={handleClose}
           MenuListProps={{ onMouseLeave: handleClose }}>
-          {sourceMap.subTitle.map((subTitle) => (
-            <MenuItem sx={{ width: "200px" }} onClick={handleClose}>
+          {sourceMap.subTitle.map((subTitle, idx) => (
+            <MenuItem key={idx} sx={{ width: "200px" }} onClick={handleClose}>
               <ListItemText sx={{ textAlign: "center" }}>
                 {subTitle}
               </ListItemText>

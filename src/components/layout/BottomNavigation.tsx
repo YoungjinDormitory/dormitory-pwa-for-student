@@ -24,9 +24,10 @@ function AppNav() {
         onChange={(event, newValue) => {
           setValue(newValue);
         }}>
-        <BottomNavigationAction label="Recents" icon={<RestoreOutlined />} />
-        <BottomNavigationAction label="Favorites" icon={<RestoreOutlined />} />
-        <BottomNavigationAction label="Nearby" icon={<RestoreOutlined />} />
+        <BottomNavigationAction label="메인" icon={<RestoreOutlined />} />
+        <BottomNavigationAction label="관리" icon={<RestoreOutlined />} />
+        <BottomNavigationAction label="게시판" icon={<RestoreOutlined />} />
+        <BottomNavigationAction label="설정" icon={<RestoreOutlined />} />
       </BottomNavigation>
     </Paper>
   );

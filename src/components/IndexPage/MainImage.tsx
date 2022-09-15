@@ -13,7 +13,7 @@ function MainImage() {
         sx={{
           backgroundColor: "rgba(0,0,0,0.5)",
         }}>
-        <Grid lg={8}>
+        <Grid md={8} item>
           <TextBox>
             <Typography
               gutterBottom
@@ -53,7 +53,7 @@ function MainImage() {
             </Typography>
           </TextBox>
         </Grid>
-        <Grid lg={4} item>
+        <Grid md={4} item>
           <TextBox>
             <Typography
               gutterBottom

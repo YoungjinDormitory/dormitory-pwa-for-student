@@ -28,8 +28,8 @@ function Header() {
               xs: "none",
               sm: "block",
             }}>
-            {menuMap.map((el) => (
-              <MenuCreator sourceMap={el} />
+            {menuMap.map((el,idx) => (
+              <MenuCreator key={idx} sourceMap={el} />
             ))}
           </Grid>
           <Grid xs={2} item></Grid>
@@ -59,11 +59,3 @@ function Header() {
   );
 }
 export default Header;
-
-const NavItem = styled(Box)`
-  display: inline-block;
-  width: 33%;
-  margin: auto;
-  text-align: center;
-  line-height: 64px;
-`;
