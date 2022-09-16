@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
+
 import SchoolImg from "/asset/school2.jfif";
 
 function MainImage() {

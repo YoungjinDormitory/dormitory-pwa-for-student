@@ -1,0 +1,30 @@
+[
+  {
+    "title": "A/S 관리",
+    "description": "기숙사 내부 물품의 분실이나 에로 사항이 있다면 이 곳에서",
+    "forwardIcon": "BuildOutlinedIcon",
+    "backwardIcon": "ArrowForwardOutlinedIcon",
+    "to": "/reservation/as"
+  },
+  {
+    "title": "버스 관리",
+    "description": "버스에 대한 예약/조회은 이곳에서",
+    "forwardIcon": "DirectionsBusOutlinedIcon",
+    "backwardIcon": "ArrowForwardOutlinedIcon",
+    "to": "/reservation/bus"
+  },
+  {
+    "title": "외출/외박 관리",
+    "description": "외박에 대한 예약/조회는 이곳에서",
+    "forwardIcon": "DirectionsRunOutlinedIcon",
+    "backwardIcon": "ArrowForwardOutlinedIcon",
+    "to": "/reservation/outing"
+  },
+  {
+    "title": "체육관 관리",
+    "description": "체육관에 대한 예약/조회는 이곳에서",
+    "forwardIcon": "FitnessCenterOutlinedIcon",
+    "backwardIcon": "ArrowForwardOutlinedIcon",
+    "to": "/reservation/gym"
+  }
+]

@@ -1,3 +1,5 @@
+import { CircularProgress } from "@mui/material";
+import { Box } from "@mui/system";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Error_404 from "./pages/error/404";
@@ -21,7 +23,19 @@ const DynamicRouter = () => {
             key={path}
             path={path}
             element={
-              <Suspense fallback="loading...">
+              <Suspense
+                fallback={
+                  <Box
+                    sx={{
+                      display: "flex",
+                      minHeight: "100vh",
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                    <CircularProgress />
+                  </Box>
+                }>
                 <Component />
               </Suspense>
             }

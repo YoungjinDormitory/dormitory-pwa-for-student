@@ -1,9 +1,13 @@
 import { RestoreOutlined } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import useTab from "../../hooks/useTab";
 
 function AppNav() {
-  const [value, setValue] = useState(0);
+  const tabProps = useTab(0);
+  const navigate = useNavigate();
+
   return (
     <Paper
       sx={{
@@ -16,16 +20,25 @@ function AppNav() {
       elevation={3}>
       <BottomNavigation
         showLabels
-        value={value}
         sx={{
           position: "static",
           bottom: 0,
         }}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}>
-        <BottomNavigationAction label="메인" icon={<RestoreOutlined />} />
-        <BottomNavigationAction label="관리" icon={<RestoreOutlined />} />
+        {...tabProps}>
+        <BottomNavigationAction
+          onClick={() => {
+            navigate("/");
+          }}
+          label="메인"
+          icon={<RestoreOutlined />}
+        />
+        <BottomNavigationAction
+          onClick={() => {
+            navigate("/reservation");
+          }}
+          label="관리"
+          icon={<RestoreOutlined />}
+        />
         <BottomNavigationAction label="게시판" icon={<RestoreOutlined />} />
         <BottomNavigationAction label="설정" icon={<RestoreOutlined />} />
       </BottomNavigation>

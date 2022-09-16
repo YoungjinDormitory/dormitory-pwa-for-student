@@ -1,23 +1,18 @@
 import { Tab, Tabs } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
 
+import useTab from "../../../hooks/useTab";
 import ASCard from "./card/ASCard";
 import BusCard from "./card/BusCard";
 import GymCard from "./card/GymCard";
 import OutCard from "./card/OutCard";
 
 function ReservationTab() {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-  console.log("hi?");
+  const tabProps = useTab(0);
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs indicatorColor="primary" value={value} onChange={handleChange}>
+        <Tabs indicatorColor="primary" {...tabProps}>
           <Tab label="버스" />
           <Tab label="A/S" />
           <Tab label="외박/외출" />
