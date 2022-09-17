@@ -1,8 +1,10 @@
-import { RestoreOutlined } from "@mui/icons-material";
+import useTab from "@hooks/useTab";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import bottomNavMap from "@utils/bottomNavMapData.json";
+import { Suspense } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import useTab from "../../hooks/useTab";
+import iconLoader from "../icon/helper";
 
 function AppNav() {
   const tabProps = useTab(0);
@@ -25,22 +27,24 @@ function AppNav() {
           bottom: 0,
         }}
         {...tabProps}>
-        <BottomNavigationAction
-          onClick={() => {
-            navigate("/");
-          }}
-          label="메인"
-          icon={<RestoreOutlined />}
-        />
-        <BottomNavigationAction
-          onClick={() => {
-            navigate("/reservation");
-          }}
-          label="관리"
-          icon={<RestoreOutlined />}
-        />
-        <BottomNavigationAction label="게시판" icon={<RestoreOutlined />} />
-        <BottomNavigationAction label="설정" icon={<RestoreOutlined />} />
+        {bottomNavMap.map((el, idx) => {
+          const { label, to, icon } = el;
+          const Icon = iconLoader(icon);
+          return (
+            <BottomNavigationAction
+              key={idx}
+              label={label}
+              onClick={() => {
+                navigate(to);
+              }}
+              icon={
+                <Suspense>
+                  <Icon />
+                </Suspense>
+              }
+            />
+          );
+        })}
       </BottomNavigation>
     </Paper>
   );

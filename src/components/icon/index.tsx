@@ -7,6 +7,10 @@ import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import DirectionsBusOutlinedIcon from "@mui/icons-material/DirectionsBusOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
 import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
+import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 export {
   BuildOutlinedIcon,
@@ -16,4 +20,8 @@ export {
   DirectionsBusOutlinedIcon,
   DirectionsRunOutlinedIcon,
   FitnessCenterOutlinedIcon,
+  ForumOutlinedIcon,
+  HomeOutlinedIcon,
+  LocationCityOutlinedIcon,
+  SettingsOutlinedIcon,
 };

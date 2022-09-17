@@ -1,4 +1,4 @@
-import { Card, CardContent, styled, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 function BusCard() {
   return (

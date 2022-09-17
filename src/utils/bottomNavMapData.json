@@ -1,0 +1,22 @@
+[
+  {
+    "label": "메인",
+    "to": "/",
+    "icon": "HomeOutlinedIcon"
+  },
+  {
+    "label": "관리",
+    "to": "/reservation",
+    "icon": "LocationCityOutlinedIcon"
+  },
+  {
+    "label": "게시판",
+    "to": "/board",
+    "icon": "ForumOutlinedIcon"
+  },
+  {
+    "label": "설정",
+    "to": "/setting",
+    "icon": "SettingsOutlinedIcon"
+  }
+]

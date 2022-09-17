@@ -1,9 +1,21 @@
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@common": path.resolve(__dirname, "./src/components/common"),
+      "@icon": path.resolve(__dirname, "./src/comonents/icon"),
+      "@IndexPage": path.resolve(__dirname, "./src/components/IndexPage"),
+      "@layout": path.resolve(__dirname, "./src/components/layout"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
+      "@utils": path.resolve(__dirname, "./src/utils"),
+      "@types": path.resolve(__dirname, "./src/types"),
+    },
+  },
   plugins: [
     react(),
     VitePWA({

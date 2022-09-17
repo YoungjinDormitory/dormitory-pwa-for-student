@@ -26,9 +26,13 @@ function MealCard() {
               }}>
               아침
             </Typography>
-            <Divider />
+            <Divider sx={{ mb: "10px" }} />
             {[0, 1, 2, 3, 4].map((_, idx) => (
-              <Typography key={idx} textAlign={"center"} gutterBottom>
+              <Typography
+                key={idx}
+                variant={"body2"}
+                textAlign={"center"}
+                gutterBottom>
                 소고기 무국
               </Typography>
             ))}
@@ -41,9 +45,13 @@ function MealCard() {
               }}>
               점심
             </Typography>
-            <Divider />
+            <Divider sx={{ mb: "10px" }} />
             {[0, 1, 2, 3, 4].map((_, idx) => (
-              <Typography key={idx} textAlign={"center"} gutterBottom>
+              <Typography
+                key={idx}
+                variant={"body2"}
+                textAlign={"center"}
+                gutterBottom>
                 소고기 무국
               </Typography>
             ))}
@@ -56,9 +64,13 @@ function MealCard() {
               }}>
               저녁
             </Typography>
-            <Divider />
+            <Divider sx={{ mb: "10px" }} />
             {[0, 1, 2, 3, 4].map((_, idx) => (
-              <Typography key={idx} textAlign={"center"} gutterBottom>
+              <Typography
+                key={idx}
+                variant={"body2"}
+                textAlign={"center"}
+                gutterBottom>
                 소고기 무국
               </Typography>
             ))}
