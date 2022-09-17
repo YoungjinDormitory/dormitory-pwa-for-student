@@ -16,6 +16,12 @@ interface Props {
   };
 }
 
+/**
+ * @param {Props} sourceMap
+ * @description Header에서 쓰는 메뉴 들을 만드는 컴포넌트 입니다
+ * {title : string, subTitle : Array<string>}
+ * 의 객체로 이루어진 포맷의 데이터를 주면 메뉴를 만들어 줍니다.
+ */
 function MenuCreator({ sourceMap }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

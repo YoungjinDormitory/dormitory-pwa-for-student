@@ -14,6 +14,10 @@ import { useNavigate } from "react-router-dom";
 import menuMap from "@utils/menuMapData.json";
 import MenuCreator from "./MenuCreator";
 
+/**
+ *
+ * @description DefaultLayout의 Header입니다.
+ */
 function Header() {
   const navigate = useNavigate();
   return (

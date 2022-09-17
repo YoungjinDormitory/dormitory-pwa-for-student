@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import NavCard from "../../../components/common/NavCard";
 
+// 체육관 네비게이션 페이지
 function Gym() {
   const location = useLocation();
 

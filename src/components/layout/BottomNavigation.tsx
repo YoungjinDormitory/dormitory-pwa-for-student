@@ -2,10 +2,14 @@ import useTab from "@hooks/useTab";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import bottomNavMap from "@utils/bottomNavMapData.json";
 import { Suspense } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import iconLoader from "../icon/helper";
 
+/**
+ *
+ * @description 모바일 화면에서만 보이는 BottomTabNav 컴포넌트입니다.
+ */
 function AppNav() {
   const tabProps = useTab(0);
   const navigate = useNavigate();

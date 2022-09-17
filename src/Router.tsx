@@ -2,6 +2,7 @@ import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+
 import Error_404 from "./pages/error/404";
 
 const modules = import.meta.glob("/src/pages/**/*.tsx");
@@ -14,6 +15,10 @@ const routes = Object.keys(modules).map((route) => {
   return { path, component: lazy(modules[route] as any) };
 });
 
+/**
+ * @description react-router-dom을 기반으로 컴포넌트 들의 페이지를 url에 맞게 로드 시키는 부분입니다.
+ * @page ./pages
+ */
 const DynamicRouter = () => {
   return (
     <Routes>

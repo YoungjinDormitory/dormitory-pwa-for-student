@@ -16,6 +16,9 @@ export default defineConfig({
       "@types": path.resolve(__dirname, "./src/types"),
     },
   },
+  server: {
+    host: "0.0.0.0",
+  },
   plugins: [
     react(),
     VitePWA({
