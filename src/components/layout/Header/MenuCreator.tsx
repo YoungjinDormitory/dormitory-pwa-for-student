@@ -8,11 +8,17 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useMenu from "../../../hooks/useMenu";
 
 interface Props {
   sourceMap: {
     title: string;
-    subTitle?: Array<string>;
+    sub?: Array<{
+      title: string;
+      to: string;
+    }>;
+    to?: string;
   };
 }
 
@@ -23,29 +29,30 @@ interface Props {
  * 의 객체로 이루어진 포맷의 데이터를 주면 메뉴를 만들어 줍니다.
  */
 function MenuCreator({ sourceMap }: Props) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const { handleOpen, handleClose, open, anchorEl } = useMenu();
+  const navigate = useNavigate();
+
   return (
     <NavItem>
-      <Button fullWidth onClick={handleClick} onMouseEnter={handleClick}>
+      <Button
+        fullWidth
+        onClick={sourceMap.to ? () => navigate(sourceMap.to!) : () => {}}
+        onMouseEnter={handleOpen}>
         <Typography color={"black"}>{sourceMap.title}</Typography>
       </Button>
-      {sourceMap.subTitle && (
+      {sourceMap.sub && (
         <Menu
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
           MenuListProps={{ onMouseLeave: handleClose }}>
-          {sourceMap.subTitle.map((subTitle, idx) => (
-            <MenuItem key={idx} sx={{ width: "200px" }} onClick={handleClose}>
+          {sourceMap.sub.map((sub, idx) => (
+            <MenuItem
+              key={idx}
+              sx={{ width: "200px" }}
+              onClick={sub.to ? () => navigate(sub.to!) : () => {}}>
               <ListItemText sx={{ textAlign: "center" }}>
-                {subTitle}
+                {sub.title}
               </ListItemText>
             </MenuItem>
           ))}

@@ -1,13 +1,46 @@
 [
   {
     "title": "관리",
-    "subTitle": ["A/S 관리", "버스 관리", "체육관 관리", "외박/외출 관리"]
+    "sub": [
+      {
+        "title": "A/S 관리",
+        "to": "/reservation/as"
+      },
+      {
+        "title": "버스 관리",
+        "to": "/reservation/bus"
+      },
+      {
+        "title": "체육관 관리",
+        "to": "/reservation/gym"
+      },
+      {
+        "title": "외출/외박 관리",
+        "to": "/reservation/outing"
+      }
+    ],
+    "to": "/reservation"
   },
   {
     "title": "게시판",
-    "subTitle": ["공지사항", "게시판", "핫게"]
+    "sub": [
+      {
+        "title": "공지사항",
+        "to": "/board/notice"
+      },
+      {
+        "title": "익명 게시판",
+        "to": "/board/annonymous"
+      },
+      {
+        "title": "핫게시판",
+        "to": "/reservation/hot"
+      }
+    ],
+    "to": "/board"
   },
   {
-    "title": "설정"
+    "title": "설정",
+    "to": "/setting"
   }
 ]

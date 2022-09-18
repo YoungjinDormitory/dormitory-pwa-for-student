@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { IProps } from "../../../types/props.interface";
+import { IProps } from "../../types/props.interface";
 import iconLoader from "../icon/helper";
 
 interface Props extends IProps {
@@ -23,7 +23,13 @@ function NavCard(props: Props) {
 
   return (
     <Card
-      sx={{ display: "flex" }}
+      sx={{
+        display: "flex",
+        cursor: "pointer",
+        "&:active": {
+          backgroundColor: "#BBDEFB",
+        },
+      }}
       onClick={() => {
         navigate(to);
       }}>

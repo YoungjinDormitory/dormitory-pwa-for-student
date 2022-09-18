@@ -1,9 +1,8 @@
-import { Box } from "@mui/system";
-
 import AppNav from "./BottomNavigation";
 import Header from "./Header";
+import Main from "./Main";
 
-import type { IProps } from "../../../types/props.interface";
+import type { IProps } from "../../types/props.interface";
 interface Props extends IProps {}
 
 /**
@@ -13,12 +12,7 @@ function DefaultLayout({ children }: Props) {
   return (
     <>
       <Header />
-      <Box
-        sx={{
-          pb: 7,
-        }}>
-        {children}
-      </Box>
+      <Main>{children}</Main>
       <AppNav />
     </>
   );

@@ -1,6 +1,6 @@
+import { createTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { DefaultLayout, LoginBox } from "./components/layout";
-
 import DynamicRouter from "./Router";
 
 // 로그인, 회원가입, 비밀번호찾기

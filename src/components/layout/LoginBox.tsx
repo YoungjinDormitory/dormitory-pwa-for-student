@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import type { IProps } from "../../../types/props.interface";
+import type { IProps } from "../../types/props.interface";
 
 interface Props extends IProps {}
 

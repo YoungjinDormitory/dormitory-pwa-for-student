@@ -24,7 +24,8 @@
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
       "@types/*": ["src/types/*"]
-    }
+    },
+    "typeRoots": ["src/types/mui.d.ts"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

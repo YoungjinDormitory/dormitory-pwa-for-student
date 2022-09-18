@@ -9,7 +9,12 @@ function AS() {
   const location = useLocation();
 
   return (
-    <>
+    <Box
+      maxWidth={"sm"}
+      margin="auto"
+      minHeight={"100%"}
+      border={1}
+      borderColor="gainsboro">
       <Box sx={{ borderBottom: 1, borderBottomColor: "gainsboro" }}>
         <Typography variant="h6" sx={{ p: "10px", fontWeight: 700 }}>
           A/S
@@ -29,7 +34,7 @@ function AS() {
         title="A/S 조회"
         description="A/S 조회는 이곳에서"
       />
-    </>
+    </Box>
   );
 }
 
