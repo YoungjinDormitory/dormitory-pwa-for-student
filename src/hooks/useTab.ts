@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function useTab(initailTab: number) {
   const [value, setTab] = useState(initailTab);
   const onChange = (
-    event: React.SyntheticEvent<Element, Event>,
+    event: React.SyntheticEvent<Element, Event> | null,
     newTab: number
   ) => {
     setTab(newTab);

@@ -1,8 +1,8 @@
 import useTab from "@hooks/useTab";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import bottomNavMap from "@utils/bottomNavMapData.json";
-import { Suspense } from "react";
-import { useNavigate } from "react-router-dom";
+import { Suspense, useLayoutEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import iconLoader from "../icon/helper";
 
@@ -13,6 +13,15 @@ import iconLoader from "../icon/helper";
 function AppNav() {
   const tabProps = useTab(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    bottomNavMap.forEach((el, index) => {
+      if (location.pathname.startsWith(el.to)) {
+        tabProps.onChange(null, index);
+      }
+    });
+  }, [location.pathname]);
 
   return (
     <Paper

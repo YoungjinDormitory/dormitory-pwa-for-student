@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 
-import NavCard from "../../../components/common/NavCard";
+import { NavCard } from "../../../components/common/card";
 
 // 외출/외박 네비게이션 페이지
 function Outing() {

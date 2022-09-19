@@ -1,46 +1,59 @@
-import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import {
   Box,
   Button,
   Divider,
   FormControl,
   Grid,
-  Input,
   OutlinedInput,
   Typography,
 } from "@mui/material";
+import useInput from "@hooks/useInput";
+import { useNavigate } from "react-router-dom";
+import Reservation from "../../../components/reservation";
 
+// AS의 신청 페이지 입니다
 function Write() {
+  const titleProps = useInput("");
+  const contentProps = useInput("");
+
+  const navigate = useNavigate();
+  // A/S 신청 함수
+  const submit = () => {};
+
+  // 취소 함수
+  const cancle = () => {
+    navigate("/reservation/as/lookup");
+  };
   return (
-    <Grid container maxWidth={"md"} margin={"auto"}>
-      <Grid xs={12} item borderBottom={3} borderColor={"#BBDEFB"}>
-        <Typography variant="h6" sx={{ p: 2, fontWeight: 700 }}>
-          A/S 신청
-        </Typography>
-      </Grid>
+    <Reservation>
+      <Reservation.Title title="A/S 신청  " />
       <Grid xs={12} item sx={{ p: 2 }}>
         <FormControl fullWidth>
-          <OutlinedInput placeholder="제목을 입력하세요..."></OutlinedInput>
+          <OutlinedInput
+            placeholder="제목을 입력하세요..."
+            {...titleProps}></OutlinedInput>
         </FormControl>
       </Grid>
       <Grid xs={12} item sx={{ p: 2 }}>
         <FormControl fullWidth>
           <OutlinedInput
             multiline
-            maxRows={15}
             rows={15}
-            placeholder="내용을 입력하세요..."></OutlinedInput>
+            placeholder="내용을 입력하세요..."
+            {...contentProps}></OutlinedInput>
         </FormControl>
       </Grid>
       <Grid xs={12} item sx={{ p: 2 }}>
         <Box display={"flex"} justifyContent={"end"}>
-          <Button variant="contained">취소</Button>
+          <Button onClick={cancle} variant="contained" color="disable">
+            취소
+          </Button>
           <Button variant="contained" sx={{ ml: 2 }}>
             제출
           </Button>
         </Box>
       </Grid>
-    </Grid>
+    </Reservation>
   );
 }
 

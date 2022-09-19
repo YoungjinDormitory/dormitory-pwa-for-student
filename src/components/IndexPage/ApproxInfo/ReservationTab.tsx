@@ -1,29 +1,26 @@
+import { BusCard, OutCard, ASCard, GymCard } from "@common/card";
+import useTab from "@hooks/useTab";
 import { Tab, Tabs } from "@mui/material";
 import { Box } from "@mui/system";
 
-import useTab from "../../../hooks/useTab";
-import ASCard from "./card/ASCard";
-import BusCard from "./card/BusCard";
-import GymCard from "./card/GymCard";
-import OutCard from "./card/OutCard";
-
 function ReservationTab() {
   const tabProps = useTab(0);
+
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs indicatorColor="primary" {...tabProps}>
-          <Tab label="버스" />
           <Tab label="A/S" />
-          <Tab label="외박/외출" />
+          <Tab label="버스" />
           <Tab label="체육관" />
+          <Tab label="외출/외박" />
         </Tabs>
       </Box>
       <Box>
-        <BusCard></BusCard>
-        <OutCard></OutCard>
-        <ASCard></ASCard>
-        <GymCard></GymCard>
+        {tabProps.value === 0 && <ASCard></ASCard>}
+        {tabProps.value === 1 && <BusCard></BusCard>}
+        {tabProps.value === 2 && <OutCard></OutCard>}
+        {tabProps.value === 3 && <GymCard></GymCard>}
       </Box>
     </>
   );

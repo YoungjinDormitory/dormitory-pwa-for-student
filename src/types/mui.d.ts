@@ -1,11 +1,8 @@
+import { PaletteOptions, Palette } from "@mui/material/styles";
+
 declare module "@mui/material/styles" {
   interface Palette {
-    disable: {
-      light?: string;
-      main: string;
-      dark?: string;
-      constrastText?: string;
-    };
+    disable: Palette["primary"];
   }
 
   interface PaletteOptions {
@@ -15,17 +12,12 @@ declare module "@mui/material/styles" {
      * @param dark?: string;
      * @param contra  stText?: string;
      */
-    disable: {
-      light?: string;
-      main: string;
-      dark?: string;
-      constrastText?: string;
-    };
+    disable: PaletteOptions["primary"];
   }
 }
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
-    enable: true;
+    disable: true;
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 /**
  * @param  {()=>unknown} cb 타이머에서 실행할 콜백함수
  * @param  {number=1000} interval 콜백함수의 interval
