@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "SCDream";
+  src: url("./asset/font/SCDream4.otf") format("opentype");
+}
+
+* {
+  font-family: "SCDream";
+}

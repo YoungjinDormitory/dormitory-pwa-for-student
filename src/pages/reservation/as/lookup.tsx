@@ -1,14 +1,15 @@
-import Reservation from "../../../components/reservation";
-import { Box, Divider, Grid, TextField, Typography } from "@mui/material";
+import useTimePicker from "@hooks/useTimePicker";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useCallback } from "react";
-import useTimePicker from "@hooks/useTimePicker";
+
+import Reservation from "../../../components/reservation";
 
 // AS 조회 페이지
 function LookUp() {
   const startDateProps = useTimePicker();
-  const endDateProps = useTimePicker(startDateProps.value);
+  const endDateProps = useTimePicker(startDateProps);
 
   // 데이터 검색 함수
   const searchData = useCallback(() => {}, []);

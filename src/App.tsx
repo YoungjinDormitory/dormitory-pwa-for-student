@@ -13,6 +13,9 @@ const theme = createTheme({
       dark: "#9E9E9E",
     },
   },
+  typography: {
+    fontFamily: "SCDream",
+  },
 });
 
 function App() {
@@ -21,19 +24,21 @@ function App() {
   // 레이아웃이 없는 단독페이지
   if (LOGIN_LAYOUT_URL.includes(location.pathname)) {
     return (
-      <LoginBox>
-        <DynamicRouter />
-      </LoginBox>
+      <ThemeProvider theme={theme}>
+        <LoginBox>
+          <DynamicRouter />
+        </LoginBox>
+      </ThemeProvider>
     );
   }
 
   // 레이아웃에 의존적인 페이지
   return (
-    <DefaultLayout>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <DefaultLayout>
         <DynamicRouter />
-      </ThemeProvider>
-    </DefaultLayout>
+      </DefaultLayout>
+    </ThemeProvider>
   );
 }
 

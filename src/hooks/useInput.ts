@@ -10,9 +10,10 @@ import { useState } from "react";
 export default function useInput(initialValue: string, label?: string) {
   const [value, setValue] = useState<string>(initialValue);
   const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
   ) => {
-    setValue(() => e.target.value);
+    if (typeof e === "string") setValue(e);
+    else setValue(() => e.target.value);
   };
   if (label) return { value, onChange, label };
 
