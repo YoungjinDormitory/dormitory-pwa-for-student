@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import menuMap from "@utils/menuMapData.json";
+import menuMap from "@data/menuMapData.json";
 import MenuCreator from "./MenuCreator";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "../../../utils/query/query/user";
 
 /**
  *
@@ -20,6 +22,7 @@ import MenuCreator from "./MenuCreator";
  */
 function Header() {
   const navigate = useNavigate();
+
   return (
     <AppBar color="transparent" position="static" elevation={3}>
       <Container maxWidth="xl">

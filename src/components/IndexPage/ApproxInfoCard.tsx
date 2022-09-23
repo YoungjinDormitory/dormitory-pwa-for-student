@@ -1,7 +1,7 @@
 import { Box, Card, Tab, Tabs } from "@mui/material";
 import { lazy, Suspense } from "react";
 
-import useTab from "../../hooks/useTab";
+import useTab from "@hooks/useTab";
 import CommunityTab from "./ApproxInfo/CommunityTab";
 import NoticeTab from "./ApproxInfo/NoticeTab";
 

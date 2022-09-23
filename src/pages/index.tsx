@@ -6,7 +6,7 @@ import { ApproxInfoCard, MainImage, MealCard } from "../components/IndexPage";
 // GET /user
 // GET /meal
 // GET /bus?offset=2
-// GET / as?offset=2
+// GET /as?offset=2
 // GET /out?offset=2
 //GET /gym?offset=2
 // GET /buletin/hot?offset=2

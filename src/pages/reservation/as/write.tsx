@@ -1,8 +1,11 @@
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   Grid,
   OutlinedInput,
   Typography,
@@ -10,18 +13,21 @@ import {
 import useInput from "@hooks/useInput";
 import { useNavigate } from "react-router-dom";
 import Reservation from "../../../components/reservation";
+import useCheckBox from "../../../hooks/useCheckBox";
 
 // AS의 신청 페이지 입니다
 function Write() {
   const titleProps = useInput("");
   const contentProps = useInput("");
 
+  const absenceCheck = useCheckBox(false);
+
   const navigate = useNavigate();
   // A/S 신청 함수
   const submit = () => {};
 
   // 취소 함수
-  const cancle = () => {
+  const cancel = () => {
     navigate("/reservation/as/lookup");
   };
   return (
@@ -44,8 +50,16 @@ function Write() {
         </FormControl>
       </Grid>
       <Grid xs={12} item sx={{ p: 2 }}>
+        <Box>
+          <FormGroup>
+            <FormControlLabel
+              label="부재중 방문 동의"
+              control={<Checkbox {...absenceCheck} />}
+            />
+          </FormGroup>
+        </Box>
         <Box display={"flex"} justifyContent={"end"}>
-          <Button onClick={cancle} variant="contained" color="disable">
+          <Button onClick={cancel} variant="contained" color="disable">
             취소
           </Button>
           <Button variant="contained" sx={{ ml: 2 }}>

@@ -23,18 +23,26 @@ export default function useTimePicker(comObj?: ITimePicker): ITimePicker {
   }, [comObj?.value]);
 
   // DatePicker 유효 값 검사 함수
-  const validation = useCallback(() => {
-    if (value?.isAfter(compareValue)) {
-      return false;
-    }
-    return true;
-  }, [value, compareValue]);
+  const validation = useCallback(
+    (v: Dayjs) => {
+      if (!compareValue) {
+        alert("시작 날짜를 지정해주세요");
+        return false;
+      }
+      if (!v.isAfter(compareValue)) {
+        alert("시작 날짜 이후의 날짜를 선택해 주세요");
+        return false;
+      }
+      return true;
+    },
+    [value, compareValue]
+  );
 
   // DatePicker의 onChange property
   const onChange = (newValue: Dayjs | null) => {
     // 유효하지 않으면 값을 반환하지 않고 리턴
-    if (compareValue) {
-      if (validation() == false) {
+    if (comObj) {
+      if (validation(newValue!) == false) {
         return;
       }
     }

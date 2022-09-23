@@ -9,7 +9,7 @@ interface Props extends IProps {}
  * */
 export default function Reservation({ children }: Props) {
   return (
-    <Grid height={"100%"} maxWidth={"md"} margin={"auto"}>
+    <Grid maxWidth={"md"} margin={"auto"} container>
       {children}
     </Grid>
   );

@@ -23,7 +23,8 @@
       "@layout/*": ["src/components/layout/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
-      "@types/*": ["src/types/*"]
+      "@type/*": ["src/types/*"],
+      "@data/*": ["src/data/*"]
     },
     "typeRoots": ["src/types/mui.d.ts"]
   },

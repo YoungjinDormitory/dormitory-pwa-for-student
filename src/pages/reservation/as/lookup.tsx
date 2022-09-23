@@ -19,10 +19,10 @@ function LookUp() {
       <Reservation.Title title="A/S 조회" />
       <Grid
         xs={12}
-        item
         textAlign={"center"}
         sx={{ m: 2 }}
-        boxShadow={"0px 2px 0px 1px gainsboro"}>
+        boxShadow={"0px 2px 0px 1px gainsboro"}
+        item>
         <Box
           padding={2}
           display={"flex"}

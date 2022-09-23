@@ -1,0 +1,38 @@
+eadf57e7623331bba551b40c9152bf52
+20200126
+2.0
+10.0.19044 (x64)
+8
+\\.\DISPLAY1\Monitor0
+\\?\DISPLAY#SAM7000#4&3e03e24&0&UID4145#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+3
+0:0:1920:1080:32
+100%
+100%
+C:\Program Files\Nimi Places\Nimi Places.exe
+3
+0
+0:지정한 파일을 찾을 수 없습니다.
+1:System.IO.FileNotFoundException
+2:   위치: NimiPlaces.IOL.CB(String p)
+   위치: System.Windows.Forms.Command.Invoke()
+   위치: System.Windows.Forms.Control.WmCommand(Message& m)
+   위치: System.Windows.Forms.Control.WndProc(Message& m)
+   위치: NimiPlaces.c0GP.WndProc(Message& m)
+   위치: System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   위치: System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+   위치: System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+   위치: System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(Int32 dwComponentID, Int32 reason, Int32 pvLoopData)
+   위치: System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+   위치: System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+   위치: System.Windows.Forms.Form.ShowDialog(IWin32Window owner)
+   위치: NimiPlaces.ZZ21.COP(ZZ21 zq)
+   위치: NimiPlaces.mtg`1.z2(Object o)
+3:Nimi Places
+4:CB
+5:IOL
+6:NimiPlaces
+7:C:\Program Files\Nimi Places\Nimi Places.exe
+8:IOL
+9:NimiPlaces
+10:C:\Program Files\Nimi Places\Nimi Places.exe

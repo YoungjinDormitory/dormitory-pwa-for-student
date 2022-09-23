@@ -11,12 +11,12 @@
         "to": "/reservation/bus"
       },
       {
-        "title": "체육관 관리",
-        "to": "/reservation/gym"
-      },
-      {
         "title": "외출/외박 관리",
         "to": "/reservation/outing"
+      },
+      {
+        "title": "체육관 관리",
+        "to": "/reservation/gym"
       }
     ],
     "to": "/reservation"

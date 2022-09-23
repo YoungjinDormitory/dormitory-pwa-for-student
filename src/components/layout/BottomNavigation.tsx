@@ -1,6 +1,6 @@
 import useTab from "@hooks/useTab";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import bottomNavMap from "@utils/bottomNavMapData.json";
+import bottomNavMap from "@data/bottomNavMapData.json";
 import { Suspense, useLayoutEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 

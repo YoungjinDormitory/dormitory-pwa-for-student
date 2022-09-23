@@ -7,16 +7,14 @@ import { useState } from "react";
  * @description value와 onChange property를 담당
  */
 
-export default function useInput(initialValue: string, label?: string) {
+export default function useToggleButton(initialValue: string) {
   const [value, setValue] = useState<string>(initialValue);
   const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string
   ) => {
-    console.log(e);
-    if (typeof e === "string") setValue(e);
-    else setValue(() => e.target.value);
+    setValue(newAlignment);
   };
-  if (label) return { value, onChange, label };
 
   return { value, onChange };
 }

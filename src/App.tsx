@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { DefaultLayout, LoginBox } from "./components/layout";
+import useAuthContext from "./hooks/useAuthContext";
 import DynamicRouter from "./Router";
 
 // 로그인, 회원가입, 비밀번호찾기
@@ -20,25 +21,31 @@ const theme = createTheme({
 
 function App() {
   const location = useLocation();
+  const { Provider: AuthProvider, value } = useAuthContext();
 
   // 레이아웃이 없는 단독페이지
   if (LOGIN_LAYOUT_URL.includes(location.pathname)) {
     return (
-      <ThemeProvider theme={theme}>
-        <LoginBox>
-          <DynamicRouter />
-        </LoginBox>
-      </ThemeProvider>
+      <AuthProvider value={value}>
+        <ThemeProvider theme={theme}>
+          <LoginBox>
+            <DynamicRouter />
+          </LoginBox>
+        </ThemeProvider>
+      </AuthProvider>
     );
   }
 
   // 레이아웃에 의존적인 페이지
+  // Auth 상태에 의존적인 페이지
   return (
-    <ThemeProvider theme={theme}>
-      <DefaultLayout>
-        <DynamicRouter />
-      </DefaultLayout>
-    </ThemeProvider>
+    <AuthProvider value={value}>
+      <ThemeProvider theme={theme}>
+        <DefaultLayout>
+          <DynamicRouter />
+        </DefaultLayout>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
