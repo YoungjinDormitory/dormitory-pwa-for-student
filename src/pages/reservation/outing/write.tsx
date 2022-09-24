@@ -1,12 +1,14 @@
+import useDatePicker from "@hooks/useDatePicker";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+
 import Reservation from "../../../components/reservation";
-import useTimePicker from "@hooks/useTimePicker";
 
 function Write() {
-  const startDateParams = useTimePicker();
-  const endDateParams = useTimePicker(startDateParams);
+  const startDateParams = useDatePicker();
+  const endDateParams = useDatePicker(startDateParams);
 
   // submit 하는 함수
   const submit = () => {};
@@ -23,7 +25,7 @@ function Write() {
               시작 일자
             </Typography>
             <DatePicker
-              minDate={new Date()}
+              minDate={dayjs()}
               {...startDateParams}
               renderInput={(params) => {
                 return <TextField {...params} />;
@@ -38,7 +40,7 @@ function Write() {
               종료 일자
             </Typography>
             <DatePicker
-              minDate={new Date()}
+              minDate={dayjs()}
               {...endDateParams}
               renderInput={(params) => {
                 return <TextField {...params} />;

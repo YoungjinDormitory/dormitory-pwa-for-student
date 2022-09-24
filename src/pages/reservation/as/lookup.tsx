@@ -1,4 +1,4 @@
-import useTimePicker from "@hooks/useTimePicker";
+import useDatePicker from "@hooks/useDatePicker";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -8,8 +8,8 @@ import Reservation from "../../../components/reservation";
 
 // AS 조회 페이지
 function LookUp() {
-  const startDateProps = useTimePicker();
-  const endDateProps = useTimePicker(startDateProps);
+  const startDateProps = useDatePicker();
+  const endDateProps = useDatePicker(startDateProps);
 
   // 데이터 검색 함수
   const searchData = useCallback(() => {}, []);
