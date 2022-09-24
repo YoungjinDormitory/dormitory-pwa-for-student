@@ -1,11 +1,16 @@
 import { createTheme, ThemeProvider } from "@mui/material";
+import { useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
+import Board from "./components/board";
 import { DefaultLayout, LoginBox } from "./components/layout";
 import useAuthContext from "./hooks/useAuthContext";
 import DynamicRouter from "./Router";
 
 // 로그인, 회원가입, 비밀번호찾기
 const LOGIN_LAYOUT_URL = ["/login", "/signup", "/findPassword"];
+
+const NOTICE_LAYOUT_URL = ["/notice", "/annonymous", "/hot"];
 
 const theme = createTheme({
   palette: {
@@ -31,6 +36,22 @@ function App() {
           <LoginBox>
             <DynamicRouter />
           </LoginBox>
+        </ThemeProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (NOTICE_LAYOUT_URL.includes(location.pathname.slice(6))) {
+    return (
+      <AuthProvider value={value}>
+        <ThemeProvider theme={theme}>
+          <DefaultLayout>
+            <Board>
+              <Board.Title path={location.pathname} />
+              <Board.Navigator />
+              <DynamicRouter></DynamicRouter>
+            </Board>
+          </DefaultLayout>
         </ThemeProvider>
       </AuthProvider>
     );

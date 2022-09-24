@@ -34,7 +34,7 @@
       },
       {
         "title": "핫게시판",
-        "to": "/reservation/hot"
+        "to": "/board/hot"
       }
     ],
     "to": "/board"

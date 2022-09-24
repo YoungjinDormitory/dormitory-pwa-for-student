@@ -1,3 +1,4 @@
+import { SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 
 /**
@@ -10,7 +11,10 @@ import { useState } from "react";
 export default function useInput(initialValue: string, label?: string) {
   const [value, setValue] = useState<string>(initialValue);
   const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | string
+      | SelectChangeEvent
   ) => {
     console.log(e);
     if (typeof e === "string") setValue(e);

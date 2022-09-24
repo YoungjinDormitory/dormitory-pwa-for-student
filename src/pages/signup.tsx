@@ -1,4 +1,6 @@
 import { Button } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 import NormalOutlinedInput from "../components/common/NormalOutlinedInput";
 import PasswordOutlinedInput from "../components/common/PasswordOutlinedInput";
@@ -12,6 +14,17 @@ function SignUp() {
   const emailProps = useInput("", "이메일");
   const passwordProps = useInput("", "패스워드");
   const confirmPasswordProps = useInput("", "패스워드 확인");
+
+  const { mutate: signup } = useMutation([""], () => {
+    return axios.post("http://localhost:8000/singup", {
+      std_id: idProps.value,
+      std_name: nameProps.value,
+      password: passwordProps.value,
+      ph_num: "111-1111-1111",
+      room_num: 702,
+      e_mail: emailProps.value,
+    });
+  });
 
   const checkPassword = () => {
     return passwordProps.value === confirmPasswordProps.value;
@@ -30,7 +43,15 @@ function SignUp() {
         validator={checkPassword}
       />
 
-      <Button color="primary" variant="contained" fullWidth>
+      <Button
+        color="primary"
+        onClick={() => {
+          if (checkPassword()) {
+            signup();
+          }
+        }}
+        variant="contained"
+        fullWidth>
         회원가입
       </Button>
     </>

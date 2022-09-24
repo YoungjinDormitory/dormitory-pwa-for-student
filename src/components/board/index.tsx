@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
 import { IProps } from "../../types/props.interface";
+import Navigator from "./Navigator";
+import Title from "./Title";
 
 interface Props extends IProps {}
 
@@ -13,3 +15,6 @@ export default function Board({ children }: Props) {
     </Grid>
   );
 }
+
+Board.Title = Title;
+Board.Navigator = Navigator;

@@ -25,8 +25,7 @@
       "@utils/*": ["src/utils/*"],
       "@type/*": ["src/types/*"],
       "@data/*": ["src/data/*"]
-    },
-    "typeRoots": ["src/types/mui.d.ts"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

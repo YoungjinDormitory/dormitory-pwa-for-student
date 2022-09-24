@@ -11,13 +11,13 @@
     "description": "기숙사 사내 커뮤니티",
     "forwardIcon": "SpeakerNotesOutlinedIcon",
     "backwardIcon": "ArrowForwardOutlinedIcon",
-    "to": "/board/notice"
+    "to": "/board/annonymous"
   },
   {
     "title": "인기글",
     "description": "기숙사 사내 커뮤니티",
     "forwardIcon": "LocalFireDepartmentOutlinedIcon",
     "backwardIcon": "ArrowForwardOutlinedIcon",
-    "to": "/board/notice"
+    "to": "/board/hot"
   }
 ]
