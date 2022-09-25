@@ -1,8 +1,9 @@
-import { AxiosResponse } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
 import request from "../../service/request";
+import config from "../config";
 
 // ==========================================================================================
 interface ILogin {
@@ -26,9 +27,21 @@ mLogin.onSuccess = (res: AxiosResponse<any, any>) => {
 };
 
 // ==========================================================================================
-export function mLogout() {}
+
+export async function mLogout() {
+  return request.post("/logout", {}, config() as AxiosRequestConfig);
+}
+
+mLogout.Succcess = () => {
+  const { ctx } = useAuthContext();
+  const contextValue = useContext(ctx);
+  contextValue?.setToken("");
+  const navigate = useNavigate();
+  navigate("/");
+};
 
 // ==========================================================================================
+
 interface ISignUp {
   std_id: string;
   std_name: string;
@@ -48,3 +61,5 @@ export async function mSignUp(body: ISignUp) {
     e_mail,
   });
 }
+
+// ==========================================================================================
