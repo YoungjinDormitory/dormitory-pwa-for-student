@@ -1,21 +1,38 @@
+import NormalOutlinedInput from "@common/NormalOutlinedInput";
+import PasswordOutlinedInput from "@common/PasswordOutlinedInput";
 import useInput from "@hooks/useInput";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import { Box, Button, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import NormalOutlinedInput from "@common/NormalOutlinedInput";
-import PasswordOutlinedInput from "@common/PasswordOutlinedInput";
 import { LoginBox } from "../components/layout";
+import { mLogin } from "../utils/query/mutation/user";
 
 // Login 로그인페이지
 function Login() {
   const idProps = useInput("", "학번");
   const passwordProps = useInput("", "패스워드");
 
+  const [hintMessage, setHintMessage] = useState<boolean>(false);
+
+  //로그인 뮤테이션
+  const { mutate: login } = useMutation(["login"], mLogin, {
+    onSuccess: mLogin.onSuccess,
+    onError: () => setHintMessage(true),
+  });
+
   return (
     <>
       <LoginBox.Title title="로그인" />
+
+      {hintMessage && (
+        <Typography color="red" variant="caption" gutterBottom>
+          아이디 또는 패스워드를 확인해주세요
+        </Typography>
+      )}
 
       {/* 아이디 박스 */}
       <NormalOutlinedInput {...idProps} />
@@ -23,7 +40,16 @@ function Login() {
       {/* 비밀번호 박스 */}
       <PasswordOutlinedInput {...passwordProps} />
 
-      <Button color="primary" variant="contained" fullWidth>
+      <Button
+        color="primary"
+        onClick={() => {
+          login({
+            std_id: idProps.value,
+            password: passwordProps.value,
+          });
+        }}
+        variant="contained"
+        fullWidth>
         제출
       </Button>
 

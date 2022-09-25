@@ -1,8 +1,10 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 
 import { NavCard } from "../../../components/common/card";
+import useAuthContext from "../../../hooks/useAuthContext";
 
 // AS 네비게이션 페이지
 function AS() {

@@ -3,6 +3,7 @@ import {
   InputBaseComponentProps,
   InputLabel,
   OutlinedInput,
+  Typography,
 } from "@mui/material";
 
 interface Props {
@@ -13,6 +14,8 @@ interface Props {
   ) => void;
   type?: string;
   inputProps?: InputBaseComponentProps | undefined;
+  validator?: () => boolean;
+  hintMessage?: string;
 }
 
 /**
@@ -25,6 +28,11 @@ export default function NormalOutlinedInput(props: Props) {
       sx={{ display: "flex", alignItems: "flex-end", mb: 1 }}>
       <InputLabel>{props.label}</InputLabel>
       <OutlinedInput {...props} fullWidth />
+      {props.value && props.validator && !props.validator() && (
+        <Typography variant="caption" color="error">
+          {props.hintMessage}
+        </Typography>
+      )}
     </FormControl>
   );
 }

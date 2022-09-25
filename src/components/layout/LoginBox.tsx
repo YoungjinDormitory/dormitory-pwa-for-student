@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import type { IProps } from "../../types/props.interface";
 
 interface Props extends IProps {}
@@ -7,6 +8,7 @@ interface Props extends IProps {}
  * @description 유저 로그인에 관련된 레이아웃을 처리하는 컴포넌트 입니다.
  */
 function LoginBox({ children }: Props) {
+  const navigate = useNavigate();
   return (
     <Box
       display={"flex"}
@@ -18,7 +20,7 @@ function LoginBox({ children }: Props) {
       alignItems="center"
       margin="auto">
       {/* 로고 */}
-      <img src="asset/logo.png"></img>
+      <img src="asset/logo.png" onClick={() => navigate("/")}></img>
       {children}
     </Box>
   );

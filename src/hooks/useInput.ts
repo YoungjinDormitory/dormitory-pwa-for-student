@@ -16,7 +16,6 @@ export default function useInput(initialValue: string, label?: string) {
       | string
       | SelectChangeEvent
   ) => {
-    console.log(e);
     if (typeof e === "string") setValue(e);
     else setValue(() => e.target.value);
   };

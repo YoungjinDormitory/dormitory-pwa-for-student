@@ -3,6 +3,7 @@ import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useCallback } from "react";
+import { ASCard } from "../../../components/common/card";
 
 import Reservation from "../../../components/reservation";
 
@@ -57,6 +58,9 @@ function LookUp() {
           </Table>
         </TableContainer>
       </Grid> */}
+      <Grid item xs={12}>
+        <ASCard />
+      </Grid>
     </Reservation>
   );
 }

@@ -1,29 +1,32 @@
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
+  alpha,
+  Box,
+  Button,
+  FormControl,
+  InputAdornment,
+  InputBase,
+  MenuItem,
   Pagination,
   PaginationItem,
-  Toolbar,
-  Box,
+  Paper,
   Select,
-  MenuItem,
-  Typography,
-  FormControl,
-  TextField,
-  Button,
-  InputBase,
   styled,
-  alpha,
+  SxProps,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Theme,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { useLayoutEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useInput from "../../hooks/useInput";
+
 import qsToJson from "../../utils/helper/qsToJson";
 
 function createData(
@@ -74,7 +77,7 @@ export default function DesctopBoard() {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <Table sx={{ minWidth: 700 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>글 번호</TableCell>
@@ -88,8 +91,12 @@ export default function DesctopBoard() {
           <TableBody>
             {rows.map((row) => (
               <TableRow
+                onClick={() => navigate("/board/notice/detail?id=" + row.id)}
                 key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  cursor: "pointer",
+                }}>
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
@@ -143,14 +150,27 @@ export default function DesctopBoard() {
               component={Link}
               {...item}
               selected={item.page === currentPage}
-              to={`/board/notice?page=${item.page}`}
+              to={`/board/notice?page=${item.page}&viewCount=${currentViewCount}`}
             />
           )}
         />
 
         {/* 검색 */}
         <Box display="flex">
-          <SearchInput size={"small"} placeholder="제목으로 검색..." />
+          <SearchInput
+            size={"small"}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchOutlinedIcon />
+              </InputAdornment>
+            }
+            endAdornment={
+              <InputAdornment position="end">
+                <Button size="small">검색</Button>
+              </InputAdornment>
+            }
+            placeholder="제목으로 검색..."
+          />
         </Box>
       </Toolbar>
     </>
