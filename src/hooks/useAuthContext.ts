@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { IAuthContext } from "../types/context.interface";
+import request from "../utils/service/request";
 
 const AuthContext = createContext<IAuthContext | null>(null);
 

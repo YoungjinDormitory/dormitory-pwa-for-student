@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
-import { border } from "@mui/system";
+
 function Setting() {
   return (
     <Grid maxWidth={"md"} margin="auto" container>
@@ -15,7 +15,7 @@ function Setting() {
       </Grid>
       <Grid item xs={12} borderBottom={1} borderColor="gainsboro">
         <Box display="flex" p={2}>
-          <Box>
+          <Box textAlign={"center"}>
             <img src="asset/avatar.png" width={40}></img>
             <Typography>이름</Typography>
           </Box>

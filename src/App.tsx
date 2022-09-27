@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useLayoutEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
+import { client } from "./client";
 
 import Board from "./components/board";
 import { DefaultLayout, LoginBox } from "./components/layout";
@@ -26,48 +27,53 @@ const theme = createTheme({
 
 function App() {
   const location = useLocation();
-  const { Provider: AuthProvider, value } = useAuthContext();
 
   // 레이아웃이 없는 단독페이지
   if (LOGIN_LAYOUT_URL.includes(location.pathname)) {
     return (
-      <AuthProvider value={value}>
-        <ThemeProvider theme={theme}>
-          <LoginBox>
-            <DynamicRouter />
-          </LoginBox>
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <LoginBox>
+          <DynamicRouter />
+        </LoginBox>
+      </ThemeProvider>
     );
   }
 
   if (NOTICE_LAYOUT_URL.includes(location.pathname.slice(6))) {
     return (
-      <AuthProvider value={value}>
-        <ThemeProvider theme={theme}>
-          <DefaultLayout>
-            <Board>
-              <Board.Title path={location.pathname} />
-              <Board.Navigator />
-              <DynamicRouter></DynamicRouter>
-            </Board>
-          </DefaultLayout>
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <DefaultLayout>
+          <Board>
+            <Board.Title path={location.pathname} />
+            <Board.Navigator />
+            <DynamicRouter></DynamicRouter>
+          </Board>
+        </DefaultLayout>
+      </ThemeProvider>
     );
   }
 
   // 레이아웃에 의존적인 페이지
   // Auth 상태에 의존적인 페이지
   return (
-    <AuthProvider value={value}>
-      <ThemeProvider theme={theme}>
-        <DefaultLayout>
-          <DynamicRouter />
-        </DefaultLayout>
-      </ThemeProvider>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <DefaultLayout>
+        <DynamicRouter />
+      </DefaultLayout>
+    </ThemeProvider>
   );
 }
 
-export default App;
+const AppWrapper = () => {
+  const { Provider: AuthProvider, ctx, value } = useAuthContext();
+
+  return (
+    <QueryClientProvider client={client}>
+      <AuthProvider value={value}>
+        <App />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
+
+export default AppWrapper;

@@ -1,3 +1,4 @@
+import menuMap from "@data/menuMapData.json";
 import {
   AppBar,
   Avatar,
@@ -6,15 +7,12 @@ import {
   Container,
   Grid,
   IconButton,
-  styled,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import menuMap from "@data/menuMapData.json";
+import useCheckUser from "../../../hooks/useCheckUser";
 import MenuCreator from "./MenuCreator";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "../../../utils/query/query/user";
 
 /**
  *
@@ -22,7 +20,9 @@ import { getUser } from "../../../utils/query/query/user";
  */
 function Header() {
   const navigate = useNavigate();
+  const { data, isLoading } = useCheckUser();
 
+  console.log(data, isLoading);
   return (
     <AppBar color="transparent" position="static" elevation={3}>
       <Container maxWidth="xl">
@@ -66,25 +66,28 @@ function Header() {
               sx={{
                 textAlign: "end",
               }}>
-              {/* <IconButton
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "flex",
-                  },
-                }}>
-                <Avatar src="asset/avatar.png"></Avatar>
-                <Typography sx={{ ml: 3, fontSize: 12 }}>
-                  어서오세요 익명님!
-                </Typography>
-              </IconButton> */}
-              <Button
-                onClick={() => {
-                  navigate("/login");
-                }}
-                color="primary">
-                로그인
-              </Button>
+              {data?.data && (
+                <IconButton
+                  sx={{
+                    display: {
+                      sm: "flex",
+                    },
+                  }}>
+                  <Avatar src="asset/avatar.png"></Avatar>
+                  <Typography sx={{ ml: 3, fontSize: 12 }}>
+                    {data.data.std_name}
+                  </Typography>
+                </IconButton>
+              )}
+              {!data?.data && (
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  color="primary">
+                  로그인
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

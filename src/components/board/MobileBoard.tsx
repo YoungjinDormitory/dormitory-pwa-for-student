@@ -1,21 +1,41 @@
 import { Toolbar, Typography } from "@mui/material";
-import BoardCard from "../common/card/BoardCard";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import { lazy, Suspense } from "react";
+import BoardSuspenseCard from "../common/card/BoardSuspenseCard";
 
 export default function MobileBoard() {
+  const BoardCard = lazy(() => import("../common/card/BoardCard"));
   return (
     <div style={{ width: "100%", marginBottom: "48px" }}>
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+      <Suspense fallback={<BoardSuspenseCard />}>
+        <BoardCard />
+      </Suspense>
+
       <Toolbar
         variant="dense"
         sx={{

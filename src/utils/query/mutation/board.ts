@@ -1,8 +1,5 @@
 import { HeadersDefaults } from "axios";
 import request from "../../service/request";
-import config from "../config";
-
-request.defaults.headers = config().headers as unknown as HeadersDefaults;
 
 export function mDeleteBulletin(id: string) {
   return request.delete(`/bulletin?id=${id}`);

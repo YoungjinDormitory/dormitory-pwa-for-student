@@ -1,15 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
-function onError(err: unknown) {
-  console.log(err);
-}
+export const client = new QueryClient();
 
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      onError,
-    },
-  },
-});
-
-export default client;
+export const reloadAsItem = () => {
+  client.invalidateQueries(["asInfo"]);
+};

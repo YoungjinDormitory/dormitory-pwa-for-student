@@ -14,6 +14,10 @@ interface Props extends IProps {
   to: string;
 }
 
+/**
+ *
+ * @description paging 처리 카드
+ */
 function NavCard(props: Props) {
   const { forwardIcon, title, description, backwardIcon, to } = props;
 

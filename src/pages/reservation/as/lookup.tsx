@@ -1,19 +1,29 @@
+import { ASCard } from "@common/card";
 import useDatePicker from "@hooks/useDatePicker";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useCallback } from "react";
-import { ASCard } from "../../../components/common/card";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect } from "react";
 
 import Reservation from "../../../components/reservation";
+import useQueryOption from "../../../hooks/useQueryOption";
+import { IAsItem } from "../../../types/reservation.interface";
+import { getASInfo } from "../../../utils/query/query/reservation";
 
 // AS 조회 페이지
 function LookUp() {
   const startDateProps = useDatePicker();
   const endDateProps = useDatePicker(startDateProps);
+  const { option, token } = useQueryOption();
+
+  const { data } = useQuery(["asInfo", token], getASInfo, option);
 
   // 데이터 검색 함수
-  const searchData = useCallback(() => {}, []);
+  const searchData = useCallback(() => {
+    if (startDateProps.value && endDateProps.value) {
+    }
+  }, []);
 
   return (
     <Reservation>
@@ -43,24 +53,12 @@ function LookUp() {
             />
           </LocalizationProvider>
         </Box>
-        {/* <Button variant="contained" sx={{ mb: 2 }}>
-          검색
-        </Button> */}
       </Grid>
-      {/*  <Grid xs={12} item>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableCell>신청 날짜</TableCell>
-              <TableCell>신청 내용</TableCell>
-              <TableCell>상태</TableCell>
-            </TableHead>
-          </Table>
-        </TableContainer>
-      </Grid> */}
-      <Grid item xs={12}>
-        <ASCard />
-      </Grid>
+      {data?.data.map((el: IAsItem) => (
+        <Grid item xs={12}>
+          <ASCard data={el} />
+        </Grid>
+      ))}
     </Reservation>
   );
 }

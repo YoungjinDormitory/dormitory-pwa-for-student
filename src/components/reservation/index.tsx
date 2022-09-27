@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import { IProps } from "../../types/props.interface";
+import AuthorityChecker from "../common/AuthorityChecker";
 import Title from "./Title";
 
 interface Props extends IProps {}
@@ -9,9 +10,11 @@ interface Props extends IProps {}
  * */
 export default function Reservation({ children }: Props) {
   return (
-    <Grid maxWidth={"md"} margin={"auto"} container>
-      {children}
-    </Grid>
+    <AuthorityChecker>
+      <Grid maxWidth={"md"} margin={"auto"} container>
+        {children}
+      </Grid>
+    </AuthorityChecker>
   );
 }
 

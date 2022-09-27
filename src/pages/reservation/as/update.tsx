@@ -10,24 +10,26 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
 import useCheckBox from "../../../hooks/useCheckBox";
 import useQueryOption from "../../../hooks/useQueryOption";
-import { mCreateAs } from "@utils/query/mutation/reservation";
+import { mUpdateAs } from "@utils/query/mutation/reservation";
 
-// AS의 신청 페이지 입니다
-function Write() {
-  const titleProps = useInput("");
-  const contentProps = useInput("");
+// AS의 업데이트 페이지 입니다
+function Update() {
+  const location = useLocation();
 
-  const absenceCheck = useCheckBox(false);
+  const titleProps = useInput(location.state.title);
+  const contentProps = useInput(location.state.content);
+
+  const absenceCheck = useCheckBox(location.state.vst_check);
   const { option, token } = useQueryOption();
   const navigate = useNavigate();
 
   // A/S 신청 함수
-  const { mutate: submit } = useMutation(["createAs"], mCreateAs, {
+  const { mutate: submit } = useMutation(["createAs"], mUpdateAs, {
     ...option,
     onSuccess: () => {
       navigate(-1);
@@ -36,6 +38,7 @@ function Write() {
 
   // mutation에 필요한 값들
   const variables = {
+    as_id: location.state.as_id,
     title: titleProps.value,
     content: contentProps.value,
     vst_check: absenceCheck.checked,
@@ -93,4 +96,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default Update;

@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
 import request from "../../service/request";
-import config from "../config";
 
 // ==========================================================================================
 interface ILogin {
@@ -12,24 +11,17 @@ interface ILogin {
 }
 export async function mLogin(body: ILogin) {
   const { std_id, password } = body;
+
   return await request.post("/login", {
     std_id,
     password,
   });
 }
 
-mLogin.onSuccess = (res: AxiosResponse<any, any>) => {
-  const { ctx } = useAuthContext();
-  const contextValue = useContext(ctx);
-  contextValue?.setToken(res.data.accessToken);
-  const navigate = useNavigate();
-  navigate("/");
-};
-
 // ==========================================================================================
 
 export async function mLogout() {
-  return request.post("/logout", {}, config() as AxiosRequestConfig);
+  return request.post("/logout", {});
 }
 
 mLogout.Succcess = () => {

@@ -1,21 +1,49 @@
-import { AxiosRequestConfig, HeadersDefaults } from "axios";
+import { HeadersDefaults } from "axios";
 import request from "../../service/request";
-import config from "../config";
-
-request.defaults.headers = config().headers as unknown as HeadersDefaults;
 
 // ==========================================================================================
 
-export async function mDeleteAs(id: string) {
-  return await request.delete(`/as?id=${id}`);
+type deleteAS = {
+  as_id: number;
+  token?: string;
+};
+
+export async function mDeleteAs({ as_id, token }: deleteAS) {
+  return await request.post(
+    `/as/delete`,
+    {
+      as_id: as_id,
+    },
+    {
+      headers: {
+        Authorization: token ? token : "",
+      },
+    }
+  );
 }
 
-export async function mUpdateAs(id: string) {
-  return await request.put(`/as?id=${id}`);
+interface IAs {
+  as_id?: string;
+  title: string;
+  content: string;
+  vst_check: boolean;
+  token?: string;
 }
 
-export async function mCreateAs() {
-  return await request.post("/as", {});
+export async function mUpdateAs({ token, ...body }: IAs) {
+  return await request.post("/as/update", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
+}
+
+export async function mCreateAs({ token, ...body }: IAs) {
+  return await request.post("/as/create", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
 }
 
 // ==========================================================================================

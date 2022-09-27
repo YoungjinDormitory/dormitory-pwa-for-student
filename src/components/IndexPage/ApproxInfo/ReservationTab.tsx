@@ -2,9 +2,15 @@ import { BusCard, OutCard, ASCard, GymCard } from "@common/card";
 import useTab from "@hooks/useTab";
 import { Tab, Tabs } from "@mui/material";
 import { Box } from "@mui/system";
+import { useQuery } from "@tanstack/react-query";
+import useQueryOption from "../../../hooks/useQueryOption";
+import { IAsItem } from "../../../types/reservation.interface";
+import { getASInfo } from "../../../utils/query/query/reservation";
 
 function ReservationTab() {
   const tabProps = useTab(0);
+  const { option, token } = useQueryOption();
+  const { data } = useQuery(["asInfo", token, "2"], getASInfo, option);
 
   return (
     <>
@@ -17,7 +23,8 @@ function ReservationTab() {
         </Tabs>
       </Box>
       <Box>
-        {tabProps.value === 0 && <ASCard></ASCard>}
+        {tabProps.value === 0 &&
+          data?.data.map((el: IAsItem) => <ASCard data={el}></ASCard>)}
         {tabProps.value === 1 && <BusCard></BusCard>}
         {tabProps.value === 2 && <OutCard></OutCard>}
         {tabProps.value === 3 && <GymCard></GymCard>}

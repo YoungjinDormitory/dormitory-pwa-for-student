@@ -6,9 +6,10 @@ import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRig
 import { Box, Button, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { LoginBox } from "../components/layout";
+import useAuthContext from "../hooks/useAuthContext";
 import { mLogin } from "../utils/query/mutation/user";
 
 // Login 로그인페이지
@@ -16,11 +17,20 @@ function Login() {
   const idProps = useInput("", "학번");
   const passwordProps = useInput("", "패스워드");
 
+  // AuthContext
+  const { ctx } = useAuthContext();
+  const contextValue = useContext(ctx);
+  const navigate = useNavigate();
+
   const [hintMessage, setHintMessage] = useState<boolean>(false);
 
   //로그인 뮤테이션
-  const { mutate: login } = useMutation(["login"], mLogin, {
-    onSuccess: mLogin.onSuccess,
+  const { data, mutate: login } = useMutation(["login"], mLogin, {
+    onSuccess: (res) => {
+      contextValue?.setToken(res.data.accessToken);
+
+      navigate("/");
+    },
     onError: () => setHintMessage(true),
   });
 

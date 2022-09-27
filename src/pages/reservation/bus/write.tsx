@@ -41,8 +41,6 @@ function Write() {
 
   const time = useToggleButton("");
 
-  console.log(time);
-
   return (
     <Reservation>
       {/* Title */}
@@ -142,7 +140,7 @@ function Write() {
           </ToggleButtonGroup>
         </Box>
       </Grid>
-      <Grid p={2}>
+      <Grid xs={12} p={2} item>
         <Button variant="contained" fullWidth>
           확인
         </Button>
