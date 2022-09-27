@@ -1,4 +1,5 @@
 import menuMap from "@data/menuMapData.json";
+import useCheckUser from "@hooks/useCheckUser";
 import {
   AppBar,
   Avatar,
@@ -11,7 +12,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import useCheckUser from "../../../hooks/useCheckUser";
 import MenuCreator from "./MenuCreator";
 
 /**
@@ -20,9 +20,8 @@ import MenuCreator from "./MenuCreator";
  */
 function Header() {
   const navigate = useNavigate();
-  const { data, isLoading } = useCheckUser();
+  const { data } = useCheckUser();
 
-  console.log(data, isLoading);
   return (
     <AppBar color="transparent" position="static" elevation={3}>
       <Container maxWidth="xl">

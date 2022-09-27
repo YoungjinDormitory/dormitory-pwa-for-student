@@ -1,16 +1,16 @@
-import { ASCard } from "@common/card";
 import useDatePicker from "@hooks/useDatePicker";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useQuery } from "@tanstack/react-query";
 
+import { OutCard } from "../../../components/common/card";
 import Reservation from "../../../components/reservation";
 import useQueryOption from "../../../hooks/useQueryOption";
-import { IAsItem } from "../../../types/reservation.interface";
-import { getASInfo } from "../../../utils/query/query/reservation";
+import { IOutItem } from "../../../types/reservation.interface";
+import { getOutingInfo } from "../../../utils/query/query/reservation";
 
-// AS 조회 페이지
+// 외출/외박 조회페이지
 function LookUp() {
   const startDateProps = useDatePicker();
   const endDateProps = useDatePicker(startDateProps);
@@ -18,19 +18,19 @@ function LookUp() {
 
   const { data } = useQuery(
     [
-      "asInfo",
+      "outingInfo",
       token,
       undefined,
       startDateProps.value?.format("YYYY-MM-DD"),
       endDateProps.value?.format("YYYY-MM-DD"),
     ],
-    getASInfo,
+    getOutingInfo,
     option
   );
 
   return (
     <Reservation>
-      <Reservation.Title title="A/S 조회" />
+      <Reservation.Title title="외박/외출 조회" />
       <Grid
         xs={12}
         textAlign={"center"}
@@ -57,9 +57,9 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IAsItem) => (
+      {data?.data.map((el: IOutItem) => (
         <Grid item xs={12}>
-          <ASCard {...el} />
+          <OutCard {...el} />
         </Grid>
       ))}
     </Reservation>

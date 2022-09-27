@@ -19,6 +19,7 @@ const routes = Object.keys(modules).map((route) => {
  * @description react-router-dom을 기반으로 컴포넌트 들의 페이지를 url에 맞게 로드 시키는 부분입니다.
  * @page ./pages
  */
+
 const DynamicRouter = () => {
   return (
     <Routes>

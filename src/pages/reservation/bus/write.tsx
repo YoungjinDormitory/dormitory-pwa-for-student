@@ -13,8 +13,10 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 import Reservation from "../../../components/reservation";
+import { getBusTimeInfo } from "../../../utils/query/query/reservation";
 
 function Write() {
   // modal control 변수
@@ -38,6 +40,8 @@ function Write() {
     ctx: endCtx,
     ...endValue
   } = useModalContext(end.onChange);
+
+  const { data } = useQuery(["getBusInfo"], getBusTimeInfo);
 
   const time = useToggleButton("");
 

@@ -16,7 +16,6 @@ export default function useQueryOption() {
         error.response.data === "Authorization Error" &&
         error.response.status === 401
       ) {
-        console.log("dont canme here?");
         // 인증 에러가 발생하면
         // refresh token 과 함께 서버로 보냄
         request.get("/restoreAccessToken").then((res: any) => {

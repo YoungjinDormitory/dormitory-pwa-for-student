@@ -1,22 +1,31 @@
 import useDatePicker from "@hooks/useDatePicker";
+import useQueryOption from "@hooks/useQueryOption";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useMutation } from "@tanstack/react-query";
+import { mUpdateOut } from "@utils/query/mutation/reservation";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
-import useQueryOption from "../../../hooks/useQueryOption";
-import { mCreateOut } from "../../../utils/query/mutation/reservation";
 
-function Write() {
-  const startDateParams = useDatePicker();
-  const endDateParams = useDatePicker(startDateParams);
+function Update() {
+  const location = useLocation();
+
+  const startDateParams = useDatePicker(
+    undefined,
+    dayjs(location.state.start_date)
+  );
+
+  const endDateParams = useDatePicker(
+    startDateParams,
+    dayjs(location.state.end_date)
+  );
   const { option, token } = useQueryOption();
   const navigate = useNavigate();
 
-  const { mutate: submit } = useMutation(["createOut"], mCreateOut, {
+  const { mutate: submit } = useMutation(["updateOut"], mUpdateOut, {
     ...option,
     onSuccess: () => {
       navigate("/reservation/outing/lookup");
@@ -24,6 +33,7 @@ function Write() {
   });
 
   const variables = {
+    stayout_id: location.state.stayout_id,
     start_date: startDateParams.value?.format("YYYY-MM-DD")!,
     end_date: endDateParams.value?.format("YYYY-MM-DD")!,
     token,
@@ -86,4 +96,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default Update;

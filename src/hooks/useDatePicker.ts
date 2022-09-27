@@ -13,8 +13,13 @@ interface ITimePicker {
  * @description @mui/x-date-pickers의 DatePicker  라이브러리에 의존적인 hook입니다.
  * DatePicker에 필요한 property들을 리턴해 줍니다
  */
-export default function useTimePicker(comObj?: ITimePicker): ITimePicker {
-  const [value, setValue] = useState<Dayjs | null>(null);
+export default function useTimePicker(
+  comObj?: ITimePicker,
+  initialValue?: Dayjs
+): ITimePicker {
+  const [value, setValue] = useState<Dayjs | null>(
+    initialValue ? initialValue : null
+  );
   const [compareValue, setCompareValue] = useState<Dayjs | null>();
 
   // 비교 대상의 값이 바뀌면 compareValue변수에 대입
@@ -26,10 +31,12 @@ export default function useTimePicker(comObj?: ITimePicker): ITimePicker {
   const validation = useCallback(
     (v: Dayjs) => {
       if (!compareValue) {
+        setValue(null);
         alert("시작 날짜를 지정해주세요");
         return false;
       }
       if (!v.isAfter(compareValue)) {
+        setValue(null);
         alert("시작 날짜 이후의 날짜를 선택해 주세요");
         return false;
       }

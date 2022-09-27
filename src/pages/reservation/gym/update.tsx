@@ -1,4 +1,5 @@
 import useDatePicker from "@hooks/useDatePicker";
+import useQueryOption from "@hooks/useQueryOption";
 import useTab from "@hooks/useTab";
 import {
   Box,
@@ -16,21 +17,28 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useMutation } from "@tanstack/react-query";
+import { mCreateGym, mUpdateGym } from "@utils/query/mutation/reservation";
 import dayjs from "dayjs";
 import { useLayoutEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
-import useQueryOption from "../../../hooks/useQueryOption";
-import { mCreateGym } from "../../../utils/query/mutation/reservation";
 
-function Write() {
-  const date = useDatePicker();
+function Update() {
+  const location = useLocation();
+
+  const date = useDatePicker(undefined, dayjs(location.state.date));
 
   const tab = useTab(0);
 
-  const startTime = useDatePicker();
-  const endTime = useDatePicker(startTime);
+  const startTime = useDatePicker(
+    undefined,
+    dayjs(location.state.start_time, "HH:mm:ss")
+  );
+  const endTime = useDatePicker(
+    startTime,
+    dayjs(location.state.end_time, "HH:mm:ss")
+  );
 
   const [spendTime, setSpendTime] = useState({
     h: 0,
@@ -66,7 +74,7 @@ function Write() {
 
   const navigate = useNavigate();
   const { option, token } = useQueryOption();
-  const { mutate: submit } = useMutation(["createGym"], mCreateGym, {
+  const { mutate: submit } = useMutation(["updateGym"], mUpdateGym, {
     ...option,
     onSuccess: () => {
       navigate("/reservation/gym/lookup");
@@ -175,4 +183,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default Update;

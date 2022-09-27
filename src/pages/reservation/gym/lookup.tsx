@@ -1,4 +1,4 @@
-import { ASCard } from "@common/card";
+import { GymCard } from "@common/card";
 import useDatePicker from "@hooks/useDatePicker";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -7,10 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import Reservation from "../../../components/reservation";
 import useQueryOption from "../../../hooks/useQueryOption";
-import { IAsItem } from "../../../types/reservation.interface";
-import { getASInfo } from "../../../utils/query/query/reservation";
+import { IAsItem, IGymItem } from "../../../types/reservation.interface";
+import { getGymInfo } from "../../../utils/query/query/reservation";
 
-// AS 조회 페이지
+// 체육관 조회 페이지
 function LookUp() {
   const startDateProps = useDatePicker();
   const endDateProps = useDatePicker(startDateProps);
@@ -18,19 +18,21 @@ function LookUp() {
 
   const { data } = useQuery(
     [
-      "asInfo",
+      "gymInfo",
       token,
       undefined,
       startDateProps.value?.format("YYYY-MM-DD"),
       endDateProps.value?.format("YYYY-MM-DD"),
     ],
-    getASInfo,
+    getGymInfo,
     option
   );
 
+  console.log(data);
+
   return (
     <Reservation>
-      <Reservation.Title title="A/S 조회" />
+      <Reservation.Title title="체육관 조회" />
       <Grid
         xs={12}
         textAlign={"center"}
@@ -57,9 +59,9 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IAsItem) => (
-        <Grid item xs={12}>
-          <ASCard {...el} />
+      {data?.data.map((el: IGymItem) => (
+        <Grid item xs={12} key={el.hlth_id}>
+          <GymCard {...el} />
         </Grid>
       ))}
     </Reservation>

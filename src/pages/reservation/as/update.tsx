@@ -13,8 +13,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
-import useCheckBox from "../../../hooks/useCheckBox";
-import useQueryOption from "../../../hooks/useQueryOption";
+import useCheckBox from "@hooks/useCheckBox";
+import useQueryOption from "@hooks/useQueryOption";
 import { mUpdateAs } from "@utils/query/mutation/reservation";
 
 // AS의 업데이트 페이지 입니다

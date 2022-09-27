@@ -1,12 +1,15 @@
 import { HeadersDefaults } from "axios";
 import request from "../../service/request";
 
+interface IToken {
+  token?: string;
+}
+
 // ==========================================================================================
 
-type deleteAS = {
+interface deleteAS extends IToken {
   as_id: number;
-  token?: string;
-};
+}
 
 export async function mDeleteAs({ as_id, token }: deleteAS) {
   return await request.post(
@@ -22,12 +25,11 @@ export async function mDeleteAs({ as_id, token }: deleteAS) {
   );
 }
 
-interface IAs {
+interface IAs extends IToken {
   as_id?: string;
   title: string;
   content: string;
   vst_check: boolean;
-  token?: string;
 }
 
 export async function mUpdateAs({ token, ...body }: IAs) {
@@ -62,28 +64,84 @@ export async function mCreateBus() {
 
 // ==========================================================================================
 
-export async function mDeleteGym(id: string) {
-  return await request.delete(`/gym?id=${id}`);
+interface deleteGym extends IToken {
+  hlth_id: number;
 }
 
-export async function mUpdateGym(id: string) {
-  return await request.put(`/gym?id=${id}`);
+export async function mDeleteGym({ hlth_id, token }: deleteGym) {
+  return await request.post(
+    `/hlth/delete`,
+    {
+      hlth_id,
+    },
+    {
+      headers: {
+        Authorization: token ? token : "",
+      },
+    }
+  );
 }
 
-export async function mCreateGym() {
-  return await request.post("/gym");
+interface IGym extends IToken {
+  stayout_id?: number;
+  date: string;
+  start_time: string;
+  end_time: string;
+}
+
+export async function mUpdateGym({ token, ...body }: IGym) {
+  return await request.put(`/hlth/update`, body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
+}
+
+export async function mCreateGym({ token, ...body }: IGym) {
+  return await request.post("/hlth/create", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
 }
 
 // ==========================================================================================
 
-export async function mDeleteOut(id: string) {
-  return await request.delete(`/out?id=${id}`);
+interface deleteOut extends IToken {
+  stayout_id: number;
 }
 
-export async function mUpdateOut(id: string) {
-  return await request.put(`/out?id=${id}`);
+export async function mDeleteOut({ token, stayout_id }: deleteOut) {
+  return await request.post(
+    `/stayout/delete`,
+    {
+      stayout_id,
+    },
+    {
+      headers: {
+        Authorization: token ? token : "",
+      },
+    }
+  );
+}
+interface IOut extends IToken {
+  stayout_id?: number;
+  start_date: string;
+  end_date: string;
 }
 
-export async function mCreateOut() {
-  return await request.post("/out");
+export async function mUpdateOut({ token, ...body }: IOut) {
+  return await request.post(`/stayout/update`, body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
+}
+
+export async function mCreateOut({ token, ...body }: IOut) {
+  return await request.post("/stayout/create", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
 }
