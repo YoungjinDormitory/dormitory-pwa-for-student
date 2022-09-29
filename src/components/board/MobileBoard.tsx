@@ -3,38 +3,29 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { lazy, Suspense } from "react";
 import BoardSuspenseCard from "../common/card/BoardSuspenseCard";
+import { IBoardItem } from "../../types/board.interface";
 
-export default function MobileBoard() {
+interface Props {
+  currentPage: number;
+  currentViewCount: number;
+  maxPage: number;
+  data: Array<IBoardItem>;
+}
+
+export default function MobileBoard({
+  currentPage,
+  currentViewCount,
+  maxPage,
+  data = [],
+}: Props) {
   const BoardCard = lazy(() => import("../common/card/BoardCard"));
   return (
     <div style={{ width: "100%", marginBottom: "48px" }}>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
-      <Suspense fallback={<BoardSuspenseCard />}>
-        <BoardCard />
-      </Suspense>
+      {data.map((el) => (
+        <Suspense key={el.bulletin_id} fallback={<BoardSuspenseCard />}>
+          <BoardCard {...el} />
+        </Suspense>
+      ))}
 
       <Toolbar
         variant="dense"
@@ -46,7 +37,7 @@ export default function MobileBoard() {
         }}>
         <ArrowBackIosOutlinedIcon />
         <Typography variant="caption" letterSpacing={2}>
-          0/2
+          {currentPage} / {maxPage}
         </Typography>
         <ArrowForwardIosOutlinedIcon />
       </Toolbar>

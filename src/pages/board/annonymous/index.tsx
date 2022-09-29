@@ -1,21 +1,40 @@
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import DesctopBoard from "../../../components/board/DesctopBoard";
 import MobileBoard from "../../../components/board/MobileBoard";
-import useQueryOption from "../../../hooks/useQueryOption";
 import qsToJson from "../../../utils/helper/qsToJson";
 import { getAnnonymous } from "../../../utils/query/query/board";
+import request from "../../../utils/service/request";
 
-function Notice() {
+function Annonymous() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
   // 쿼리스트링에 해당하는 페이지와 뷰 카운트 변수
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentViewCount, setCurrentViewCount] = useState<number>(10);
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("sm"));
-  const { data } = useQuery(["getAnnonymouseInfo"], getAnnonymous);
+  const [maxPage, setMaxPage] = useState(1);
+
+  const { data } = useQuery(
+    ["getAnnonymouseInfo", String(currentPage), String(currentViewCount)],
+    getAnnonymous,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+  useEffect(() => {
+    request.get("/bulletin/count").then((res) => {
+      if (res.data % 10) {
+        setMaxPage(res.data / 10);
+      }
+      setMaxPage(parseInt(String(res.data / 10)) + 1);
+    });
+  }, []);
+
   // 렌더링 되기전에 여러 변수를 초기화 시켜주는 훅
+
   useLayoutEffect(() => {
     const qsObj = qsToJson(location.search);
     const page = Number(qsObj?.page);
@@ -27,19 +46,22 @@ function Notice() {
       setCurrentViewCount(viewCount);
     }
   }, [location.search]);
+
+  const props = {
+    data: data?.data,
+    currentViewCount,
+    currentPage,
+    maxPage,
+  };
+
   return (
     <>
       {/* 데스크탑 환경 */}
-      {/*       {!matches && (
-        <DesctopBoard
-          currentViewCount={currentViewCount}
-          currentPage={currentPage}
-        />
-      )} */}
+      {!matches && <DesctopBoard {...props} />}
       {/* 모바일 환경 */}
-      {/*       {matches && <MobileBoard />} */}
+      {matches && <MobileBoard {...props} />}
     </>
   );
 }
 
-export default Notice;
+export default Annonymous;

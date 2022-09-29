@@ -1,12 +1,26 @@
 import { Box, Button, Grid, OutlinedInput, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useLocation } from "react-router-dom";
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
+import { getAnnonymousDetail } from "../../../utils/query/query/board";
+
 function Detail() {
+  const location = useLocation();
+
+  const { data } = useQuery(
+    ["getAnnonymousDetail", location.state.bulletin_id],
+    getAnnonymousDetail,
+    {
+      refetchOnMount: false,
+    }
+  );
+
   return (
     <>
       <Grid maxWidth={"md"} margin={"auto"} container>
         <Grid item xs={12} mt={5} p={2}>
-          <Typography variant="h6">제목</Typography>
+          <Typography variant="h6">{data?.data.title}</Typography>
         </Grid>
         <Grid
           item
@@ -18,8 +32,8 @@ function Detail() {
           pb={2}
           borderColor="gainsboro">
           <Box display="flex" letterSpacing={1}>
-            <Typography mr="10px">작성자 </Typography>
-            <Typography mr="10px">{dayjs().format("DD/MM/YYYY")}</Typography>
+            <Typography mr="10px">{data?.data.std_name} </Typography>
+            <Typography mr="10px">{dayjs().format("YYYY-MM-DD")}</Typography>
             <Typography>댓글:0개</Typography>
           </Box>
           <Box display="flex" letterSpacing={1}>
@@ -28,21 +42,7 @@ function Detail() {
           </Box>
         </Grid>
         <Grid item xs={12} p={2}>
-          <Typography variant="caption">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloribus,
-            deserunt omnis dolorum voluptate saepe dignissimos voluptas illum ex
-            ratione nobis totam dicta magnam quasi sit qui laudantium ut. Modi,
-            ipsam?Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Doloribus, deserunt omnis dolorum voluptate saepe dignissimos
-            voluptas illum ex ratione nobis totam dicta magnam quasi sit qui
-            laudantium ut. Modi, ipsam?Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Doloribus, deserunt omnis dolorum voluptate saepe
-            dignissimos voluptas illum ex ratione nobis totam dicta magnam quasi
-            sit qui laudantium ut. Modi, ipsam?Lorem ipsum dolor sit amet
-            consectetur, adipisicing elit. Doloribus, deserunt omnis dolorum
-            voluptate saepe dignissimos voluptas illum ex ratione nobis totam
-            dicta magnam quasi sit qui laudantium ut. Modi, ipsam?
-          </Typography>
+          <Typography variant="caption">{data?.data.content}</Typography>
         </Grid>
         <Grid item xs={12} borderBottom={1} pb={2} borderColor="gainsboro">
           <Box display="flex" alignItems={"center"} justifyContent={"center"}>
@@ -55,7 +55,7 @@ function Detail() {
               border={1}
               borderColor="gainsboro">
               <LocalFireDepartmentOutlinedIcon></LocalFireDepartmentOutlinedIcon>
-              <Typography variant="caption">1000</Typography>
+              <Typography variant="caption">{data?.data.hot}</Typography>
             </Box>
           </Box>
         </Grid>

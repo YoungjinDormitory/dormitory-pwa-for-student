@@ -1,9 +1,6 @@
 import { HeadersDefaults } from "axios";
+import { IToken } from "../../../types/query.interface";
 import request from "../../service/request";
-
-interface IToken {
-  token?: string;
-}
 
 // ==========================================================================================
 

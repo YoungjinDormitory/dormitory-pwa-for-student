@@ -7,8 +7,6 @@ export function useGetUser(accessToken?: string) {
     },
   });
 }
-const PREFIX = "/auth";
-
 export async function restoreAccessToken() {
   const result = await request.get("/restoreAccessToken");
   return result;

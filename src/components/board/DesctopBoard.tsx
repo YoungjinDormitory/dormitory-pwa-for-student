@@ -12,22 +12,19 @@ import {
   Paper,
   Select,
   styled,
-  SxProps,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Theme,
   Toolbar,
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import qsToJson from "../../utils/helper/qsToJson";
+import { IBoardItem } from "../../types/board.interface";
 
 function createData(
   id: number,
@@ -52,27 +49,29 @@ function createDataArr(size: number) {
 
 const rows = createDataArr(20);
 
-export default function DesctopBoard() {
-  // 쿼리스트링에 해당하는 페이지와 뷰 카운트 변수
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [currentViewCount, setCurrentViewCount] = useState<number>(10);
+interface Props {
+  currentPage: number;
+  currentViewCount: number;
+  maxPage: number;
+  data: Array<IBoardItem>;
+}
 
+export default function DesctopBoard({
+  currentPage,
+  currentViewCount,
+  maxPage,
+  data = [],
+}: Props) {
   // 위치정보와 페이지 이동 훅
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 렌더링 되기전에 여러 변수를 초기화 시켜주는 훅
-  useLayoutEffect(() => {
-    const qsObj = qsToJson(location.search);
-    const page = Number(qsObj?.page);
-    const viewCount = Number(qsObj?.viewCount);
-    if (!isNaN(page)) {
-      setCurrentPage(page);
+  const path = useMemo(() => {
+    if (location.pathname === "/board/hot") {
+      return "/board/annonymous";
     }
-    if (!isNaN(viewCount)) {
-      setCurrentViewCount(viewCount);
-    }
-  }, [location.search]);
+    return location.pathname;
+  }, [location.pathname]);
 
   return (
     <>
@@ -89,22 +88,28 @@ export default function DesctopBoard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {data.map((row) => (
               <TableRow
-                onClick={() => navigate("/board/notice/detail?id=" + row.id)}
-                key={row.id}
+                onClick={() =>
+                  navigate(path + "/detail?id=" + row.bulletin_id, {
+                    state: row,
+                  })
+                }
+                key={row.bulletin_id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
                 }}>
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.bulletin_id}
                 </TableCell>
                 <TableCell align="right">{row.title}</TableCell>
-                <TableCell align="right">{row.author}</TableCell>
-                <TableCell align="right">{row.createAt}</TableCell>
-                <TableCell align="right">{row.view}</TableCell>
-                <TableCell align="right">{row.like}</TableCell>
+                <TableCell align="right">{row.std_id}</TableCell>
+                <TableCell align="right">
+                  {dayjs(row.create_date).format("YYYY-MM-DD")}
+                </TableCell>
+                <TableCell align="right">{row.views}</TableCell>
+                <TableCell align="right">{row.hot}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -142,7 +147,7 @@ export default function DesctopBoard() {
 
         {/* 페이지네이션  */}
         <Pagination
-          count={20}
+          count={maxPage}
           variant="outlined"
           shape="rounded"
           renderItem={(item) => (
@@ -150,7 +155,10 @@ export default function DesctopBoard() {
               component={Link}
               {...item}
               selected={item.page === currentPage}
-              to={`/board/notice?page=${item.page}&viewCount=${currentViewCount}`}
+              to={
+                location.pathname +
+                `?page=${item.page}&viewCount=${currentViewCount}`
+              }
             />
           )}
         />
