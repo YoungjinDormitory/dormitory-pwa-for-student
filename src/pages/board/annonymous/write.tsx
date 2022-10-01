@@ -1,5 +1,4 @@
-import useInput from "@hooks/useInput";
-import useQueryOption from "@hooks/useQueryOption";
+import { useImageInput, useInput, useQueryOption } from "@hooks/index";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import {
   Box,
@@ -11,11 +10,10 @@ import {
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { mCreateBulletin } from "@utils/query/mutation/board";
-import { LegacyRef, MutableRefObject, useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
-import useImageInput from "../../../hooks/useImageInput";
 
 function Write() {
   const titleProps = useInput("");
@@ -38,13 +36,6 @@ function Write() {
     images: imageProps.value,
     token,
   };
-
-  console.log(imageProps.value);
-  // 이미지 업로드할떄 같이 업로드함?
-  // 아님 이미지만 따로 업로드함?
-
-  // ex)
-  // 게시판 업로드 url 따로있고 이미지 url따로있고
 
   const cancel = () => {
     navigate(-1);
@@ -71,7 +62,7 @@ function Write() {
           type="file"
           accept="image/*"
           onChange={imageProps.onChange}
-          multiple
+          multiple={false}
         />
         {imageProps.previewImgArr.map((el, idx) => {
           return (

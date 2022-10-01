@@ -3,8 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
-import { getAnnonymousDetail } from "../../../utils/query/query/board";
+import { getAnnonymousDetail } from "@utils/query/query/board";
 
+// 게시판 상세보기 페이지
 function Detail() {
   const location = useLocation();
 

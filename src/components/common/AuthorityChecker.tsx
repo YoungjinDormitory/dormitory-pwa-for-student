@@ -7,7 +7,6 @@ interface Props extends IProps {}
 
 export default function AuthorityChecker({ children }: Props) {
   const { data, isLoading } = useCheckUser();
-  console.log(data, isLoading);
   const navigate = useNavigate();
 
   useEffect(() => {

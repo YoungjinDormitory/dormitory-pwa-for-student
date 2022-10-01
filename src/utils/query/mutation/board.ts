@@ -18,13 +18,19 @@ export function mUpdateBulletin(id: string) {
 
 export function mCreateBulletin({ token, ...body }: IBulletin) {
   const formData = new FormData();
+
   Object.keys(body).forEach((el) => {
-    formData.append(el, body[el]);
+    if (typeof body[el] === "object") {
+      body[el].forEach((v: File) => {
+        formData.append(el, v);
+      });
+    } else formData.append(el, body[el] as Blob);
   });
+
   return request.post("/bulletin/create", formData, {
     headers: {
+      "content-type": "multipart/form-data",
       Authorization: token ? token : "",
-      "Content-Type": "multipart/form-data",
     },
   });
 }
