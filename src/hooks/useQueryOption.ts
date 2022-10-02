@@ -1,4 +1,10 @@
-import { useContext } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import request from "../utils/service/request";
 import useAuthContext from "./useAuthContext";
 
@@ -6,6 +12,7 @@ import useAuthContext from "./useAuthContext";
  *
  * @description - refreshToken요청사항이 있는 쿼리 옵션 hook입니다.
  */
+
 export default function useQueryOption() {
   const { ctx } = useAuthContext();
   const auth = useContext(ctx);
@@ -21,12 +28,12 @@ export default function useQueryOption() {
         request.get("/restoreAccessToken").then((res: any) => {
           auth?.setToken(res.data.accessToken);
         });
-        return true;
       }
       return false;
     },
     refetchOnWindowFocus: false,
   };
   const token = auth?.token;
+
   return { option, token };
 }

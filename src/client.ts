@@ -11,3 +11,11 @@ export const reloadOutingItem = () => {
 export const reloadGymItem = () => {
   client.invalidateQueries(["gymInfo"]);
 };
+
+export const reloadComments = () => {
+  client.invalidateQueries(["getComments"]);
+};
+
+export const reloadBulletin = () => {
+  client.invalidateQueries(["getBulletin"]);
+};

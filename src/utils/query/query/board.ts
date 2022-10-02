@@ -24,6 +24,29 @@ export function getAnnonymousDetail({
   });
 }
 
+export function getAnnonymousImage({
+  queryKey,
+}: {
+  queryKey: Partial<string[]>;
+}) {
+  return request.get(`/bulletin/image`, {
+    params: {
+      bulletin_id: queryKey[1],
+    },
+  });
+}
+
 export function getHot(page: number | string, limit: number | string) {
   return request.get(`/bulletin/hot?page=${page}&limit=${limit}`);
+}
+
+/**
+ * @description - 댓글 조회
+ */
+export function getComments({ queryKey }: { queryKey: Partial<string[]> }) {
+  return request.get("/comment", {
+    params: {
+      bulletin_id: queryKey[1],
+    },
+  });
 }

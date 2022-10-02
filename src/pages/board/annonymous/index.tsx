@@ -22,16 +22,17 @@ function Annonymous() {
     getAnnonymous,
     {
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
     }
   );
   useEffect(() => {
     request.get("/bulletin/count").then((res) => {
-      if (res.data % 10) {
-        setMaxPage(res.data / 10);
+      if (res.data % currentViewCount) {
+        setMaxPage(res.data / currentViewCount);
       }
-      setMaxPage(parseInt(String(res.data / 10)) + 1);
+      setMaxPage(parseInt(String(res.data / currentViewCount)) + 1);
     });
-  }, []);
+  }, [currentViewCount]);
 
   // 렌더링 되기전에 여러 변수를 초기화 시켜주는 훅
 

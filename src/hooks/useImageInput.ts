@@ -1,5 +1,5 @@
 import imageCompression from "browser-image-compression";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const compressImage = async (image: File) => {
   try {
@@ -17,7 +17,7 @@ const compressImage = async (image: File) => {
  *
  * @description 이미지 input 형식의 데이터를 파싱해서 axios에 보낼 값과 preview값을 리턴해줍니다.
  */
-export default function useImageInput() {
+export default function useImageInput(initailValue?: Array<string>) {
   const idenfifyNum = useRef<number>(0);
   const [value, setValue] = useState<Array<File | undefined>>([]);
   const [previewImgArr, setPreviewImgArr] = useState<Array<string | null>>([]);

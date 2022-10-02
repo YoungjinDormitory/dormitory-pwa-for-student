@@ -9,35 +9,41 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { mCreateBulletin } from "@utils/query/mutation/board";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { mUpdateBulletin } from "@utils/query/mutation/board";
+import { useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
 
-function Write() {
-  const titleProps = useInput("");
-  const contentProps = useInput("");
+function Update() {
+  const location = useLocation();
+  const titleProps = useInput(location.state.detail.title);
+  const contentProps = useInput(location.state.detail.content);
   const imageProps = useImageInput();
 
   const imageRef = useRef<HTMLInputElement>(null);
+
+  //삭제해야할 이미지의 primarykey 배열
+  const [shouldDeleteImages, setShouldDeleteImages] = useState<Array<number>>(
+    []
+  );
   const navigate = useNavigate();
 
   const { option, token } = useQueryOption();
 
+  const { mutate: submit } = useMutation(["updateBulletin"], mUpdateBulletin, {
+    ...option,
+    onSuccess: () => navigate("/board/annonymous"),
+  });
+
   const variables = {
+    bulletin_id: location.state.detail.bulletin_id,
     title: titleProps.value,
     content: contentProps.value,
     images: imageProps.value,
+    should_delete_img: shouldDeleteImages,
     token,
   };
-
-  const { mutate: submit } = useMutation(["createBulletin"], mCreateBulletin, {
-    ...option,
-    onSuccess: () => {
-      navigate("/board/annonymous");
-    },
-  });
 
   const cancel = () => {
     navigate(-1);
@@ -45,7 +51,7 @@ function Write() {
 
   return (
     <Reservation>
-      <Reservation.Title title="게시글 작성" />
+      <Reservation.Title title="게시글 수정" />
       <Grid xs={12} item px={2} textAlign={"end"}>
         <IconButton
           onClick={() => {
@@ -66,6 +72,20 @@ function Write() {
           onChange={imageProps.onChange}
           multiple={false}
         />
+        {location.state.image.map((el: any, idx: number) => {
+          if (shouldDeleteImages.includes(el.image_id)) {
+            return <span key={"none" + idx}></span>;
+          }
+          return (
+            <IconButton
+              key={"image" + idx}
+              onClick={() => {
+                setShouldDeleteImages((prev) => [...prev, el.image_id]);
+              }}>
+              <img src={el.path} width={40}></img>
+            </IconButton>
+          );
+        })}
         {imageProps.previewImgArr.map((el, idx) => {
           return (
             el && (
@@ -111,4 +131,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default Update;
