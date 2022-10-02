@@ -1,15 +1,13 @@
-import { IconButton, Toolbar, Typography } from "@mui/material";
-import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { lazy, Suspense } from "react";
 import BoardSuspenseCard from "../common/card/BoardSuspenseCard";
 import { IBoardItem } from "../../types/board.interface";
-import { useNavigate } from "react-router-dom";
+import BoardToolBar from "../common/toolbar/BoardToolBar";
 
 interface Props {
   currentPage: number;
   currentViewCount: number;
   maxPage: number;
+  keyword?: string;
   data: Array<IBoardItem>;
 }
 
@@ -17,9 +15,9 @@ export default function MobileBoard({
   currentPage,
   currentViewCount,
   maxPage,
+  keyword,
   data = [],
 }: Props) {
-  const navigate = useNavigate();
   const BoardCard = lazy(() => import("../common/card/BoardCard"));
 
   return (
@@ -29,40 +27,12 @@ export default function MobileBoard({
           <BoardCard {...el} />
         </Suspense>
       ))}
-
-      <Toolbar
-        variant="dense"
-        sx={{
-          position: "fixed",
-          width: "100%",
-          backgroundColor: "gainsboro",
-          bottom: "56px",
-        }}>
-        <IconButton
-          disabled={currentPage - 1 <= 0}
-          onClick={() => {
-            navigate(
-              location.pathname +
-                `?page=${currentPage - 1}&viewCount=${currentViewCount}`
-            );
-          }}>
-          <ArrowBackIosOutlinedIcon />
-        </IconButton>
-
-        <Typography variant="caption" letterSpacing={2}>
-          {currentPage} / {maxPage}
-        </Typography>
-        <IconButton
-          disabled={currentPage + 1 > maxPage}
-          onClick={() => {
-            navigate(
-              location.pathname +
-                `?page=${currentPage + 1}&viewCount=${currentViewCount}`
-            );
-          }}>
-          <ArrowForwardIosOutlinedIcon />
-        </IconButton>
-      </Toolbar>
+      <BoardToolBar
+        keyword={keyword}
+        currentPage={currentPage}
+        currentViewCount={currentViewCount}
+        maxPage={maxPage}
+      />
     </div>
   );
 }

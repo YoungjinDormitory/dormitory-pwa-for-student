@@ -7,13 +7,17 @@ interface Props {
 
 export default function Title({ path }: Props) {
   const [title, setTitle] = useState<string>("");
+
   useEffect(() => {
     boardMapData.forEach((el) => {
       if (el.to === path) {
         setTitle(el.title);
+      } else {
+        setTitle("검색");
       }
     });
   }, [path]);
+
   return (
     <Grid xs={12} item>
       <Typography variant="h6" sx={{ p: 2, pb: 1, fontWeight: 700 }}>

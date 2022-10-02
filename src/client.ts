@@ -19,3 +19,7 @@ export const reloadComments = () => {
 export const reloadBulletin = () => {
   client.invalidateQueries(["getBulletin"]);
 };
+
+export const reloadCurrentBulletin = () => {
+  client.invalidateQueries(["getAnnonymousDetail"]);
+};

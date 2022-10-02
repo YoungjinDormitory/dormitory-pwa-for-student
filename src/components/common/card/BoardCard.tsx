@@ -1,19 +1,31 @@
 import { Box, Grid, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { IBoardItem } from "../../../types/board.interface";
+import { getComments } from "../../../utils/query/query/board";
 import { LocalFireDepartmentOutlinedIcon } from "../../icon";
 
 export default function BoardCard(data: IBoardItem) {
   const navigate = useNavigate();
 
   const path = useMemo(() => {
-    if (location.pathname === "/board/hot") {
+    if (
+      location.pathname === "/board/hot" ||
+      location.pathname === "/board/annonymous/search"
+    ) {
       return "/board/annonymous";
     }
     return location.pathname;
   }, [location.pathname]);
+
+  const { data: comments } = useQuery(
+    ["getComments", String(data.bulletin_id)],
+    getComments,
+    { refetchOnMount: false, refetchOnWindowFocus: false }
+  );
+
   return (
     <Box
       onClick={() =>
@@ -38,12 +50,22 @@ export default function BoardCard(data: IBoardItem) {
       </Box>
       <Box flex={1}>
         <Grid container p={2} spacing={2}>
-          <Grid item>{data.title}[댓글수]</Grid>
+          <Grid item>
+            {data.title}[{comments?.data.count}]
+          </Grid>
         </Grid>
         <Grid container pl={2} spacing={2}>
-          <Grid item>{dayjs(data.create_date).format("YYYY/MM/DD")}</Grid>
-          <Grid item> | </Grid>
-          <Grid item>{data.std_id}</Grid>
+          <Grid item>
+            <Typography variant="caption">
+              {dayjs(data.create_date).format("YYYY/MM/DD")}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="caption">|</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="caption">{data.std_id}</Typography>
+          </Grid>
         </Grid>
       </Box>
     </Box>

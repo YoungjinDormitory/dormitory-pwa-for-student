@@ -17,9 +17,10 @@ dayjs.extend(relT);
 
 interface Props {
   bulletinId: number;
+  myId: string;
 }
 
-export default function Comments({ bulletinId }: Props) {
+export default function Comments({ bulletinId, myId }: Props) {
   const { option, token } = useQueryOption();
   const [ip, setIp] = useState("");
   const content = useInput("");
@@ -81,7 +82,7 @@ export default function Comments({ bulletinId }: Props) {
       </Grid>
       <Grid item xs={12} p={2}>
         {comments?.data.rows.map((el: any, idx: number) => (
-          <CommentCard {...el} key={el.comment_id + idx} />
+          <CommentCard myId={myId} {...el} key={el.comment_id + idx} />
         ))}
       </Grid>
     </>

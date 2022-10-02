@@ -12,6 +12,29 @@ export function getAnnonymous({ queryKey }: { queryKey: Partial<string[]> }) {
     },
   });
 }
+export function getHot({ queryKey }: { queryKey: Partial<string[]> }) {
+  return request.get(`/hot`, {
+    params: {
+      page: queryKey[1],
+      limit: queryKey[2],
+    },
+  });
+}
+
+export function getSearchedAnnonymous({
+  queryKey,
+}: {
+  queryKey: Partial<string[]>;
+}) {
+  return request.get(`/bulletin/search`, {
+    params: {
+      page: queryKey[1],
+      limit: queryKey[2],
+      keyword: queryKey[3],
+    },
+  });
+}
+
 export function getAnnonymousDetail({
   queryKey,
 }: {
@@ -34,10 +57,6 @@ export function getAnnonymousImage({
       bulletin_id: queryKey[1],
     },
   });
-}
-
-export function getHot(page: number | string, limit: number | string) {
-  return request.get(`/bulletin/hot?page=${page}&limit=${limit}`);
 }
 
 /**

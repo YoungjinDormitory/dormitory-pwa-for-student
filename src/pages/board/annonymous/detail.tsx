@@ -1,19 +1,25 @@
-import { useModal, useQueryOption } from "@hooks/index";
+import DeleteModal from "@common/DeleteModal";
+import { useCheckUser, useModal, useQueryOption } from "@hooks/index";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import {
+  mClickHot,
+  mDeleteBulletin,
+  mViewBulletin,
+} from "@utils/query/mutation/board";
+import {
   getAnnonymousDetail,
   getAnnonymousImage,
 } from "@utils/query/query/board";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Comments from "../../../components/board/Comments";
 
-import DeleteModal from "../../../components/common/DeleteModal";
+import { reloadCurrentBulletin } from "../../../client";
+import Comments from "../../../components/board/Comments";
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
-import { mDeleteBulletin } from "../../../utils/query/mutation/board";
 
 // 게시판 상세보기 페이지
 function Detail() {
@@ -21,7 +27,9 @@ function Detail() {
   const navigate = useNavigate();
   const deleteModal = useModal();
   const { option, token } = useQueryOption();
+  const { data } = useCheckUser();
 
+  // 게시판 정보와 이미지 쿼리
   const [{ data: detail }, { data: image }] = useQueries({
     queries: [
       {
@@ -39,12 +47,14 @@ function Detail() {
     ],
   });
 
+  // 업데이트 페이지로 이동
   const moveToUpdate = () => {
     navigate("/board/annonymous/update", {
       state: { detail: detail?.data, image: image?.data },
     });
   };
 
+  // 게시판 삭제 mutation
   const { mutate: deleteBulletinItem } = useMutation(
     ["deleteBulletinItem"],
     mDeleteBulletin,
@@ -53,6 +63,20 @@ function Detail() {
       onSuccess: () => navigate(-1),
     }
   );
+
+  // 게시판 조회수 올려주는 mutation
+  const { mutate: view } = useMutation(["viewBulletin"], mViewBulletin);
+  const { mutate: clickHot } = useMutation(["clickHot"], mClickHot, {
+    ...option,
+    onSuccess: () => reloadCurrentBulletin(),
+    onError: () => alert("이전에 한번이상 누르셨습니다."),
+  });
+
+  useEffect(() => {
+    view({
+      bulletin_id: location.state.bulletin_id,
+    });
+  }, []);
 
   return (
     <>
@@ -74,14 +98,16 @@ function Detail() {
             <Typography mr="10px">{dayjs().format("YYYY-MM-DD")}</Typography>
             <Typography>댓글:0개</Typography>
           </Box>
-          <Box display="flex" letterSpacing={1}>
-            <IconButton onClick={deleteModal.onOpen}>
-              <DeleteOutlineOutlinedIcon />
-            </IconButton>
-            <IconButton onClick={moveToUpdate}>
-              <CreateOutlinedIcon />
-            </IconButton>
-          </Box>
+          {data && data.data.std_id === detail?.data.std_id && (
+            <Box display="flex" letterSpacing={1}>
+              <IconButton onClick={deleteModal.onOpen}>
+                <DeleteOutlineOutlinedIcon />
+              </IconButton>
+              <IconButton onClick={moveToUpdate}>
+                <CreateOutlinedIcon />
+              </IconButton>
+            </Box>
+          )}
         </Grid>
         {image &&
           image.data.map((el: any, idx: string) => {
@@ -96,20 +122,24 @@ function Detail() {
         </Grid>
         <Grid item xs={12} borderBottom={1} pb={2} borderColor="gainsboro">
           <Box display="flex" alignItems={"center"} justifyContent={"center"}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              justifyContent={"center"}
-              alignItems="center"
-              p={1}
-              border={1}
-              borderColor="gainsboro">
-              <LocalFireDepartmentOutlinedIcon></LocalFireDepartmentOutlinedIcon>
-              <Typography variant="caption">{detail?.data.hot}</Typography>
+            <Box border={1} borderRadius={2} borderColor="gainsboro">
+              <IconButton
+                onClick={() => {
+                  clickHot({
+                    bulletin_id: location.state.bulletin_id,
+                    token,
+                  });
+                }}>
+                <LocalFireDepartmentOutlinedIcon></LocalFireDepartmentOutlinedIcon>
+                <Typography variant="caption">{detail?.data.hot}</Typography>
+              </IconButton>
             </Box>
           </Box>
         </Grid>
-        <Comments bulletinId={detail?.data.bulletin_id} />
+        <Comments
+          bulletinId={detail?.data.bulletin_id}
+          myId={data?.data.std_id}
+        />
       </Grid>
       <DeleteModal
         {...deleteModal}

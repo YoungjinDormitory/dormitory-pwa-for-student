@@ -11,7 +11,12 @@ import DynamicRouter from "./Router";
 // 로그인, 회원가입, 비밀번호찾기
 const LOGIN_LAYOUT_URL = ["/login", "/signup", "/findPassword"];
 
-const NOTICE_LAYOUT_URL = ["/notice", "/annonymous", "/hot"];
+const NOTICE_LAYOUT_URL = [
+  "/notice",
+  "/annonymous",
+  "/hot",
+  "/annonymous/search",
+];
 
 const theme = createTheme({
   palette: {

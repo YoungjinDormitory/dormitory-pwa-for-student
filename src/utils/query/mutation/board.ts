@@ -10,14 +10,14 @@ interface IBulletin extends IToken {
   // 삭제해야할 이미지의 primary key
 }
 
-interface IBulletinDeleteOption extends IToken {
+interface IBulletinOption extends IToken {
   bulletin_id: number;
 }
 
 /**
  * @description - 게시판 삭제 함수
  */
-export function mDeleteBulletin({ bulletin_id, token }: IBulletinDeleteOption) {
+export function mDeleteBulletin({ bulletin_id, token }: IBulletinOption) {
   return request.post(
     `/bulletin/delete`,
     {
@@ -30,6 +30,33 @@ export function mDeleteBulletin({ bulletin_id, token }: IBulletinDeleteOption) {
     }
   );
 }
+
+/**
+ * @description - 게시판 조회수 올리는 함수
+ */
+export function mViewBulletin({ bulletin_id }: IBulletinOption) {
+  return request.post(`/bulletin/view`, {
+    bulletin_id,
+  });
+}
+
+/**
+ * @description - 게시판 조회수 올리는 함수
+ */
+export function mClickHot({ bulletin_id, token }: IBulletinOption) {
+  return request.post(
+    `/bulletin/hot`,
+    {
+      bulletin_id,
+    },
+    {
+      headers: {
+        Authorization: token ? token : "",
+      },
+    }
+  );
+}
+
 /**
  * @description - 게시판 업데이트 함수
  */

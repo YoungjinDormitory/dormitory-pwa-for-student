@@ -22,52 +22,37 @@ import {
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IBoardItem } from "../../types/board.interface";
 
-function createData(
-  id: number,
-  title: string,
-  author: string,
-  createAt: string,
-  view: number,
-  like: number
-) {
-  return { id, title, author, createAt, view, like };
-}
+import { useInput } from "../../hooks";
 
-function createDataArr(size: number) {
-  const arr = [];
-  for (let i = 0; i < size; i++) {
-    arr.push(
-      createData(i, "제목" + i, "글쓴이", dayjs().format("DD/MM/YYYY"), 0, 0)
-    );
-  }
-  return arr;
-}
-
-const rows = createDataArr(20);
-
+import type { IBoardItem } from "../../types/board.interface";
 interface Props {
   currentPage: number;
   currentViewCount: number;
   maxPage: number;
   data: Array<IBoardItem>;
+  keyword?: string;
 }
 
 export default function DesctopBoard({
   currentPage,
   currentViewCount,
   maxPage,
+  keyword,
   data = [],
 }: Props) {
   // 위치정보와 페이지 이동 훅
   const location = useLocation();
   const navigate = useNavigate();
+  const searchContent = useInput("");
 
   const path = useMemo(() => {
-    if (location.pathname === "/board/hot") {
+    if (
+      location.pathname === "/board/hot" ||
+      location.pathname === "/board/annonymous/search"
+    ) {
       return "/board/annonymous";
     }
     return location.pathname;
@@ -131,7 +116,8 @@ export default function DesctopBoard({
                     onClick={() => {
                       navigate(
                         location.pathname +
-                          `?page=${currentPage}&viewCount=${el}`
+                          `?page=${currentPage}&viewCount=${el}` +
+                          `${keyword ? "&content=" + keyword : ""}`
                       );
                     }}
                     value={String(el)}
@@ -157,7 +143,8 @@ export default function DesctopBoard({
               selected={item.page === currentPage}
               to={
                 location.pathname +
-                `?page=${item.page}&viewCount=${currentViewCount}`
+                `?page=${item.page}&viewCount=${currentViewCount}` +
+                `${keyword ? "&content=" + keyword : ""}`
               }
             />
           )}
@@ -166,6 +153,7 @@ export default function DesctopBoard({
         {/* 검색 */}
         <Box display="flex">
           <SearchInput
+            {...searchContent}
             size={"small"}
             startAdornment={
               <InputAdornment position="start">
@@ -174,7 +162,15 @@ export default function DesctopBoard({
             }
             endAdornment={
               <InputAdornment position="end">
-                <Button size="small">검색</Button>
+                <Button
+                  onClick={() => {
+                    navigate(
+                      `/board/annonymous/search?content=${searchContent.value}`
+                    );
+                  }}
+                  size="small">
+                  검색
+                </Button>
               </InputAdornment>
             }
             placeholder="제목으로 검색..."
