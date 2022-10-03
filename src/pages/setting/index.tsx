@@ -1,7 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import { useCheckUser } from "../../hooks";
 
 function Setting() {
+  const { data: user } = useCheckUser();
   return (
     <Grid maxWidth={"md"} margin="auto" container>
       <Grid
@@ -14,22 +16,25 @@ function Setting() {
         </Typography>
       </Grid>
       <Grid item xs={12} borderBottom={1} borderColor="gainsboro">
-        <Box display="flex" p={2}>
-          <Box textAlign={"center"}>
-            <img src="asset/avatar.png" width={40}></img>
-            <Typography>이름</Typography>
+        {!user && (
+          <Box display="flex" p={2} m="auto">
+            <Typography>로그인 후 이용해 주세요.</Typography>
           </Box>
-          <Box ml={2}>
-            <Box display="flex">
-              <Typography>호실 : </Typography>
-              <Typography>702</Typography>
+        )}
+        {user && (
+          <Box display="flex" p={2}>
+            <Box textAlign={"center"}>
+              <img src="asset/avatar.png" width={40}></img>
+              <Typography>{user?.data.std_name}</Typography>
             </Box>
-            <Box display="flex">
-              <Typography>이메일 : </Typography>
-              <Typography>smg20004@g.yjp.ac.kr</Typography>
+            <Box ml={2} my={"auto"}>
+              <Box display="flex">
+                <Typography>호실 : </Typography>
+                <Typography>{user?.data.room_num}</Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        )}
       </Grid>
       <Grid item xs={12} p={2} display="flex" flexWrap="wrap">
         <Box

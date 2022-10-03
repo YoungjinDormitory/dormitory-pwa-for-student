@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import MenuCreator from "./MenuCreator";
 
 /**
@@ -66,17 +66,17 @@ function Header() {
                 textAlign: "end",
               }}>
               {data?.data && (
-                <IconButton
-                  sx={{
-                    display: {
-                      sm: "flex",
-                    },
-                  }}>
+                <Box display="flex" justifyContent={"end"}>
                   <Avatar src="asset/avatar.png"></Avatar>
-                  <Typography sx={{ ml: 3, fontSize: 12 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ ml: 3, fontSize: 12, my: "auto" }}>
                     {data.data.std_name}
                   </Typography>
-                </IconButton>
+                  <IconButton color="error">
+                    <PowerSettingsNewIcon />
+                  </IconButton>
+                </Box>
               )}
               {!data?.data && (
                 <Button

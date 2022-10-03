@@ -1,29 +1,43 @@
 import RadioModal from "@common/RadioModal";
-import useInput from "@hooks/useInput";
-import useModal from "@hooks/useModal";
-import useModalContext from "@hooks/useModalContext";
-import useToggleButton from "@hooks/useToggleButton";
 import ForwardOutlinedIcon from "@mui/icons-material/ForwardOutlined";
 import {
   Box,
   Button,
   Divider,
   Grid,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  useTimePicker,
+  useToggleButton,
+  useModal,
+  useInput,
+  useModalContext,
+} from "@hooks/index";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Reservation from "../../../components/reservation";
-import { getBusTimeInfo } from "../../../utils/query/query/reservation";
+import { useEffect, useState } from "react";
+import request from "../../../utils/service/request";
+import dayjs from "dayjs";
 
 function Write() {
+  const [busInfo, setBusInfo] = useState<any>();
+  const [busTime, setBusTime] = useState<Array<string>>([]);
+  const [endBusStop, setEndBusStop] = useState<Array<string>>([]);
+
   // modal control 변수
   const { onOpen: openStartModal, ...startModalProps } = useModal();
   const { onOpen: openEndModal, ...endModalProps } = useModal();
 
-  // 날짜 state
+  // submit할 변수들
+  const date = useTimePicker();
+  const direction = useToggleButton("");
+  const time = useToggleButton("");
   const start = useInput("");
   const end = useInput("");
 
@@ -41,115 +55,203 @@ function Write() {
     ...endValue
   } = useModalContext(end.onChange);
 
-  const { data } = useQuery(["getBusInfo"], getBusTimeInfo);
+  // 버스 예약관련 정보 불러오기
+  useEffect(() => {
+    request.get(`/businfo`).then((res) => setBusInfo(res.data));
+  }, []);
 
-  const time = useToggleButton("");
+  // time toggle button 출력
+  useEffect(() => {
+    if (
+      start.value &&
+      direction.value != undefined &&
+      date.value != undefined
+    ) {
+      end.onChange("");
+      const day = dayjs(date.value).day();
+      const dayType = [0, 6].includes(day) ? 1 : 0;
+
+      const busTimeArr = busInfo
+        ?.filter(
+          (el: any) =>
+            start.value === el.bus_stop &&
+            direction.value == el.type &&
+            dayType == el.bus_date
+        )
+        .map((el: any) => el.bus_time);
+      setBusTime(busTimeArr);
+    }
+  }, [start.value, direction.value, date.value]);
+
+  // 도착지 설정
+  useEffect(() => {
+    const day = dayjs(date.value).day();
+    const dayType = [0, 6].includes(day) ? 1 : 0;
+    if (
+      start.value &&
+      direction.value != undefined &&
+      date.value != undefined &&
+      time.value
+    )
+      setEndBusStop(() => {
+        return busInfo
+          .filter((el: any) => {
+            console.log(
+              start.value === el.bus_stop &&
+                direction.value == el.type &&
+                dayType == el.bus_date
+            );
+            return (
+              direction.value == el.type &&
+              dayType == el.bus_date &&
+              dayjs(el.bus_time, "hh:mm:ss").isAfter(
+                dayjs(time.value, "hh:mm:ss")
+              )
+            );
+          })
+          .map((el: any) => el.bus_stop);
+      });
+  }, [time.value]);
 
   return (
-    <Reservation>
-      {/* Title */}
-      <Reservation.Title title="버스 신청  " />
-
-      <Grid xs={12} p={2} item>
-        <Typography
-          variant="subtitle2"
-          component={"div"}
-          sx={{ fontWeight: "bold" }}
-          textAlign={"center"}>
-          탑승일
-        </Typography>
-        <Box display={"flex"}>
-          <Button sx={{ flex: 1 }}>somthing</Button>
-        </Box>
-      </Grid>
-
-      <Grid xs={12} item>
-        <Divider />
-      </Grid>
-
-      <Grid
-        xs={12}
-        p={2}
-        display="flex"
-        justifyContent={"space-between"}
-        alignItems="center"
-        item>
-        {/* 출발지 버튼 상자 */}
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          width={"40%"}
-          height={100}
-          textAlign={"center"}>
-          <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-            출발지
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Reservation>
+        {/* Title */}
+        <Reservation.Title title="버스 신청  " />
+        <Grid xs={12} p={2} item>
+          <Typography
+            variant="subtitle2"
+            component={"div"}
+            sx={{ fontWeight: "bold" }}
+            textAlign={"center"}>
+            탑승일
           </Typography>
-          {/* 모달 핸들러 */}
-          <Button sx={{ flex: 1 }} onClick={openStartModal}>
-            {start.value}
-          </Button>
-          {/* 모달 */}
-          <SRadioModalProvider value={startValue}>
-            <RadioModal {...startModalProps} ctx={startCtx} title="출발지">
-              <RadioModal.List
-                ctx={startCtx}
-                source={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></RadioModal.List>
-            </RadioModal>
-          </SRadioModalProvider>
-        </Box>
-        {/* 중간 화살표 */}
-        <ForwardOutlinedIcon color="primary" />
-        {/* 도착지 버튼 상자 */}
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          width={"40%"}
-          height={100}
-          textAlign={"center"}>
-          <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-            도착지
+          <Box display={"flex"}>
+            <DatePicker
+              {...date}
+              renderInput={(params) => (
+                <TextField {...params} sx={{ mr: 2, flex: 1 }} />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid xs={12} item>
+          <Divider />
+        </Grid>
+        <Grid xs={12} p={2} item>
+          <Typography
+            variant="subtitle2"
+            component={"div"}
+            sx={{ fontWeight: "bold" }}
+            textAlign={"center"}>
+            방면
           </Typography>
-          {/* 모달 핸들러 */}
-          <Button sx={{ flex: 1 }} onClick={openEndModal}>
-            {end.value}
+          <Box display={"flex"}>
+            <ToggleButtonGroup
+              exclusive
+              {...direction}
+              sx={{ mt: 2, m: "auto" }}>
+              {[0, 1].map((el, idx) => (
+                <ToggleButton key={idx} value={el}>
+                  {el === 0
+                    ? "복현캠퍼스 -> 영어마을"
+                    : "영어마을 -> 복현캠퍼스"}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </Box>
+        </Grid>
+
+        <Grid xs={12} item>
+          <Divider />
+        </Grid>
+        <Grid
+          xs={12}
+          p={2}
+          display="flex"
+          justifyContent={"space-between"}
+          alignItems="center"
+          item>
+          {/* 출발지 버튼 상자 */}
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            width={"40%"}
+            height={100}
+            textAlign={"center"}>
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+              출발지
+            </Typography>
+            {/* 모달 핸들러 */}
+            <Button sx={{ flex: 1 }} onClick={openStartModal}>
+              {start.value}
+            </Button>
+            {/* 모달 */}
+            <SRadioModalProvider value={startValue}>
+              <RadioModal {...startModalProps} ctx={startCtx} title="출발지">
+                <RadioModal.List
+                  ctx={startCtx}
+                  source={[
+                    ...new Set(busInfo?.map((el: any) => el.bus_stop)),
+                  ]}></RadioModal.List>
+              </RadioModal>
+            </SRadioModalProvider>
+          </Box>
+          {/* 중간 화살표 */}
+          <ForwardOutlinedIcon color="primary" />
+          {/* 도착지 버튼 상자 */}
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            width={"40%"}
+            height={100}
+            textAlign={"center"}>
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+              도착지
+            </Typography>
+            {/* 모달 핸들러 */}
+            <Button sx={{ flex: 1 }} onClick={openEndModal}>
+              {end.value}
+            </Button>
+            {/* 모달 */}
+            <ERadioModalProvider value={endValue}>
+              <RadioModal {...endModalProps} ctx={endCtx} title="도착지">
+                <RadioModal.List
+                  ctx={endCtx}
+                  source={[...new Set(endBusStop)]}></RadioModal.List>
+              </RadioModal>
+            </ERadioModalProvider>
+          </Box>
+        </Grid>
+        <Grid xs={12} item>
+          <Divider />
+        </Grid>
+        <Grid xs={12} p={2} item>
+          <Typography
+            variant="subtitle2"
+            component={"div"}
+            sx={{ fontWeight: "bold" }}
+            textAlign={"center"}>
+            시간 선택
+          </Typography>
+          <Box width={"100%"} textAlign={"center"}>
+            <ToggleButtonGroup exclusive {...time} sx={{ mt: 2 }}>
+              {busTime &&
+                [...new Set(busTime)].map((el: any, idx: number) => (
+                  <ToggleButton key={String(idx)} value={el}>
+                    <Typography variant="caption">{el}</Typography>
+                  </ToggleButton>
+                ))}
+            </ToggleButtonGroup>
+          </Box>
+        </Grid>
+        <Grid xs={12} p={2} item>
+          <Button variant="contained" fullWidth>
+            확인
           </Button>
-          {/* 모달 */}
-          <ERadioModalProvider value={endValue}>
-            <RadioModal {...endModalProps} ctx={endCtx} title="도착지">
-              <RadioModal.List
-                ctx={endCtx}
-                source={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></RadioModal.List>
-            </RadioModal>
-          </ERadioModalProvider>
-        </Box>
-      </Grid>
-      <Grid xs={12} item>
-        <Divider />
-      </Grid>
-      <Grid xs={12} p={2} item>
-        <Typography
-          variant="subtitle2"
-          component={"div"}
-          sx={{ fontWeight: "bold" }}
-          textAlign={"center"}>
-          시간 선택
-        </Typography>
-        <Box width={"100%"} textAlign={"center"}>
-          <ToggleButtonGroup exclusive {...time} sx={{ mt: 2 }}>
-            {["09:40", "11:40", "14:00", "16:20", "18:00"].map((el, idx) => (
-              <ToggleButton key={idx} value={el}>
-                {el}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-        </Box>
-      </Grid>
-      <Grid xs={12} p={2} item>
-        <Button variant="contained" fullWidth>
-          확인
-        </Button>
-      </Grid>
-    </Reservation>
+        </Grid>
+      </Reservation>
+    </LocalizationProvider>
   );
 }
 

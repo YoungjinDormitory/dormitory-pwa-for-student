@@ -20,6 +20,8 @@ export async function mLogin(body: ILogin) {
 
 // ==========================================================================================
 
+interface ILogout {}
+
 export async function mLogout() {
   return request.post("/logout", {});
 }

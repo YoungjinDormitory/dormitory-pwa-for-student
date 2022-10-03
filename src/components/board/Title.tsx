@@ -9,13 +9,16 @@ export default function Title({ path }: Props) {
   const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
+    let currentTitle;
     boardMapData.forEach((el) => {
       if (el.to === path) {
-        setTitle(el.title);
-      } else {
-        setTitle("검색");
+        currentTitle = el.title;
+        setTitle(currentTitle);
       }
     });
+    if (!currentTitle) {
+      setTitle("검색");
+    }
   }, [path]);
 
   return (

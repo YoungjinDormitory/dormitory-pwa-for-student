@@ -24,21 +24,21 @@ export default function RadioList({ source, ctx }: Props) {
 
   return (
     <Box sx={{ width: "100%", height: 400, overflow: "auto" }}>
-      {source.map((_, idx: number) => (
+      {source.map((value: any, idx: number) => (
         <ListItem key={idx}>
           <ListItemButton
             onClick={() => {
-              v && v.onChange(String(idx));
+              v && v.onChange(value);
             }}>
             <ListItemIcon>
-              {v && v.value === String(idx) && (
+              {v && v.value === String(value) && (
                 <RadioButtonCheckedOutlinedIcon color="primary" />
               )}
-              {v && v.value != String(idx) && (
+              {v && v.value != String(value) && (
                 <RadioButtonUncheckedOutlinedIcon color="primary" />
               )}
             </ListItemIcon>
-            <ListItemText primary={`Item ${idx}`} />
+            <ListItemText primary={value} />
           </ListItemButton>
         </ListItem>
       ))}

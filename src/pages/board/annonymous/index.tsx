@@ -22,7 +22,6 @@ function Annonymous() {
     getAnnonymous,
     {
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
     }
   );
   useEffect(() => {
