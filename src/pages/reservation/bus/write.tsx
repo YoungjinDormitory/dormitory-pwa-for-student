@@ -17,6 +17,7 @@ import {
   useModal,
   useInput,
   useModalContext,
+  useQueryOption,
 } from "@hooks/index";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -24,6 +25,9 @@ import Reservation from "../../../components/reservation";
 import { useEffect, useState } from "react";
 import request from "../../../utils/service/request";
 import dayjs from "dayjs";
+import { useMutation } from "@tanstack/react-query";
+import { mCreateBus } from "../../../utils/query/mutation/reservation";
+import { useNavigate } from "react-router-dom";
 
 function Write() {
   const [busInfo, setBusInfo] = useState<any>();
@@ -54,6 +58,24 @@ function Write() {
     ctx: endCtx,
     ...endValue
   } = useModalContext(end.onChange);
+
+  const canClickEnd = () => {
+    return (
+      start.value &&
+      direction.value != undefined &&
+      date.value != undefined &&
+      time.value
+    );
+  };
+
+  const navigate = useNavigate();
+  const { option, token } = useQueryOption();
+  const { mutate: submit } = useMutation(["createBusRequest"], mCreateBus, {
+    ...option,
+    onSuccess: () => {
+      navigate("/reservation/bus/lookup");
+    },
+  });
 
   // 버스 예약관련 정보 불러오기
   useEffect(() => {
@@ -87,30 +109,36 @@ function Write() {
   useEffect(() => {
     const day = dayjs(date.value).day();
     const dayType = [0, 6].includes(day) ? 1 : 0;
+
     if (
       start.value &&
       direction.value != undefined &&
       date.value != undefined &&
       time.value
-    )
+    ) {
+      const times = busInfo.filter((el: any) => {
+        return (
+          start.value === el.bus_stop &&
+          direction.value == el.type &&
+          time.value == el.bus_time
+        );
+      })[0].bus_times;
+      console.log(times);
       setEndBusStop(() => {
         return busInfo
           .filter((el: any) => {
-            console.log(
-              start.value === el.bus_stop &&
-                direction.value == el.type &&
-                dayType == el.bus_date
-            );
             return (
               direction.value == el.type &&
               dayType == el.bus_date &&
               dayjs(el.bus_time, "hh:mm:ss").isAfter(
                 dayjs(time.value, "hh:mm:ss")
-              )
+              ) &&
+              times === el.bus_times
             );
           })
           .map((el: any) => el.bus_stop);
       });
+    }
   }, [time.value]);
 
   return (
@@ -129,6 +157,7 @@ function Write() {
           <Box display={"flex"}>
             <DatePicker
               {...date}
+              minDate={dayjs().add(1, "day")}
               renderInput={(params) => (
                 <TextField {...params} sx={{ mr: 2, flex: 1 }} />
               )}
@@ -210,7 +239,15 @@ function Write() {
               도착지
             </Typography>
             {/* 모달 핸들러 */}
-            <Button sx={{ flex: 1 }} onClick={openEndModal}>
+            <Button
+              sx={{ flex: 1 }}
+              onClick={() => {
+                if (canClickEnd()) {
+                  openEndModal();
+                } else {
+                  alert("다른 모든 값들을 먼저 입력해주세요");
+                }
+              }}>
               {end.value}
             </Button>
             {/* 모달 */}
@@ -246,7 +283,20 @@ function Write() {
           </Box>
         </Grid>
         <Grid xs={12} p={2} item>
-          <Button variant="contained" fullWidth>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              if (end.value && canClickEnd()) {
+                submit({
+                  bus_date: date.value!.toDate(),
+                  bus_stop: start.value,
+                  bus_time: time.value,
+                  bus_way: direction.value,
+                  token,
+                });
+              }
+            }}>
             확인
           </Button>
         </Grid>

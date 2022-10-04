@@ -1,4 +1,4 @@
-import { ASCard } from "@common/card";
+import { BusCard } from "@common/card";
 import useDatePicker from "@hooks/useDatePicker";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -7,8 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import Reservation from "../../../components/reservation";
 import useQueryOption from "../../../hooks/useQueryOption";
-import { IAsItem } from "../../../types/reservation.interface";
-import { getASInfo } from "../../../utils/query/query/reservation";
+import { IBusItem } from "../../../types/reservation.interface";
+import { getBusInfo } from "../../../utils/query/query/reservation";
 
 // AS 조회 페이지
 function LookUp() {
@@ -18,13 +18,13 @@ function LookUp() {
 
   const { data } = useQuery(
     [
-      "asInfo",
+      "busInfo",
       token,
       undefined,
       startDateProps.value?.format("YYYY-MM-DD"),
       endDateProps.value?.format("YYYY-MM-DD"),
     ],
-    getASInfo,
+    getBusInfo,
     option
   );
 
@@ -57,9 +57,9 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IAsItem) => (
+      {data?.data.map((el: IBusItem) => (
         <Grid item xs={12}>
-          <ASCard {...el} />
+          <BusCard {...el} />
         </Grid>
       ))}
     </Reservation>

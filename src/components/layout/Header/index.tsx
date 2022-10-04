@@ -13,6 +13,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import MenuCreator from "./MenuCreator";
+import { useMutation } from "@tanstack/react-query";
+import { mLogout } from "../../../utils/query/mutation/user";
 
 /**
  *
@@ -21,6 +23,9 @@ import MenuCreator from "./MenuCreator";
 function Header() {
   const navigate = useNavigate();
   const { data } = useCheckUser();
+  const { mutate: logout } = useMutation(["userLogour"], mLogout, {
+    onSuccess: () => navigate(0),
+  });
 
   return (
     <AppBar color="transparent" position="static" elevation={3}>
@@ -74,7 +79,11 @@ function Header() {
                     {data.data.std_name}
                   </Typography>
                   <IconButton color="error">
-                    <PowerSettingsNewIcon />
+                    <PowerSettingsNewIcon
+                      onClick={() => {
+                        logout();
+                      }}
+                    />
                   </IconButton>
                 </Box>
               )}

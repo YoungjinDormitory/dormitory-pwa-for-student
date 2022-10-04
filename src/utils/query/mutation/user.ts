@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
+import { IToken } from "../../../types/query.interface";
 import request from "../../service/request";
 
 // ==========================================================================================
@@ -20,19 +21,23 @@ export async function mLogin(body: ILogin) {
 
 // ==========================================================================================
 
-interface ILogout {}
-
-export async function mLogout() {
-  return request.post("/logout", {});
+export function mLogout() {
+  return request.post("/logout");
 }
 
-mLogout.Succcess = () => {
-  const { ctx } = useAuthContext();
-  const contextValue = useContext(ctx);
-  contextValue?.setToken("");
-  const navigate = useNavigate();
-  navigate("/");
-};
+// ==========================================================================================
+interface ChangeRoom extends IToken {
+  token: string;
+  room_num: number;
+}
+
+export function mChangeRoom({ token, ...body }: ChangeRoom) {
+  return request.post("/logout", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
+}
 
 // ==========================================================================================
 
@@ -44,9 +49,9 @@ interface ISignUp {
   room_num: string;
   e_mail: string;
 }
-export async function mSignUp(body: ISignUp) {
+export function mSignUp(body: ISignUp) {
   const { std_id, std_name, password, ph_num, room_num, e_mail } = body;
-  return await request.post("/signup", {
+  return request.post("/signup", {
     std_id,
     std_name,
     password,
@@ -57,3 +62,11 @@ export async function mSignUp(body: ISignUp) {
 }
 
 // ==========================================================================================
+
+export function mfindPassword(body: { e_mail: string; hash: string }) {
+  return request.post("/find/pw", body);
+}
+
+export function mChangePassword(body: { e_mail: string; password: string }) {
+  return request.post("/change/pw", body);
+}

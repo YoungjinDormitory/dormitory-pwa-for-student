@@ -6,11 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import useQueryOption from "../../../hooks/useQueryOption";
 import {
   IAsItem,
+  IBusItem,
   IGymItem,
   IOutItem,
 } from "../../../types/reservation.interface";
 import {
   getASInfo,
+  getBusInfo,
   getGymInfo,
   getOutingInfo,
 } from "../../../utils/query/query/reservation";
@@ -33,6 +35,12 @@ function ReservationTab() {
     option
   );
 
+  const { data: BusItem } = useQuery(
+    ["busInfo", token, "2"],
+    getBusInfo,
+    option
+  );
+
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -48,7 +56,10 @@ function ReservationTab() {
           AsItem?.data.map((el: IAsItem) => (
             <ASCard key={el.as_id} {...el}></ASCard>
           ))}
-        {tabProps.value === 1 && <BusCard></BusCard>}
+        {tabProps.value === 1 &&
+          BusItem?.data.map((el: IBusItem) => (
+            <BusCard key={el.bus_req_id} {...el}></BusCard>
+          ))}
         {tabProps.value === 2 &&
           OutItem?.data.map((el: IOutItem) => (
             <OutCard key={el.stayout_id} {...el}></OutCard>

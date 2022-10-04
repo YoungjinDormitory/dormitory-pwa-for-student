@@ -26,11 +26,17 @@ export function getGymInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   });
 }
 
-export function getBusTimeInfo() {
-  return request.get(`/businfo`);
-}
-export function getBusInfo(limit: number) {
-  return request.get(`/bus?limit=${limit}`);
+export function getBusInfo({ queryKey }: { queryKey: Partial<string[]> }) {
+  return request.get(`/bus`, {
+    headers: {
+      Authorization: queryKey[1]!,
+    },
+    params: {
+      limit: queryKey[2],
+      start_date: queryKey[3],
+      end_date: queryKey[4],
+    },
+  });
 }
 
 export function getASInfo({ queryKey }: { queryKey: Partial<string[]> }) {

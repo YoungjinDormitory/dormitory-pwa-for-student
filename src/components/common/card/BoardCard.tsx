@@ -11,13 +11,10 @@ export default function BoardCard(data: IBoardItem) {
   const navigate = useNavigate();
 
   const path = useMemo(() => {
-    if (
-      location.pathname === "/board/hot" ||
-      location.pathname === "/board/annonymous/search"
-    ) {
-      return "/board/annonymous";
+    if (location.pathname === "/notice") {
+      return location.pathname;
     }
-    return location.pathname;
+    return "/board/annonymous";
   }, [location.pathname]);
 
   const { data: comments } = useQuery(
@@ -33,6 +30,9 @@ export default function BoardCard(data: IBoardItem) {
           state: data,
         })
       }
+      sx={{
+        cursor: "pointer",
+      }}
       width="100%"
       display="flex"
       height={80}

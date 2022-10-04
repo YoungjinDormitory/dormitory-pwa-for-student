@@ -10,7 +10,7 @@ export default function AuthorityChecker({ children }: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !data) {
+    if (isLoading && !data) {
       alert("권한이 없습니다.");
       navigate(-1);
     }

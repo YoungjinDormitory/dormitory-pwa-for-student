@@ -1,9 +1,18 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import { useCheckUser } from "../../hooks";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { mChangeRoom, mLogout } from "../../utils/query/mutation/user";
 
 function Setting() {
   const { data: user } = useCheckUser();
+  const navigate = useNavigate();
+  const { mutate: logout } = useMutation(["userLogour"], mLogout, {
+    onSuccess: () => navigate(0),
+  });
+
   return (
     <Grid maxWidth={"md"} margin="auto" container>
       <Grid
@@ -36,22 +45,29 @@ function Setting() {
           </Box>
         )}
       </Grid>
-      <Grid item xs={12} p={2} display="flex" flexWrap="wrap">
-        <Box
-          display="flex"
-          justifyContent={"center"}
-          alignItems="center"
-          width={100}
-          height={100}
-          border={1}
-          borderRadius={2}
-          borderColor="gainsboro">
-          <Box textAlign={"center"}>
-            <ApartmentOutlinedIcon></ApartmentOutlinedIcon>
-            <Typography>호실 변경</Typography>
+      {user && (
+        <Grid item xs={12} p={2} display="flex" flexWrap="wrap">
+          <Box
+            display="flex"
+            justifyContent={"center"}
+            alignItems="center"
+            width={100}
+            height={100}
+            border={1}
+            borderRadius={2}
+            m={1}
+            borderColor="gainsboro">
+            <IconButton
+              sx={{ flex: 1, borderRadius: 1 }}
+              onClick={() => logout()}>
+              <Box textAlign={"center"} color="red">
+                <PowerSettingsNewIcon />
+                <Typography>로그아웃</Typography>
+              </Box>
+            </IconButton>
           </Box>
-        </Box>
-      </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 }

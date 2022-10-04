@@ -47,16 +47,36 @@ export async function mCreateAs({ token, ...body }: IAs) {
 
 // ==========================================================================================
 
-export async function mDeleteBus(id: string) {
-  return await request.delete(`/bus?id=${id}`);
+interface deleteBus extends IToken {
+  bus_req_id: number;
+}
+export async function mDeleteBus({ bus_req_id, token }: deleteBus) {
+  return await request.post(
+    `/bus/delete`,
+    {
+      bus_req_id,
+    },
+    {
+      headers: {
+        Authorization: token ? token : "",
+      },
+    }
+  );
 }
 
-export async function mUpdateBus(id: string) {
-  return await request.put(`/bus?id=${id}`);
+interface IBus extends IToken {
+  bus_date: Date;
+  bus_way: string;
+  bus_stop: string;
+  bus_time: string;
 }
 
-export async function mCreateBus() {
-  return await request.post("/bus", {});
+export async function mCreateBus({ token, ...body }: IBus) {
+  return await request.post("/bus/create", body, {
+    headers: {
+      Authorization: token ? token : "",
+    },
+  });
 }
 
 // ==========================================================================================

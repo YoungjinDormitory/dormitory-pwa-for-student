@@ -11,6 +11,9 @@ export const reloadOutingItem = () => {
 export const reloadGymItem = () => {
   client.invalidateQueries(["gymInfo"]);
 };
+export const reloadBusItem = () => {
+  client.invalidateQueries(["busInfo"]);
+};
 
 export const reloadComments = () => {
   client.invalidateQueries(["getComments"]);

@@ -19,3 +19,12 @@ export interface IGymItem {
   start_time: string;
   end_time: string;
 }
+
+export interface IBusItem {
+  bus_req_id: number;
+  bus_date: Date;
+  bus_stop: string;
+  bus_time: string;
+  bus_way: number;
+  std_id: string;
+}
