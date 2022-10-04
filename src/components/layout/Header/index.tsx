@@ -23,9 +23,10 @@ import { mLogout } from "../../../utils/query/mutation/user";
 function Header() {
   const navigate = useNavigate();
   const { data } = useCheckUser();
-  const { mutate: logout } = useMutation(["userLogour"], mLogout, {
+  const { mutate: logout } = useMutation(["userLogout"], mLogout, {
     onSuccess: () => navigate(0),
   });
+  console.log("data", data);
 
   return (
     <AppBar color="transparent" position="static" elevation={3}>
