@@ -4,7 +4,9 @@ import boardMapData from "@data/boardMapData.json";
 interface Props {
   path: string;
 }
-
+/**
+ * @description - 게시판 제목 컴포넌트 입니다
+ */
 export default function Title({ path }: Props) {
   const [title, setTitle] = useState<string>("");
 

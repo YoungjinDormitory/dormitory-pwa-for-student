@@ -1,5 +1,8 @@
 import request from "../../service/request";
 
+/**
+ * @description - 본인 외출/외박 정보 얻는 함수
+ */
 export function getOutingInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/stayout`, {
     headers: {
@@ -13,6 +16,9 @@ export function getOutingInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   });
 }
 
+/**
+ * @description - 본인 체육관 예약 정보 얻는 함수
+ */
 export function getGymInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/hlth`, {
     headers: {
@@ -26,6 +32,9 @@ export function getGymInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   });
 }
 
+/**
+ * @description - 본인 버스 정보 얻는 함수
+ */
 export function getBusInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/bus`, {
     headers: {
@@ -39,6 +48,9 @@ export function getBusInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   });
 }
 
+/**
+ * @description - 본인 AS 정보 얻는 함수
+ */
 export function getASInfo({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/as`, {
     headers: {

@@ -36,6 +36,9 @@ interface Props {
   keyword?: string;
 }
 
+/**
+ * @description 데스크탑 뷰 전용 게시판 컴포넌트 입니다.
+ */
 export default function DesctopBoard({
   currentPage,
   currentViewCount,

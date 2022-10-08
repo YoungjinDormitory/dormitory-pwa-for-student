@@ -5,6 +5,9 @@ import { IProps } from "../../types/props.interface";
 
 interface Props extends IProps {}
 
+/**
+ * @description 권한 확인용 래퍼 컴포넌트 입니다.
+ */
 export default function AuthorityChecker({ children }: Props) {
   const { data, isLoading } = useCheckUser();
   const navigate = useNavigate();

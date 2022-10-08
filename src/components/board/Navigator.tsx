@@ -3,6 +3,9 @@ import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { Box, Button, Grid, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * @description - 게시판  네비게이터 컴포넌트 입니다.
+ */
 export default function Navigator() {
   const navigate = useNavigate();
   return (

@@ -41,7 +41,7 @@ export function mViewBulletin({ bulletin_id }: IBulletinOption) {
 }
 
 /**
- * @description - 게시판 조회수 올리는 함수
+ * @description - 게시판 좋아요 올리는 함수
  */
 export function mClickHot({ bulletin_id, token }: IBulletinOption) {
   return request.post(

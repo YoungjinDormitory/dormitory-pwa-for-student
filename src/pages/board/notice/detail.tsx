@@ -1,6 +1,11 @@
 import { Box, Button, Grid, OutlinedInput, Typography } from "@mui/material";
 import dayjs from "dayjs";
+
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
+
+/**
+ * @description - 공지사항 자세히 보기 컴포넌트 지만 아직 데이터가 없어 방치시킨 상태입니다
+ */
 function Detail() {
   return (
     <>

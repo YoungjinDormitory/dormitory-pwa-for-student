@@ -12,6 +12,7 @@ import { mDeleteAs } from "../../../utils/query/mutation/reservation";
 import DeleteModal from "../DeleteModal";
 
 import type { IAsItem } from "../../../types/reservation.interface";
+
 function ASCard(props: IAsItem) {
   const deleteModal = useModal();
 

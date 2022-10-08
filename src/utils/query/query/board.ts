@@ -1,9 +1,18 @@
 import request from "../../service/request";
 
+/**
+ *
+ * @param page
+ * @param limit
+ * @description 공지사항 정보 얻는 함수
+ */
 export function getNotice(page: number | string, limit: number | string) {
   return request.get(`/bulletin/notice?page=${page}&limit=${limit}`);
 }
 
+/**
+ * @description 익명 게시판 정보 얻는 함수
+ */
 export function getAnnonymous({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/bulletin`, {
     params: {
@@ -12,6 +21,10 @@ export function getAnnonymous({ queryKey }: { queryKey: Partial<string[]> }) {
     },
   });
 }
+
+/**
+ * @description - 핫 게시판 정보 얻는 함수
+ */
 export function getHot({ queryKey }: { queryKey: Partial<string[]> }) {
   return request.get(`/hot`, {
     params: {
@@ -20,7 +33,9 @@ export function getHot({ queryKey }: { queryKey: Partial<string[]> }) {
     },
   });
 }
-
+/**
+ * @description - 검색 조회 정보 얻는 함수
+ */
 export function getSearchedAnnonymous({
   queryKey,
 }: {
@@ -35,6 +50,9 @@ export function getSearchedAnnonymous({
   });
 }
 
+/**
+ * @description - 게시판 자세히 보기 함수
+ */
 export function getAnnonymousDetail({
   queryKey,
 }: {
@@ -47,6 +65,9 @@ export function getAnnonymousDetail({
   });
 }
 
+/**
+ * @description - 게시판 이미지 얻는 함수
+ */
 export function getAnnonymousImage({
   queryKey,
 }: {

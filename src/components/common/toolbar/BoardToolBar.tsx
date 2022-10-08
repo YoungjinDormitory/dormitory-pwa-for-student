@@ -98,9 +98,6 @@ export default function BoardToolBar({
         }>
         <Typography variant="caption">{currentViewCount}개로 보기</Typography>
       </IconButton>
-      <IconButton>
-        <SearchOutlinedIcon />
-      </IconButton>
     </Toolbar>
   );
 }

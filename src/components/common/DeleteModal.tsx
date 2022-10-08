@@ -7,6 +7,10 @@ interface Props {
   submit: () => void;
 }
 
+/**
+ *
+ * @description 삭제하기위한 모달 컴포넌트 입니다.
+ */
 export default function DeleteModal({ submit, ...modalController }: Props) {
   return (
     <Modal {...modalController}>

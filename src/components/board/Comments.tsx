@@ -20,6 +20,9 @@ interface Props {
   myId: string;
 }
 
+/**
+ * @description - 댓글 컴포넌트 입니다
+ */
 export default function Comments({ bulletinId, myId }: Props) {
   const { option, token } = useQueryOption();
   const [ip, setIp] = useState("");
@@ -61,7 +64,9 @@ export default function Comments({ bulletinId, myId }: Props) {
   return (
     <>
       <Grid item xs={12} p={2}>
+        {/* 타이틀 */}
         <Typography>댓글 {comments?.data.count}개</Typography>
+        {/* 댓글 입력  박스*/}
         <Box display="flex">
           <OutlinedInput
             multiline
@@ -80,6 +85,7 @@ export default function Comments({ bulletinId, myId }: Props) {
           </Button>
         </Box>
       </Grid>
+      {/* 댓글 뷰 */}
       <Grid item xs={12} p={2}>
         {comments?.data.rows.map((el: any, idx: number) => (
           <CommentCard myId={myId} {...el} key={el.comment_id + idx} />
