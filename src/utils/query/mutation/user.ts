@@ -85,3 +85,9 @@ export function mfindPassword(body: { e_mail: string; hash: string }) {
 export function mChangePassword(body: { e_mail: string; password: string }) {
   return request.post("/change/pw", body);
 }
+
+// ==========================================================================================
+
+export function mSendHashToEmail(body: { e_mail: string; hash: string }) {
+  return request.post("/sendMail", body);
+}

@@ -5,6 +5,7 @@ import {
   OutlinedInput,
   Typography,
 } from "@mui/material";
+import { ReactNode } from "react";
 
 interface Props {
   label?: string;
@@ -15,7 +16,9 @@ interface Props {
   type?: string;
   inputProps?: InputBaseComponentProps | undefined;
   validator?: () => boolean;
-  hintMessage?: string;
+  hintMessage?: string | ReactNode;
+  endAdornment?: ReactNode;
+  disabled?: boolean;
 }
 
 /**

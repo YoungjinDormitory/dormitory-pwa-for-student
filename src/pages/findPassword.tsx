@@ -3,22 +3,14 @@ import NormalOutlinedInput from "../components/common/NormalOutlinedInput";
 import { LoginBox } from "../components/layout";
 import useInput from "../hooks/useInput";
 import useTimer from "../hooks/useTimer";
-import crypto from "crypto";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { mChangePassword, mfindPassword } from "../utils/query/mutation/user";
 import { useNavigate } from "react-router-dom";
 import PasswordOutlinedInput from "../components/common/PasswordOutlinedInput";
+import generateRandomCode from "../utils/helper/generateRandomCode";
 
 const TIMEOUT_MSG = "시간 제한 끝. 재발급 받아주세요";
-
-function generateRandomCode(n: number): string {
-  let str = "";
-  for (let i = 0; i < n; i++) {
-    str += Math.floor(Math.random() * 10);
-  }
-  return str;
-}
 
 // FindPassword 비밀번호 찾기 페이지
 function FindPassword() {

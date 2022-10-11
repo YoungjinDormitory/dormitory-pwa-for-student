@@ -102,7 +102,9 @@ function Write() {
           <Button
             variant="contained"
             sx={{ ml: 2 }}
-            onClick={() => submit(variables)}>
+            onClick={() =>
+              titleProps.value && contentProps.value && submit(variables)
+            }>
             제출
           </Button>
         </Box>
