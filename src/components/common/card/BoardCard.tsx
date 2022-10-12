@@ -11,7 +11,7 @@ export default function BoardCard(data: IBoardItem) {
   const navigate = useNavigate();
 
   const path = useMemo(() => {
-    if (location.pathname === "/notice") {
+    if (location.pathname === "/board/notice") {
       return location.pathname;
     }
     return "/board/annonymous";
@@ -22,13 +22,19 @@ export default function BoardCard(data: IBoardItem) {
     getComments,
     { refetchOnMount: false, refetchOnWindowFocus: false }
   );
-
   return (
     <Box
       onClick={() =>
-        navigate(path + "/detail?id=" + data.bulletin_id, {
-          state: data,
-        })
+        navigate(
+          path +
+            "/detail?id=" +
+            (data.hasOwnProperty("adm_id")
+              ? data.notice_id!
+              : data.bulletin_id),
+          {
+            state: data,
+          }
+        )
       }
       sx={{
         cursor: "pointer",
@@ -50,9 +56,18 @@ export default function BoardCard(data: IBoardItem) {
       </Box>
       <Box flex={1}>
         <Grid container p={2} spacing={2}>
-          <Grid item>
-            {data.title}[{comments?.data.count}]
-          </Grid>
+          {data.hasOwnProperty("adm_id") ? (
+            <Grid item>
+              <Typography variant="caption" color="error">
+                {"[공지]" + data.title}
+              </Typography>
+            </Grid>
+          ) : (
+            <Grid item>
+              {data.title}
+              {"[" + comments?.data.count + "]"}
+            </Grid>
+          )}
         </Grid>
         <Grid container pl={2} spacing={2}>
           <Grid item>
@@ -64,7 +79,9 @@ export default function BoardCard(data: IBoardItem) {
             <Typography variant="caption">|</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="caption">{data.std_id}</Typography>
+            <Typography variant="caption">
+              {data.hasOwnProperty("adm_id") ? "관리자" : data.ip}
+            </Typography>
           </Grid>
         </Grid>
       </Box>

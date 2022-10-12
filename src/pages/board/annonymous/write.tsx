@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { mCreateBulletin } from "@utils/query/mutation/board";
-import { useRef } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Reservation from "../../../components/reservation";
@@ -22,13 +23,26 @@ function Write() {
 
   const imageRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [ip, setIp] = useState("");
 
   const { option, token } = useQueryOption();
 
+  useEffect(() => {
+    axios
+      .get("https://api.ipify.org?format=json")
+      .then((res) => {
+        const currentIp = res.data.ip.split(".");
+
+        const ipArr = [currentIp[2], currentIp[3]];
+        setIp(ipArr.join("."));
+      })
+      .catch((err) => {});
+  }, []);
   const variables = {
     title: titleProps.value,
     content: contentProps.value,
     images: imageProps.value,
+    ip,
     token,
   };
 

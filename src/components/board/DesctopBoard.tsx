@@ -50,7 +50,6 @@ export default function DesctopBoard({
   const location = useLocation();
   const navigate = useNavigate();
   const searchContent = useInput("");
-
   const path = useMemo(() => {
     if (
       location.pathname === "/board/hot" ||
@@ -78,21 +77,34 @@ export default function DesctopBoard({
           <TableBody>
             {data.map((row) => (
               <TableRow
-                onClick={() =>
-                  navigate(path + "/detail?id=" + row.bulletin_id, {
-                    state: row,
-                  })
+                onClick={() => {
+                  navigate(
+                    path +
+                      "/detail?id=" +
+                      (row.hasOwnProperty("adm_id")
+                        ? row.notice_id!
+                        : row.bulletin_id),
+                    {
+                      state: row,
+                    }
+                  );
+                }}
+                key={
+                  row.hasOwnProperty("adm_id") ? row.notice_id : row.bulletin_id
                 }
-                key={row.bulletin_id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
                 }}>
                 <TableCell component="th" scope="row">
-                  {row.bulletin_id}
+                  {row.hasOwnProperty("adm_id")
+                    ? row.notice_id
+                    : row.bulletin_id}
                 </TableCell>
                 <TableCell align="right">{row.title}</TableCell>
-                <TableCell align="right">{row.std_id}</TableCell>
+                <TableCell align="right">
+                  {row.hasOwnProperty("adm_id") ? "관리자" : row.ip}
+                </TableCell>
                 <TableCell align="right">
                   {dayjs(row.create_date).format("YYYY-MM-DD")}
                 </TableCell>

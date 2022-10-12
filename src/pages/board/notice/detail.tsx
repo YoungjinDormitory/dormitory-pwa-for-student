@@ -1,17 +1,36 @@
-import { Box, Button, Grid, OutlinedInput, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getNoticeDetail } from "@utils/query/query/board";
 import dayjs from "dayjs";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { mViewNotice } from "../../../utils/query/mutation/board";
 
-import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
-
-/**
- * @description - 공지사항 자세히 보기 컴포넌트 지만 아직 데이터가 없어 방치시킨 상태입니다
- */
+// 게시판 상세보기 페이지
 function Detail() {
+  const location = useLocation();
+  // 게시판 정보와 이미지 쿼리
+  const { data: detail } = useQuery({
+    queryKey: ["getNotice", location.state.notice_id],
+    queryFn: getNoticeDetail,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  // 게시판 조회수 올려주는 mutation
+  const { mutate: view } = useMutation(["viewBulletin"], mViewNotice);
+
+  useEffect(() => {
+    view({
+      notice_id: location.state.notice_id,
+    });
+  }, []);
+
   return (
     <>
       <Grid maxWidth={"md"} margin={"auto"} container>
         <Grid item xs={12} mt={5} p={2}>
-          <Typography variant="h6">제목</Typography>
+          <Typography variant="h6">{detail?.data.title}</Typography>
         </Grid>
         <Grid
           item
@@ -23,87 +42,29 @@ function Detail() {
           pb={2}
           borderColor="gainsboro">
           <Box display="flex" letterSpacing={1}>
-            <Typography mr="10px">작성자 </Typography>
-            <Typography mr="10px">{dayjs().format("DD/MM/YYYY")}</Typography>
-            <Typography>댓글:0개</Typography>
-          </Box>
-          <Box display="flex" letterSpacing={1}>
-            <Typography mr="10px">삭제</Typography>
-            <Typography mr="10px">수정</Typography>
+            <Typography mr="10px">
+              {detail?.data.hasOwnProperty("adm_id")
+                ? "관리자"
+                : detail?.data.std_name}{" "}
+            </Typography>
+            <Typography mr="10px">{dayjs().format("YYYY-MM-DD")}</Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} p={2}>
-          <Typography variant="caption">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloribus,
-            deserunt omnis dolorum voluptate saepe dignissimos voluptas illum ex
-            ratione nobis totam dicta magnam quasi sit qui laudantium ut. Modi,
-            ipsam?Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Doloribus, deserunt omnis dolorum voluptate saepe dignissimos
-            voluptas illum ex ratione nobis totam dicta magnam quasi sit qui
-            laudantium ut. Modi, ipsam?Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Doloribus, deserunt omnis dolorum voluptate saepe
-            dignissimos voluptas illum ex ratione nobis totam dicta magnam quasi
-            sit qui laudantium ut. Modi, ipsam?Lorem ipsum dolor sit amet
-            consectetur, adipisicing elit. Doloribus, deserunt omnis dolorum
-            voluptate saepe dignissimos voluptas illum ex ratione nobis totam
-            dicta magnam quasi sit qui laudantium ut. Modi, ipsam?
+        <Grid
+          item
+          xs={12}
+          p={2}
+          minHeight={400}
+          borderBottom={1}
+          pb={2}
+          borderColor="gainsboro">
+          <Typography
+            variant="caption"
+            sx={{
+              wordBreak: "break-all",
+            }}>
+            {detail?.data.content}
           </Typography>
-        </Grid>
-        <Grid item xs={12} borderBottom={1} pb={2} borderColor="gainsboro">
-          <Box display="flex" alignItems={"center"} justifyContent={"center"}>
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              justifyContent={"center"}
-              alignItems="center"
-              p={1}
-              border={1}
-              borderColor="gainsboro">
-              <LocalFireDepartmentOutlinedIcon></LocalFireDepartmentOutlinedIcon>
-              <Typography variant="caption">1000</Typography>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={12} p={2}>
-          <Typography>댓글</Typography>
-          <Box display="flex">
-            <OutlinedInput
-              multiline
-              fullWidth
-              rows={3}
-              placeholder="내용을 입력하세요..."></OutlinedInput>
-            <Button
-              variant="contained"
-              color="disable"
-              sx={{ boxShadow: "none" }}>
-              제출
-            </Button>
-          </Box>
-        </Grid>
-        <Grid item xs={12} p={2}>
-          <Box display="flex">
-            {/* <SubdirectoryArrowRightOutlinedIcon /> */}
-            <Box>
-              <Box display="flex" justifyContent={"space-between"}>
-                <Box display="flex">
-                  <Typography mr="5px">작성자</Typography>
-                  <Typography>작성일</Typography>
-                </Box>
-                <Box display="flex">
-                  <Typography>수정</Typography>
-                  <Typography ml="5px   ">삭제</Typography>
-                </Box>
-              </Box>
-              <Box p={2}>
-                <Typography variant="caption">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. A
-                  obcaecati quidem recusandae, at non accusantium, ex dolorem ab
-                  molestiae rem incidunt expedita in! Corrupti quae minima fugit
-                  perspiciatis nobis blanditiis.
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
         </Grid>
       </Grid>
     </>

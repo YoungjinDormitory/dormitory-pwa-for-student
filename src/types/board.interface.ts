@@ -6,4 +6,6 @@ export interface IBoardItem {
   std_id: string;
   title: string;
   views: number;
+  ip?: string;
+  notice_id?: string;
 }

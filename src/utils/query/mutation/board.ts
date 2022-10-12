@@ -7,11 +7,15 @@ interface IBulletin extends IToken {
   title: string;
   content: string;
   images: (File | undefined)[];
+  ip?: string;
   // 삭제해야할 이미지의 primary key
 }
 
 interface IBulletinOption extends IToken {
   bulletin_id: number;
+}
+interface INoticeOption extends IToken {
+  notice_id: number;
 }
 
 /**
@@ -37,6 +41,15 @@ export function mDeleteBulletin({ bulletin_id, token }: IBulletinOption) {
 export function mViewBulletin({ bulletin_id }: IBulletinOption) {
   return request.post(`/bulletin/view`, {
     bulletin_id,
+  });
+}
+
+/**
+ * @description - 공지사항 조회수 올리는 함수
+ */
+export function mViewNotice({ notice_id }: INoticeOption) {
+  return request.post(`/notice/view`, {
+    notice_id,
   });
 }
 

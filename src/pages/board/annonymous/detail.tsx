@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reloadCurrentBulletin } from "../../../client";
 import Comments from "../../../components/board/Comments";
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
+import qsToJson from "../../../utils/helper/qsToJson";
 
 // 게시판 상세보기 페이지
 function Detail() {
@@ -29,24 +30,25 @@ function Detail() {
   const { option, token } = useQueryOption();
   const { data } = useCheckUser();
 
+  const id = qsToJson(location.search).id;
+
   // 게시판 정보와 이미지 쿼리
   const [{ data: detail }, { data: image }] = useQueries({
     queries: [
       {
-        queryKey: ["getAnnonymousDetail", location.state.bulletin_id],
+        queryKey: ["getAnnonymousDetail", id],
         queryFn: getAnnonymousDetail,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
       },
       {
-        queryKey: ["getAnnonymousImage", location.state.bulletin_id],
+        queryKey: ["getAnnonymousImage", id],
         queryFn: getAnnonymousImage,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
       },
     ],
   });
-
   // 업데이트 페이지로 이동
   const moveToUpdate = () => {
     navigate("/board/annonymous/update", {
@@ -74,7 +76,7 @@ function Detail() {
 
   useEffect(() => {
     view({
-      bulletin_id: location.state.bulletin_id,
+      bulletin_id: id,
     });
   }, []);
 
@@ -118,7 +120,13 @@ function Detail() {
             );
           })}
         <Grid item xs={12} p={2}>
-          <Typography variant="caption">{detail?.data.content}</Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              wordBreak: "break-all",
+            }}>
+            {detail?.data.content}
+          </Typography>
         </Grid>
         <Grid item xs={12} borderBottom={1} pb={2} borderColor="gainsboro">
           <Box display="flex" alignItems={"center"} justifyContent={"center"}>

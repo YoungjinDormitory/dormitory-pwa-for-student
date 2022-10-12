@@ -6,8 +6,13 @@ import request from "../../service/request";
  * @param limit
  * @description 공지사항 정보 얻는 함수
  */
-export function getNotice(page: number | string, limit: number | string) {
-  return request.get(`/bulletin/notice?page=${page}&limit=${limit}`);
+export function getNotice({ queryKey }: { queryKey: Partial<string[]> }) {
+  return request.get(`/notice`, {
+    params: {
+      page: queryKey[1],
+      limit: queryKey[2],
+    },
+  });
 }
 
 /**
@@ -33,6 +38,7 @@ export function getHot({ queryKey }: { queryKey: Partial<string[]> }) {
     },
   });
 }
+
 /**
  * @description - 검색 조회 정보 얻는 함수
  */
@@ -61,6 +67,17 @@ export function getAnnonymousDetail({
   return request.get(`/bulletin/detail`, {
     params: {
       bulletin_id: queryKey[1],
+    },
+  });
+}
+
+/**
+ * @description - 게시판 자세히 보기 함수
+ */
+export function getNoticeDetail({ queryKey }: { queryKey: Partial<string[]> }) {
+  return request.get(`/notice/detail`, {
+    params: {
+      notice_id: queryKey[1],
     },
   });
 }

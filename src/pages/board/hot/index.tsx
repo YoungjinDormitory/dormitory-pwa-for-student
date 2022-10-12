@@ -26,7 +26,6 @@ function Hot() {
     }
   );
 
-  console.log(data);
   useEffect(() => {
     request.get("/hot/count").then((res) => {
       if (res.data % currentViewCount) {

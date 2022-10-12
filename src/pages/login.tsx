@@ -32,7 +32,6 @@ function Login() {
     },
     onError: () => setHintMessage(true),
     retry: () => {
-      console.log("fuck");
       return false;
     },
   });
