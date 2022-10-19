@@ -1,6 +1,19 @@
 import { Card, CardContent, Divider, Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
+import { useLayoutEffect, useState } from "react";
+import { IMealItem } from "../../../types/meal.interface";
 
-function MealCard() {
+function MealCard({ data }: { data: IMealItem }) {
+  const [breakfastArr, setBreakFastArr] = useState<Array<string>>();
+  const [lunchArr, setLunchArr] = useState<Array<string>>();
+  const [dinnerArr, setDinnerArr] = useState<Array<string>>();
+
+  useLayoutEffect(() => {
+    setBreakFastArr(data.breakfast.split(","));
+    setLunchArr(data.lunch.split(","));
+    setDinnerArr(data.dinner.split(","));
+  }, []);
+
   return (
     <Card
       sx={{
@@ -14,7 +27,7 @@ function MealCard() {
             fontWeight: 700,
           }}
           gutterBottom>
-          오늘의 식단
+          {dayjs(data.date).format("MM월 DD일 ddd요일")} 식단
         </Typography>
         <Divider />
         <Grid container>
@@ -27,13 +40,13 @@ function MealCard() {
               아침
             </Typography>
             <Divider sx={{ mb: "10px" }} />
-            {[0, 1, 2, 3, 4].map((_, idx) => (
+            {breakfastArr?.map((item: string, idx: number) => (
               <Typography
-                key={idx}
+                key={String(idx)}
                 variant={"body2"}
                 textAlign={"center"}
                 gutterBottom>
-                소고기 무국
+                {item}
               </Typography>
             ))}
           </Grid>
@@ -46,13 +59,13 @@ function MealCard() {
               점심
             </Typography>
             <Divider sx={{ mb: "10px" }} />
-            {[0, 1, 2, 3, 4].map((_, idx) => (
+            {lunchArr?.map((item: string, idx: number) => (
               <Typography
-                key={idx}
+                key={String(idx)}
                 variant={"body2"}
                 textAlign={"center"}
                 gutterBottom>
-                소고기 무국
+                {item}
               </Typography>
             ))}
           </Grid>
@@ -65,13 +78,13 @@ function MealCard() {
               저녁
             </Typography>
             <Divider sx={{ mb: "10px" }} />
-            {[0, 1, 2, 3, 4].map((_, idx) => (
+            {dinnerArr?.map((item: string, idx: number) => (
               <Typography
-                key={idx}
+                key={String(idx)}
                 variant={"body2"}
                 textAlign={"center"}
                 gutterBottom>
-                소고기 무국
+                {item}
               </Typography>
             ))}
           </Grid>
@@ -82,3 +95,6 @@ function MealCard() {
 }
 
 export default MealCard;
+function setState<T>(): [any, any] {
+  throw new Error("Function not implemented.");
+}

@@ -1,9 +1,7 @@
+import useTab from "@hooks/useTab";
 import { Box, Card, Tab, Tabs } from "@mui/material";
 import { lazy, Suspense, useContext } from "react";
-
-import useTab from "@hooks/useTab";
-import CommunityTab from "./ApproxInfo/CommunityTab";
-import NoticeTab from "./ApproxInfo/NoticeTab";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useAuthContext } from "../../hooks";
 
 function ApproxInfoCard() {
@@ -12,7 +10,8 @@ function ApproxInfoCard() {
   const authInfo = useContext(ctx);
 
   const ReservationTab = lazy(() => import("./ApproxInfo/ReservationTab"));
-
+  const NoticeTab = lazy(() => import("./ApproxInfo/NoticeTab"));
+  const CommunityTab = lazy(() => import("./ApproxInfo/CommunityTab"));
   return (
     <Card
       sx={{
@@ -25,13 +24,11 @@ function ApproxInfoCard() {
           <Tab label="뜨는 글들" />
         </Tabs>
       </Box>
-      {authInfo?.token && (
-        <Suspense fallback="hi">
-          {tabProps.value === 0 && <ReservationTab />}
-          {tabProps.value === 1 && <NoticeTab />}
-          {tabProps.value === 2 && <CommunityTab />}
-        </Suspense>
-      )}
+      <Suspense fallback={<CircularProgress />}>
+        {tabProps.value === 0 && <ReservationTab />}
+        {tabProps.value === 1 && <NoticeTab />}
+        {tabProps.value === 2 && <CommunityTab />}
+      </Suspense>
     </Card>
   );
 }

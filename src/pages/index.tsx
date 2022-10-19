@@ -1,15 +1,12 @@
 import { Box, Grid } from "@mui/material";
-
-import { ApproxInfoCard, MainImage, MealCard } from "../components/IndexPage";
-
-// 필요 api 주소
-// GET /user
-// GET /meal
-// GET /bus?offset=2
-// GET /as?offset=2
-// GET /out?offset=2
-//GET /gym?offset=2
-// GET /buletin/hot?offset=2
+import {
+  ApproxInfoCard,
+  MainImage,
+  MealCarousel,
+} from "../components/IndexPage";
+import "dayjs/locale/ko";
+import dayjs from "dayjs";
+dayjs.locale("ko");
 
 // Home 인덱스 페이지
 function Home() {
@@ -23,7 +20,7 @@ function Home() {
         alignItems="center">
         <Grid container maxWidth={"xl"}>
           <Grid xs={12} md={4} item>
-            <MealCard></MealCard>
+            <MealCarousel />
           </Grid>
           <Grid xs={12} md={2} item></Grid>
           <Grid xs={12} md={6} item>

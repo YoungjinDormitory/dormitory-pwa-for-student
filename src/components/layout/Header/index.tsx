@@ -26,7 +26,6 @@ function Header() {
   const { mutate: logout } = useMutation(["userLogout"], mLogout, {
     onSuccess: () => navigate(0),
   });
-  console.log("data", data);
 
   return (
     <AppBar color="transparent" position="static" elevation={3}>

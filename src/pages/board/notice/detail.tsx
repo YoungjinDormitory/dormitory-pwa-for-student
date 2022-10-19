@@ -4,14 +4,16 @@ import { getNoticeDetail } from "@utils/query/query/board";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import qsToJson from "../../../utils/helper/qsToJson";
 import { mViewNotice } from "../../../utils/query/mutation/board";
 
 // 게시판 상세보기 페이지
 function Detail() {
   const location = useLocation();
+  const { id: notice_id } = qsToJson(location.search);
   // 게시판 정보와 이미지 쿼리
   const { data: detail } = useQuery({
-    queryKey: ["getNotice", location.state.notice_id],
+    queryKey: ["getNotice", notice_id],
     queryFn: getNoticeDetail,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -21,9 +23,7 @@ function Detail() {
   const { mutate: view } = useMutation(["viewBulletin"], mViewNotice);
 
   useEffect(() => {
-    view({
-      notice_id: location.state.notice_id,
-    });
+    view({ notice_id });
   }, []);
 
   return (

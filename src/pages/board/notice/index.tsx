@@ -24,6 +24,7 @@ function Notice() {
       refetchOnWindowFocus: false,
     }
   );
+
   useEffect(() => {
     request.get("/bulletin/count").then((res) => {
       if (res.data % currentViewCount) {

@@ -59,7 +59,6 @@ export default function DesctopBoard({
     }
     return location.pathname;
   }, [location.pathname]);
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -75,7 +74,7 @@ export default function DesctopBoard({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {data?.map((row) => (
               <TableRow
                 onClick={() => {
                   navigate(
@@ -103,7 +102,9 @@ export default function DesctopBoard({
                 </TableCell>
                 <TableCell align="right">{row.title}</TableCell>
                 <TableCell align="right">
-                  {row.hasOwnProperty("adm_id") ? "관리자" : row.ip}
+                  {row.hasOwnProperty("adm_id")
+                    ? "관리자"
+                    : "익명" + "(" + row.ip + ")"}
                 </TableCell>
                 <TableCell align="right">
                   {dayjs(row.create_date).format("YYYY-MM-DD")}
