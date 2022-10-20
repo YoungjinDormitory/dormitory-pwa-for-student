@@ -1,5 +1,6 @@
 import menuMap from "@data/menuMapData.json";
 import useCheckUser from "@hooks/useCheckUser";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import {
   AppBar,
   Avatar,
@@ -10,11 +11,13 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import MenuCreator from "./MenuCreator";
 import { useMutation } from "@tanstack/react-query";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { mLogout } from "../../../utils/query/mutation/user";
+import { AuthContext } from "../../common/CognitoAuthorityChecker";
+import MenuCreator from "./MenuCreator";
 
 /**
  *
@@ -23,9 +26,20 @@ import { mLogout } from "../../../utils/query/mutation/user";
 function Header() {
   const navigate = useNavigate();
   const { data } = useCheckUser();
-  const { mutate: logout } = useMutation(["userLogout"], mLogout, {
+  /*   const { mutate: logout } = useMutation(["userLogout"], mLogout, {
     onSuccess: () => navigate(0),
-  });
+  }); */
+
+  const [name, setName] = useState("");
+
+  const { getUserData, logout } = useContext(AuthContext);
+
+  useEffect(() => {
+    getUserData().then((data: any) => {
+      const nameObj = data.filter((el: any) => el.Name === "name");
+      setName(nameObj[0].Value);
+    });
+  }, []);
 
   return (
     <AppBar color="transparent" position="static" elevation={3}>
@@ -70,24 +84,20 @@ function Header() {
               sx={{
                 textAlign: "end",
               }}>
-              {data?.data && (
+              {name && (
                 <Box display="flex" justifyContent={"end"}>
-                  <Avatar src="asset/avatar.png"></Avatar>
+                  <Avatar src="asset/cloud.ico"></Avatar>
                   <Typography
                     variant="caption"
                     sx={{ ml: 3, fontSize: 12, my: "auto" }}>
-                    {data.data.std_name}
+                    {name}
                   </Typography>
-                  <IconButton color="error">
-                    <PowerSettingsNewIcon
-                      onClick={() => {
-                        logout();
-                      }}
-                    />
+                  <IconButton onClick={logout} color="error">
+                    <PowerSettingsNewIcon />
                   </IconButton>
                 </Box>
               )}
-              {!data?.data && (
+              {!name && (
                 <Button
                   onClick={() => {
                     navigate("/login");

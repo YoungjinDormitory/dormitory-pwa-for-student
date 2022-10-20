@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useCheckUser from "../../hooks/useCheckUser";
 import { IProps } from "../../types/props.interface";
+import { AuthContext } from "./CognitoAuthorityChecker";
 
 interface Props extends IProps {}
 
@@ -9,16 +10,23 @@ interface Props extends IProps {}
  * @description 권한 확인용 래퍼 컴포넌트 입니다.
  */
 export default function AuthorityChecker({ children }: Props) {
-  const { data, isLoading } = useCheckUser();
+  const { getUserData } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
-    if (isLoading && !data) {
-      alert("권한이 없습니다.");
-      navigate(-1);
-    }
+    authCheck();
   }, []);
 
+  const authCheck = async () => {
+    try {
+      await getUserData();
+    } catch (err) {
+      alert("권한이 없습니다.");
+      navigate(-1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   if (isLoading) {
     return <></>;
   } else {

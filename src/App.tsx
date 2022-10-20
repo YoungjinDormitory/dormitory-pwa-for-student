@@ -1,9 +1,10 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { client } from "./client";
 
 import Board from "./components/board";
+import { CognitoAuthorityChecker } from "./components/common/CognitoAuthorityChecker";
 import { DefaultLayout, LoginBox } from "./components/layout";
 import useAuthContext from "./hooks/useAuthContext";
 import DynamicRouter from "./Router";
@@ -74,9 +75,11 @@ const AppWrapper = () => {
 
   return (
     <QueryClientProvider client={client}>
-      <AuthProvider value={value}>
-        <App />
-      </AuthProvider>
+      <CognitoAuthorityChecker>
+        <AuthProvider value={value}>
+          <App />
+        </AuthProvider>
+      </CognitoAuthorityChecker>
     </QueryClientProvider>
   );
 };

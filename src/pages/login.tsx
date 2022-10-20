@@ -7,10 +7,13 @@ import { Box, Button, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { LoginBox } from "../components/layout";
 import useAuthContext from "../hooks/useAuthContext";
 import { mLogin } from "../utils/query/mutation/user";
+import { CognitoUserPool } from "amazon-cognito-identity-js";
+
+import { AuthContext } from "../components/common/CognitoAuthorityChecker";
 
 // Login 로그인페이지
 function Login() {
@@ -36,6 +39,13 @@ function Login() {
     },
   });
 
+  const { authenticate } = useContext(AuthContext);
+
+  // AWS Cognito
+  const onSubmit = async () => {
+    await authenticate(idProps.value, passwordProps.value);
+  };
+
   return (
     <>
       <LoginBox.Title title="로그인" />
@@ -55,10 +65,11 @@ function Login() {
       <Button
         color="primary"
         onClick={() => {
-          login({
+          /*           login({
             std_id: idProps.value,
             password: passwordProps.value,
-          });
+          }); */
+          onSubmit();
         }}
         variant="contained"
         fullWidth>

@@ -10,6 +10,7 @@ import useInput from "../hooks/useInput";
 import { eMailValidation, hpNumValidation } from "../utils/helper/validation";
 import { mSendHashToEmail, mSignUp } from "../utils/query/mutation/user";
 import generateRandomCode from "../utils/helper/generateRandomCode";
+import UserPool from "../utils/service/userPool";
 
 //SignUp 회원 가입 페이지
 function SignUp() {
@@ -39,6 +40,30 @@ function SignUp() {
       setCode(v.hash);
     },
   });
+
+  const onSubmit = () => {
+    console.log(UserPool);
+    UserPool.signUp(
+      idProps.value,
+      passwordProps.value,
+      [
+        { Name: "name", Value: nameProps.value } as any,
+        { Name: "email", Value: emailProps.value } as any,
+        {
+          Name: "phone_number",
+          Value: "+82" + phNumProps.value.slice(1).replaceAll("-", ""),
+        } as any,
+        { Name: "custom:room_num", Value: roomNumProps.value } as any,
+      ],
+      null as any,
+      (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(data);
+      }
+    );
+  };
 
   // 패스워드 일치 체크 함수
   const checkPassword = () => {
@@ -166,7 +191,7 @@ function SignUp() {
         color="primary"
         onClick={() => {
           if (checkPassword()) {
-            signup();
+            onSubmit();
           }
         }}
         variant="contained"

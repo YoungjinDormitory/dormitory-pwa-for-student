@@ -3,7 +3,11 @@ import dayjs from "dayjs";
 import { useLayoutEffect, useState } from "react";
 import { IMealItem } from "../../../types/meal.interface";
 
-function MealCard({ data }: { data: IMealItem }) {
+interface Props {
+  data: IMealItem;
+}
+
+function MealCard({ data }: Props) {
   const [breakfastArr, setBreakFastArr] = useState<Array<string>>();
   const [lunchArr, setLunchArr] = useState<Array<string>>();
   const [dinnerArr, setDinnerArr] = useState<Array<string>>();
@@ -95,6 +99,3 @@ function MealCard({ data }: { data: IMealItem }) {
 }
 
 export default MealCard;
-function setState<T>(): [any, any] {
-  throw new Error("Function not implemented.");
-}

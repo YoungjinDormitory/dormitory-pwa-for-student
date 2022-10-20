@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env.development
 .env.production
-yarn.lock
+*.lock.*
 vite.config.ts.*
 
 # Editor directories and files
