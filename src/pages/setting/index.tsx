@@ -1,19 +1,12 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
-import { useCheckUser } from "../../hooks";
+
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { mLogout } from "../../utils/query/mutation/user";
+
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../components/common/CognitoAuthorityChecker";
 
 function Setting() {
-  // const { data: user } = useCheckUser();
-  const navigate = useNavigate();
-  /*   const { mutate: logout } = useMutation(["userLogour"], mLogout, {
-    onSuccess: () => navigate(0),
-  }); */
-
   const [name, setName] = useState("");
   const [roomNum, setRoomNum] = useState("");
 
