@@ -3,72 +3,64 @@ import NormalOutlinedInput from "../components/common/NormalOutlinedInput";
 import { LoginBox } from "../components/layout";
 import useInput from "../hooks/useInput";
 import useTimer from "../hooks/useTimer";
-import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { mChangePassword, mfindPassword } from "../utils/query/mutation/user";
-import { useNavigate } from "react-router-dom";
 import PasswordOutlinedInput from "../components/common/PasswordOutlinedInput";
-import generateRandomCode from "../utils/helper/generateRandomCode";
-
-const TIMEOUT_MSG = "시간 제한 끝. 재발급 받아주세요";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import UserPool from "../utils/service/UserPool";
+import { useState } from "react";
+import { compareString } from "../utils/helper/validation";
 
 // FindPassword 비밀번호 찾기 페이지
 function FindPassword() {
-  const emailProps = useInput("", "이메일");
+  const idProps = useInput("", "본인 학번");
   const codeProps = useInput("", "6자리 코드");
   const newPasswordProps = useInput("", "비밀번호");
   const confirmPasswordProps = useInput("", "비밀번호 확인");
 
-  const navigate = useNavigate();
-  const [code, setCode] = useState<string>();
+  const forgotPassword = (Username: string) => {
+    const user = new CognitoUser({ Username, Pool: UserPool });
+    user.forgotPassword({
+      onSuccess(res) {
+        setStep((prev) => ({ ...prev, one: true }));
+      },
+      onFailure(err) {
+        alert("요청이 보내지지 않았습니다. 조금 후에 다시 요청해주세요.");
+      },
+    });
+  };
+
+  const confirmForgotPassword = (Username: string) => {
+    const user = new CognitoUser({ Username, Pool: UserPool });
+    user.confirmPassword(codeProps.value, newPasswordProps.value, {
+      onSuccess(res) {
+        console.log(res);
+      },
+      onFailure(err) {
+        console.log(err);
+      },
+    });
+  };
   const [step, setStep] = useState({
     one: false,
-    two: false,
   });
 
-  const timer = useTimer({
-    m: 3,
-    s: 0,
-  });
-
-  useEffect(() => {
-    setCode(generateRandomCode(6));
-  }, []);
-
-  useEffect(() => {
-    if (code === codeProps.value) {
-      setStep((prev) => ({ ...prev, one: true, two: true }));
-    }
-  }, [codeProps.value]);
-
-  const { mutate: sendMail } = useMutation(["sendMail"], mfindPassword, {
-    onSuccess: () => setStep((prev) => ({ ...prev, one: true })),
-  });
-  const { mutate: changePw } = useMutation(["changePw"], mChangePassword, {
-    onSuccess: () => navigate("/login"),
-  });
-
-  const checkPassword = () => {
-    return newPasswordProps.value === confirmPasswordProps.value;
-  };
   return (
     <>
       <LoginBox.Title title="비밀번호 찾기" />
 
-      {!step.one && !step.two && (
+      {!step.one && (
         <>
           <Typography variant="caption" gutterBottom>
-            회원 가입 시 등록한 이메일 주소를 입력해주세요
+            본인 학번을 입력해주세요.
           </Typography>
-          <NormalOutlinedInput {...emailProps} />
+          <NormalOutlinedInput {...idProps} />
           <Box display={"flex"} justifyContent="center" alignItems={"center"}>
             <Button
               onClick={() => {
-                code &&
-                  sendMail({
-                    e_mail: emailProps.value,
-                    hash: code,
-                  });
+                if (idProps.value.length == 7) {
+                  forgotPassword(idProps.value);
+                } else {
+                  alert("정확한 본인의 학번을 입력해주세요");
+                }
               }}>
               전송
             </Button>
@@ -76,62 +68,26 @@ function FindPassword() {
         </>
       )}
 
-      {step.one && !step.two && (
+      {step.one && (
         <>
           <Typography variant="caption" gutterBottom>
-            회원 가입 시 등록한 이메일로 6자리 코드를 보내드렸습니다.
-          </Typography>
-          <NormalOutlinedInput {...codeProps} />
-          <Box display={"flex"} justifyContent="center" alignItems={"center"}>
-            <Typography variant="caption">
-              {timer.time && (
-                <>
-                  <span>유효시간 :</span>
-                  <span
-                    style={{
-                      padding: 3,
-                      backgroundColor: "beige",
-                      fontWeight: "bold",
-                    }}>
-                    {timer.time}
-                  </span>
-                </>
-              )}
-              {!timer.time && <span>{TIMEOUT_MSG}</span>}
-            </Typography>
-            <Button
-              onClick={() => {
-                sendMail({
-                  e_mail: emailProps.value,
-                  hash: code!,
-                });
-              }}>
-              재전송
-            </Button>
-          </Box>
-        </>
-      )}
-      {step.one && step.two && (
-        <>
-          <Typography variant="caption" gutterBottom>
-            새 비밀번호 설정
+            이메일에 도착한 코드와 새 비밀번호를 입력해주세요.
           </Typography>
           <PasswordOutlinedInput {...newPasswordProps} />
           <PasswordOutlinedInput
             {...confirmPasswordProps}
-            validator={checkPassword}
+            validator={compareString(
+              newPasswordProps.value,
+              confirmPasswordProps.value
+            )}
           />
-          <Button
-            onClick={() => {
-              if (checkPassword()) {
-                changePw({
-                  password: newPasswordProps.value,
-                  e_mail: emailProps.value,
-                });
-              }
-            }}>
-            제출
-          </Button>
+          <NormalOutlinedInput {...codeProps} />
+          <Box display={"flex"} justifyContent="center" alignItems={"center"}>
+            <Typography variant="caption">
+              이메일이 아직도착하지 않으셨습니까?
+            </Typography>
+            <Button>재전송</Button>
+          </Box>
         </>
       )}
     </>

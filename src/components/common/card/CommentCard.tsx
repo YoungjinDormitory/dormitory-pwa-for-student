@@ -63,7 +63,7 @@ export default function CommentCard({
             </Typography>
           </Box>
 
-          {myId && myId === std_id && (
+          {myId && myId === String(std_id) && (
             <Box display="flex">
               <Button
                 size="small"
@@ -86,7 +86,7 @@ export default function CommentCard({
           <Typography variant="caption">{content}</Typography>
         </Box>
       </Box>
-      {myId && myId === std_id && (
+      {myId && myId === String(std_id) && (
         <>
           <Box pl={4} display={`${updateCard.open ? "flex" : "none"}`}>
             <SubdirectoryArrowRightIcon sx={{ mt: 2 }} />
@@ -104,11 +104,12 @@ export default function CommentCard({
                   color="disable"
                   sx={{ boxShadow: "none" }}
                   onClick={() => {
-                    updateComment({
-                      comment_id,
-                      content: updateContent.value,
-                      token,
-                    });
+                    token &&
+                      updateComment({
+                        comment_id,
+                        content: updateContent.value,
+                        token,
+                      });
                     updateCard.onClose();
                   }}>
                   제출
@@ -119,6 +120,7 @@ export default function CommentCard({
           <DeleteModal
             {...deleteModal}
             submit={() =>
+              token &&
               deleteComment({
                 comment_id: comment_id,
                 token,

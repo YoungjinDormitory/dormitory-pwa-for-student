@@ -164,7 +164,7 @@ function Write() {
                 variables.end_time &&
                 variables.start_time
               ) {
-                submit(variables);
+                token && submit(variables);
               }
             }}>
             제출

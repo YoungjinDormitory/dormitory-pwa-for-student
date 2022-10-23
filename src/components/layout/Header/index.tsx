@@ -1,5 +1,4 @@
 import menuMap from "@data/menuMapData.json";
-import useCheckUser from "@hooks/useCheckUser";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import {
   AppBar,
@@ -11,11 +10,9 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { mLogout } from "../../../utils/query/mutation/user";
 import { AuthContext } from "../../common/CognitoAuthorityChecker";
 import MenuCreator from "./MenuCreator";
 
@@ -25,10 +22,6 @@ import MenuCreator from "./MenuCreator";
  */
 function Header() {
   const navigate = useNavigate();
-  const { data } = useCheckUser();
-  /*   const { mutate: logout } = useMutation(["userLogout"], mLogout, {
-    onSuccess: () => navigate(0),
-  }); */
 
   const [name, setName] = useState("");
 
@@ -36,8 +29,10 @@ function Header() {
 
   useEffect(() => {
     getUserData().then((data: any) => {
-      const nameObj = data.filter((el: any) => el.Name === "name");
-      setName(nameObj[0].Value);
+      const nameObj = data.UserAttributes.filter(
+        (el: any) => el.Name === "name"
+      )[0];
+      setName(nameObj.Value);
     });
   }, []);
 

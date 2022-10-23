@@ -80,7 +80,9 @@ export default function BoardCard(data: IBoardItem) {
           </Grid>
           <Grid item>
             <Typography variant="caption">
-              {data.hasOwnProperty("adm_id") ? "관리자" : data.ip}
+              {data.hasOwnProperty("adm_id")
+                ? "관리자"
+                : "익명(" + data.ip + ")"}
             </Typography>
           </Grid>
         </Grid>

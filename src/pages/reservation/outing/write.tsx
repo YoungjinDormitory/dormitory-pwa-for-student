@@ -72,7 +72,7 @@ function Write() {
             variant="contained"
             onClick={() => {
               if (variables.start_date && variables.end_date) {
-                submit(variables);
+                token && submit(variables);
               } else {
                 alert("값을 입력해주세요");
               }

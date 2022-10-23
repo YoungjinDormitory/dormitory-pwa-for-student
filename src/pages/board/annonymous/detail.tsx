@@ -1,5 +1,5 @@
 import DeleteModal from "@common/DeleteModal";
-import { useCheckUser, useModal, useQueryOption } from "@hooks/index";
+import { useModal, useQueryOption } from "@hooks/index";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
@@ -14,11 +14,12 @@ import {
   getAnnonymousImage,
 } from "@utils/query/query/board";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { reloadCurrentBulletin } from "../../../client";
 import Comments from "../../../components/board/Comments";
+import { AuthContext } from "../../../components/common/CognitoAuthorityChecker";
 import { LocalFireDepartmentOutlinedIcon } from "../../../components/icon";
 import qsToJson from "../../../utils/helper/qsToJson";
 
@@ -28,10 +29,16 @@ function Detail() {
   const navigate = useNavigate();
   const deleteModal = useModal();
   const { option, token } = useQueryOption();
-  const { data } = useCheckUser();
+  const [userID, setUserID] = useState<string>();
+  const { getUserData } = useContext(AuthContext);
+
+  useEffect(() => {
+    getUserData().then((data: any) => {
+      setUserID(data.Username);
+    });
+  }, []);
 
   const id = qsToJson(location.search).id;
-
   // 게시판 정보와 이미지 쿼리
   const [{ data: detail }, { data: image }] = useQueries({
     queries: [
@@ -49,6 +56,7 @@ function Detail() {
       },
     ],
   });
+
   // 업데이트 페이지로 이동
   const moveToUpdate = () => {
     navigate("/board/annonymous/update", {
@@ -75,9 +83,10 @@ function Detail() {
   });
 
   useEffect(() => {
-    view({
-      bulletin_id: id,
-    });
+    token &&
+      view({
+        bulletin_id: id,
+      });
   }, []);
 
   return (
@@ -100,7 +109,7 @@ function Detail() {
             <Typography mr="10px">{dayjs().format("YYYY-MM-DD")}</Typography>
             <Typography>댓글:0개</Typography>
           </Box>
-          {data && data.data.std_id === detail?.data.std_id && (
+          {userID && userID === String(detail?.data.std_id) && (
             <Box display="flex" letterSpacing={1}>
               <IconButton onClick={deleteModal.onOpen}>
                 <DeleteOutlineOutlinedIcon />
@@ -133,10 +142,11 @@ function Detail() {
             <Box border={1} borderRadius={2} borderColor="gainsboro">
               <IconButton
                 onClick={() => {
-                  clickHot({
-                    bulletin_id: location.state.bulletin_id,
-                    token,
-                  });
+                  token &&
+                    clickHot({
+                      bulletin_id: location.state.bulletin_id,
+                      token,
+                    });
                 }}>
                 <LocalFireDepartmentOutlinedIcon></LocalFireDepartmentOutlinedIcon>
                 <Typography variant="caption">{detail?.data.hot}</Typography>
@@ -146,12 +156,13 @@ function Detail() {
         </Grid>
         <Comments
           bulletinId={detail?.data.bulletin_id}
-          myId={data?.data.std_id}
+          myId={String(detail?.data.std_id)}
         />
       </Grid>
       <DeleteModal
         {...deleteModal}
         submit={() =>
+          token &&
           deleteBulletinItem({
             bulletin_id: detail?.data.bulletin_id,
             token,

@@ -2,7 +2,6 @@ import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
 import { reloadBusItem } from "../../../client";
 import { useModal, useQueryOption } from "../../../hooks";
 import { IBusItem } from "../../../types/reservation.interface";
@@ -12,8 +11,6 @@ import DeleteModal from "../DeleteModal";
 function BusCard(data: IBusItem) {
   const deleteModal = useModal();
   const { option, token } = useQueryOption();
-
-  const navigate = useNavigate();
 
   const { mutate: deleteBusItem } = useMutation(["deleteAs"], mDeleteBus, {
     ...option,
@@ -56,6 +53,7 @@ function BusCard(data: IBusItem) {
       <DeleteModal
         {...deleteModal}
         submit={() =>
+          token &&
           deleteBusItem({
             bus_req_id: data.bus_req_id,
             token,

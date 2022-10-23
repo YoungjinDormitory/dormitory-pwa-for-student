@@ -122,7 +122,7 @@ function Update() {
           <Button
             variant="contained"
             sx={{ ml: 2 }}
-            onClick={() => submit(variables)}>
+            onClick={() => token && submit(variables)}>
             제출
           </Button>
         </Box>

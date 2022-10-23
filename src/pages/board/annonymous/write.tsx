@@ -38,13 +38,6 @@ function Write() {
       })
       .catch((err) => {});
   }, []);
-  const variables = {
-    title: titleProps.value,
-    content: contentProps.value,
-    images: imageProps.value,
-    ip,
-    token,
-  };
 
   const { mutate: submit } = useMutation(["createBulletin"], mCreateBulletin, {
     ...option,
@@ -117,7 +110,16 @@ function Write() {
             variant="contained"
             sx={{ ml: 2 }}
             onClick={() =>
-              titleProps.value && contentProps.value && submit(variables)
+              titleProps.value &&
+              contentProps.value &&
+              token &&
+              submit({
+                title: titleProps.value,
+                content: contentProps.value,
+                images: imageProps.value,
+                ip,
+                token,
+              })
             }>
             제출
           </Button>

@@ -1,12 +1,6 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useContext, useLayoutEffect, useState } from "react";
+import { AuthContext } from "../components/common/CognitoAuthorityChecker";
 import request from "../utils/service/request";
-import useAuthContext from "./useAuthContext";
 
 /**
  *
@@ -14,8 +8,14 @@ import useAuthContext from "./useAuthContext";
  */
 
 export default function useQueryOption() {
-  const { ctx } = useAuthContext();
-  const auth = useContext(ctx);
+  const [token, setToken] = useState<string>();
+  const auth = useContext(AuthContext);
+
+  useLayoutEffect(() => {
+    auth.getAccessToken().then((res: any) => {
+      setToken(res.jwtToken);
+    });
+  }, []);
 
   const option = {
     retry: (failureCount: number, error: any) => {
@@ -25,15 +25,11 @@ export default function useQueryOption() {
       ) {
         // 인증 에러가 발생하면
         // refresh token 과 함께 서버로 보냄
-        request.get("/restoreAccessToken").then((res: any) => {
-          auth?.setToken(res.data.accessToken);
-        });
       }
       return false;
     },
     refetchOnWindowFocus: false,
   };
-  const token = auth?.token;
 
   return { option, token };
 }

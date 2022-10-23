@@ -21,7 +21,6 @@ function Setting() {
 
   useEffect(() => {
     getUserData().then((data: any) => {
-      console.log(data);
       const nameObj = data.filter((el: any) => el.Name === "name");
       const roomNumObj = data.filter(
         (el: any) => el.Name === "custom:room_num"

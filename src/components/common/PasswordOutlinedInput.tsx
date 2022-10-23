@@ -15,7 +15,7 @@ interface Props {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  validator?: () => boolean;
+  validator?: (v: string) => boolean;
 }
 
 /**
@@ -29,7 +29,9 @@ export default function PasswordOutlinedInput({
   validator,
 }: Props) {
   const props = { label, value, onChange };
-  const [passwordType, setPasswordType] = useState<"text" | "password">("text");
+  const [passwordType, setPasswordType] = useState<"text" | "password">(
+    "password"
+  );
 
   const changeType = () => {
     setPasswordType(() => (passwordType === "text" ? "password" : "text"));
@@ -38,12 +40,12 @@ export default function PasswordOutlinedInput({
     <FormControl
       fullWidth
       sx={{ display: "flex", alignItems: "flex-end", mb: 1 }}>
-      <InputLabel error={validator ? !validator() : undefined}>
+      <InputLabel error={validator ? !validator(value) : undefined}>
         {props.label}
       </InputLabel>
       <OutlinedInput
         {...props}
-        error={validator ? !validator() : undefined}
+        error={validator ? !validator(value) : undefined}
         type={passwordType}
         endAdornment={
           /* 패스워드 type 상태 표시 아이콘 */
@@ -54,10 +56,15 @@ export default function PasswordOutlinedInput({
         }
         fullWidth
       />
-      {validator && !validator() && (
-        <Typography variant="caption" color="error">
-          비밀번호를 확인해 주세요
-        </Typography>
+      {validator && !validator(value) && (
+        <>
+          <Typography variant="caption" color="error">
+            비밀번호를 확인해 주세요
+          </Typography>
+          <Typography variant="caption" color="error">
+            특수문자 1개, 영어 소문자, 숫자를 조합해서 만들어주세요
+          </Typography>
+        </>
       )}
     </FormControl>
   );

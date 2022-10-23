@@ -84,7 +84,7 @@ function Update() {
           </Button>
           <Button
             onClick={() => {
-              submit(variables);
+              token && submit(variables);
             }}
             variant="contained"
             sx={{ ml: 2 }}>

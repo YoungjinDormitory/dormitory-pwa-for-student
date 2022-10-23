@@ -2,7 +2,6 @@ import { NavCard } from "@common/card";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
-import AuthorityChecker from "../../../components/common/AuthorityChecker";
 
 // AS 네비게이션 페이지
 function AS() {

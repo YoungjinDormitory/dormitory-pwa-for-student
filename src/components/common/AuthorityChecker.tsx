@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useCheckUser from "../../hooks/useCheckUser";
 import { IProps } from "../../types/props.interface";
 import { AuthContext } from "./CognitoAuthorityChecker";
 
@@ -27,6 +26,7 @@ export default function AuthorityChecker({ children }: Props) {
       setIsLoading(false);
     }
   };
+
   if (isLoading) {
     return <></>;
   } else {

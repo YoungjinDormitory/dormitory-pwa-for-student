@@ -62,6 +62,7 @@ function OutCard(props: IOutItem) {
       <DeleteModal
         {...deleteModal}
         submit={() =>
+          token &&
           deleteOutItem({
             stayout_id: props.stayout_id,
             token,

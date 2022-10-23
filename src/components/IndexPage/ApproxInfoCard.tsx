@@ -1,13 +1,10 @@
 import useTab from "@hooks/useTab";
 import { Box, Card, Tab, Tabs } from "@mui/material";
-import { lazy, Suspense, useContext } from "react";
+import { lazy, Suspense } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useAuthContext } from "../../hooks";
 
 function ApproxInfoCard() {
   const tabProps = useTab(0);
-  const { ctx } = useAuthContext();
-  const authInfo = useContext(ctx);
 
   const ReservationTab = lazy(() => import("./ApproxInfo/ReservationTab"));
   const NoticeTab = lazy(() => import("./ApproxInfo/NoticeTab"));

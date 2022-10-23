@@ -25,15 +25,16 @@ interface Props {
  * @content 일반적인 input 컴포넌트 입니다.
  */
 export default function NormalOutlinedInput(props: Props) {
+  const { validator, hintMessage, ...others } = props;
   return (
     <FormControl
       fullWidth
       sx={{ display: "flex", alignItems: "flex-end", mb: 1 }}>
-      <InputLabel>{props.label}</InputLabel>
-      <OutlinedInput {...props} fullWidth />
-      {props.value && props.validator && !props.validator() && (
+      <InputLabel>{others.label}</InputLabel>
+      <OutlinedInput {...others} fullWidth />
+      {others.value && validator && !validator() && (
         <Typography variant="caption" color="error">
-          {props.hintMessage}
+          {hintMessage}
         </Typography>
       )}
     </FormControl>

@@ -79,7 +79,7 @@ export default function Comments({ bulletinId, myId }: Props) {
             color="disable"
             sx={{ boxShadow: "none" }}
             onClick={() => {
-              content.value && submit(variables);
+              token && content.value && submit(variables);
             }}>
             제출
           </Button>

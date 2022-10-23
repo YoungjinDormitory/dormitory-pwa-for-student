@@ -23,18 +23,40 @@ function CognitoAuthorityChecker({ children }: Props) {
           (err: Error | null, session: CognitoUserSession | null) => {
             if (err) {
               reject(err);
-            } else if (session) {
-              user.getUserAttributes((err, data) => {
-                if (err) {
-                  reject(err);
-                }
-                resolve(data);
-              });
             }
+            user.getUserData((err, data) => {
+              if (err) {
+                reject(err);
+              }
+              resolve(data);
+            });
           }
         );
       } else {
         reject();
+      }
+    });
+  };
+
+  // getAccessToken 함수는 AWS Cognito 에서 유저의 accessToken을 가져오는 함수 입니다.
+  const getAccessToken = async () => {
+    return await new Promise((resolve, reject) => {
+      const user = UserPool.getCurrentUser();
+      if (user) {
+        user.getSession((err: Error | null, session: CognitoUserSession) => {
+          if (err) {
+            user.refreshSession(
+              session.getRefreshToken(),
+              (err: Error | null, session: CognitoUserSession) => {
+                if (err) {
+                  reject(err);
+                }
+                resolve(session.getAccessToken());
+              }
+            );
+          }
+          resolve(session.getAccessToken());
+        });
       }
     });
   };
@@ -73,7 +95,8 @@ function CognitoAuthorityChecker({ children }: Props) {
     }
   };
   return (
-    <AuthContext.Provider value={{ authenticate, getUserData, logout }}>
+    <AuthContext.Provider
+      value={{ authenticate, getUserData, logout, getAccessToken }}>
       {children}
     </AuthContext.Provider>
   );

@@ -24,12 +24,6 @@ function GymCard(props: IGymItem) {
     },
   });
 
-  const moveToUpdate = () => {
-    navigate("/reservation/gym/update", {
-      state: props,
-    });
-  };
-
   return (
     <Card sx={{ width: "90%", mx: "30px", my: "10px" }}>
       <CardContent>
@@ -46,9 +40,6 @@ function GymCard(props: IGymItem) {
             <IconButton onClick={deleteModal.onOpen}>
               <DeleteOutlineOutlinedIcon />
             </IconButton>
-            {/* <IconButton onClick={moveToUpdate}>
-              <CreateOutlinedIcon />
-            </IconButton> */}
           </Box>
         </Box>
         <Typography sx={{ textAlign: "end" }} variant="subtitle2">
@@ -60,10 +51,11 @@ function GymCard(props: IGymItem) {
       <DeleteModal
         {...deleteModal}
         submit={() => {
-          deleteGymItem({
-            hlth_id: props.hlth_id,
-            token,
-          });
+          token &&
+            deleteGymItem({
+              hlth_id: props.hlth_id,
+              token,
+            });
         }}
       />
     </Card>

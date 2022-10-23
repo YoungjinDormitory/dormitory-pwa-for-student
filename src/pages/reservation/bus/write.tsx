@@ -288,13 +288,14 @@ function Write() {
             fullWidth
             onClick={() => {
               if (end.value && canClickEnd()) {
-                submit({
-                  bus_date: date.value!.toDate(),
-                  bus_stop: start.value,
-                  bus_time: time.value,
-                  bus_way: direction.value,
-                  token,
-                });
+                token &&
+                  submit({
+                    bus_date: date.value!.toDate(),
+                    bus_stop: start.value,
+                    bus_time: time.value,
+                    bus_way: direction.value,
+                    token,
+                  });
               }
             }}>
             확인
