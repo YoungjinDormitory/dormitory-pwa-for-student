@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import UserPool from "../../utils/service/UserPool";
 import type { IProps } from "../../types/props.interface";
 import {
@@ -7,12 +7,15 @@ import {
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { useNavigate } from "react-router-dom";
+import FullWindowCircular from "./FullWindowCircular";
 
 interface Props extends IProps {}
 const AuthContext = createContext<any>({});
 
 function CognitoAuthorityChecker({ children }: Props) {
   const navigate = useNavigate();
+
+  const [circularVisible, setCircularVisible] = useState(false);
 
   // getUserData 함수는 AWS Cognito 에서 유저의 정보를 뺴오는 함수입니다.
   const getUserData = async () => {
@@ -63,6 +66,7 @@ function CognitoAuthorityChecker({ children }: Props) {
 
   // authenticate 함수는 유저의 로그인을 도와주는 함수입니다.
   const authenticate = async (Username: string, Password: string) => {
+    setCircularVisible(true);
     return await new Promise((resolve, reject) => {
       const user = new CognitoUser({ Username, Pool: UserPool });
 
@@ -70,15 +74,15 @@ function CognitoAuthorityChecker({ children }: Props) {
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
-          console.log("success", data);
+          setCircularVisible(false);
           navigate("/");
         },
         onFailure: (error) => {
-          console.log("error", error);
+          setCircularVisible(false);
           reject(error);
         },
         newPasswordRequired: (data) => {
-          console.log("new Password required", data);
+          setCircularVisible(false);
           resolve(data);
         },
       });
@@ -98,6 +102,7 @@ function CognitoAuthorityChecker({ children }: Props) {
     <AuthContext.Provider
       value={{ authenticate, getUserData, logout, getAccessToken }}>
       {children}
+      <FullWindowCircular visible={circularVisible} />
     </AuthContext.Provider>
   );
 }

@@ -7,10 +7,12 @@ import PasswordOutlinedInput from "../components/common/PasswordOutlinedInput";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import UserPool from "../utils/service/UserPool";
 import { useState } from "react";
-import { compareString } from "../utils/helper/validation";
+import { useNavigate } from "react-router-dom";
 
 // FindPassword 비밀번호 찾기 페이지
 function FindPassword() {
+  const navigate = useNavigate();
+
   const idProps = useInput("", "본인 학번");
   const codeProps = useInput("", "6자리 코드");
   const newPasswordProps = useInput("", "비밀번호");
@@ -32,10 +34,12 @@ function FindPassword() {
     const user = new CognitoUser({ Username, Pool: UserPool });
     user.confirmPassword(codeProps.value, newPasswordProps.value, {
       onSuccess(res) {
-        console.log(res);
+        alert("성공!");
+        navigate("/login");
       },
       onFailure(err) {
-        console.log(err);
+        alert("코드가 달라 이메일을 재전송하였습니다.");
+        forgotPassword(idProps.value);
       },
     });
   };
@@ -76,10 +80,7 @@ function FindPassword() {
           <PasswordOutlinedInput {...newPasswordProps} />
           <PasswordOutlinedInput
             {...confirmPasswordProps}
-            validator={compareString(
-              newPasswordProps.value,
-              confirmPasswordProps.value
-            )}
+            validator={(v) => newPasswordProps.value === v}
           />
           <NormalOutlinedInput {...codeProps} />
           <Box display={"flex"} justifyContent="center" alignItems={"center"}>
@@ -88,6 +89,14 @@ function FindPassword() {
             </Typography>
             <Button>재전송</Button>
           </Box>
+          <Button
+            onClick={() => {
+              if (newPasswordProps.value === confirmPasswordProps.value) {
+                confirmForgotPassword(idProps.value);
+              }
+            }}>
+            제출
+          </Button>
         </>
       )}
     </>

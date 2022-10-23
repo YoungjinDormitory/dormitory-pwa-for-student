@@ -81,7 +81,9 @@ function Header() {
               }}>
               {name && (
                 <Box display="flex" justifyContent={"end"}>
-                  <Avatar src="asset/cloud.ico"></Avatar>
+                  <IconButton>
+                    <Avatar src="asset/cloud.ico"></Avatar>
+                  </IconButton>
                   <Typography
                     variant="caption"
                     sx={{ ml: 3, fontSize: 12, my: "auto" }}>

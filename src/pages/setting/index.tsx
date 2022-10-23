@@ -1,84 +1,111 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton, TextField, Typography } from "@mui/material";
 
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import { useNavigate } from "react-router-dom";
-
+import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../components/common/CognitoAuthorityChecker";
+import { changeUserRoom } from "../../utils/query/aws/user";
+import SettingCard from "../../components/common/card/SettingCard";
+import ModalContainer from "../../components/common/ModalContainer";
+import { useModal, useModalContext } from "../../hooks";
 
 function Setting() {
   const [name, setName] = useState("");
-  const [roomNum, setRoomNum] = useState("");
+  const [currentRoom, setCurrentRoom] = useState();
+  const CRModal = useModal();
+  const {
+    Provider: CRProvider,
+    ctx,
+    ...value
+  } = useModalContext(changeUserRoom);
 
   const { getUserData, logout } = useContext(AuthContext);
 
   useEffect(() => {
     getUserData().then((data: any) => {
-      const nameObj = data.filter((el: any) => el.Name === "name");
-      const roomNumObj = data.filter(
+      const nameObj = data.UserAttributes.filter(
+        (el: any) => el.Name === "name"
+      );
+      const roomNumObj = data.UserAttributes.filter(
         (el: any) => el.Name === "custom:room_num"
       );
-      setRoomNum(roomNumObj[0].Value);
+      setCurrentRoom(roomNumObj[0].Value);
       setName(nameObj[0].Value);
     });
   }, []);
 
   return (
-    <Grid maxWidth={"md"} margin="auto" container>
-      <Grid
-        item
-        xs={12}
-        sx={{ borderBottom: 1, borderBottomColor: "gainsboro" }}
-        px={2}>
-        <Typography variant="h6" sx={{ p: "10px", fontWeight: 700 }}>
-          설정
-        </Typography>
-      </Grid>
-      <Grid item xs={12} borderBottom={1} borderColor="gainsboro">
-        {!name && (
-          <Box display="flex" p={2} m="auto">
-            <Typography>로그인 후 이용해 주세요.</Typography>
-          </Box>
-        )}
-        {name && (
-          <Box display="flex" p={2}>
-            <Box textAlign={"center"}>
-              <img src="asset/avatar.png" width={40}></img>
-              <Typography>{name}</Typography>
-            </Box>
-            <Box ml={2} my={"auto"}>
-              <Box display="flex">
-                <Typography>호실 : </Typography>
-                <Typography>{roomNum}</Typography>
-              </Box>
-            </Box>
-          </Box>
-        )}
-      </Grid>
-      {name && (
-        <Grid item xs={12} p={2} display="flex" flexWrap="wrap">
-          <Box
-            display="flex"
-            justifyContent={"center"}
-            alignItems="center"
-            width={100}
-            height={100}
-            border={1}
-            borderRadius={2}
-            m={1}
-            borderColor="gainsboro">
-            <IconButton
-              sx={{ flex: 1, borderRadius: 1 }}
-              onClick={() => logout()}>
-              <Box textAlign={"center"} color="red">
-                <PowerSettingsNewIcon />
-                <Typography>로그아웃</Typography>
-              </Box>
-            </IconButton>
-          </Box>
+    <>
+      <Grid maxWidth={"md"} margin="auto" container>
+        <Grid
+          item
+          xs={12}
+          sx={{ borderBottom: 1, borderBottomColor: "gainsboro" }}
+          px={2}>
+          <Typography variant="h6" sx={{ p: "10px", fontWeight: 700 }}>
+            설정
+          </Typography>
         </Grid>
-      )}
-    </Grid>
+        <Grid item xs={12} borderBottom={1} borderColor="gainsboro">
+          {!name && (
+            <Box display="flex" p={2} m="auto">
+              <Typography>로그인 후 이용해 주세요.</Typography>
+            </Box>
+          )}
+          {name && (
+            <Box display="flex" p={2}>
+              <Box textAlign={"center"}>
+                <IconButton>
+                  <img src="asset/cloud.ico" width={40}></img>
+                </IconButton>
+
+                <Typography>{name}</Typography>
+              </Box>
+              <Box ml={2} my={"auto"}>
+                <Box display="flex">
+                  <Typography>호실 : </Typography>
+                  <Typography>{currentRoom}</Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
+        </Grid>
+        {name && (
+          <Grid item xs={12} p={2} display="flex" flexWrap="wrap">
+            <SettingCard
+              Icon={DoorBackOutlinedIcon}
+              text={"방 번호 변경"}
+              action={CRModal.onOpen}
+              color="black"
+            />
+            <SettingCard
+              Icon={PowerSettingsNewIcon}
+              text={"로그아웃"}
+              action={logout}
+              color="red"
+            />
+          </Grid>
+        )}
+      </Grid>
+      <CRProvider value={value}>
+        <ModalContainer ctx={ctx} {...CRModal} title={"방 번호 변경"}>
+          <Box
+            textAlign="center"
+            p={2}
+            display={"flex"}
+            flexDirection={"column"}>
+            <TextField
+              onChange={(e) => value.onChange(e.target.value)}
+              value={value.value}
+            />
+            <Typography variant="caption" color="red">
+              정확한 호수를 입력하지 않으면 서비스 제공에 불이익이 갈 수
+              있습니다.
+            </Typography>
+          </Box>
+        </ModalContainer>
+      </CRProvider>
+    </>
   );
 }
 

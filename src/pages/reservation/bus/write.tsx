@@ -1,4 +1,4 @@
-import RadioModal from "@common/RadioModal";
+import ModalContainer from "@common/ModalContainer";
 import ForwardOutlinedIcon from "@mui/icons-material/ForwardOutlined";
 import {
   Box,
@@ -47,14 +47,14 @@ function Write() {
 
   // 시작지 모달 제어 hook
   const {
-    Provider: SRadioModalProvider,
+    Provider: SModalContainerProvider,
     ctx: startCtx,
     ...startValue
   } = useModalContext(start.onChange);
 
   // 도착지 모달 제어 hook
   const {
-    Provider: ERadioModalProvider,
+    Provider: EModalContainerProvider,
     ctx: endCtx,
     ...endValue
   } = useModalContext(end.onChange);
@@ -216,15 +216,18 @@ function Write() {
               {start.value}
             </Button>
             {/* 모달 */}
-            <SRadioModalProvider value={startValue}>
-              <RadioModal {...startModalProps} ctx={startCtx} title="출발지">
-                <RadioModal.List
+            <SModalContainerProvider value={startValue}>
+              <ModalContainer
+                {...startModalProps}
+                ctx={startCtx}
+                title="출발지">
+                <ModalContainer.List
                   ctx={startCtx}
                   source={[
                     ...new Set(busInfo?.map((el: any) => el.bus_stop)),
-                  ]}></RadioModal.List>
-              </RadioModal>
-            </SRadioModalProvider>
+                  ]}></ModalContainer.List>
+              </ModalContainer>
+            </SModalContainerProvider>
           </Box>
           {/* 중간 화살표 */}
           <ForwardOutlinedIcon color="primary" />
@@ -251,13 +254,13 @@ function Write() {
               {end.value}
             </Button>
             {/* 모달 */}
-            <ERadioModalProvider value={endValue}>
-              <RadioModal {...endModalProps} ctx={endCtx} title="도착지">
-                <RadioModal.List
+            <EModalContainerProvider value={endValue}>
+              <ModalContainer {...endModalProps} ctx={endCtx} title="도착지">
+                <ModalContainer.List
                   ctx={endCtx}
-                  source={[...new Set(endBusStop)]}></RadioModal.List>
-              </RadioModal>
-            </ERadioModalProvider>
+                  source={[...new Set(endBusStop)]}></ModalContainer.List>
+              </ModalContainer>
+            </EModalContainerProvider>
           </Box>
         </Grid>
         <Grid xs={12} item>

@@ -15,7 +15,7 @@ interface Props extends IProps {
 /**
  * @description 라디오 리스트가 주 컨텐츠인 모달을 쓸때 이용하는
  */
-export default function RadioModal({
+export default function ModalContainer({
   title,
   children,
   ctx,
@@ -66,4 +66,4 @@ export default function RadioModal({
 /**
  * @description 라디오 버튼으로 구성된 리스트 입니다. RadioModal 의 구성요소로도 쓰임
  */
-RadioModal.List = RadioList;
+ModalContainer.List = RadioList;
