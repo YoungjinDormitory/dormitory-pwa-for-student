@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 404 에러 페이지
 function Error_404() {
-  const navigate = useNavigate();
   return (
     <Box
       width="100%"

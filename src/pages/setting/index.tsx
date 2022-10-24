@@ -9,6 +9,10 @@ import SettingCard from "../../components/common/card/SettingCard";
 import ModalContainer from "../../components/common/ModalContainer";
 import { useModal, useModalContext } from "../../hooks";
 
+function CloudIcon() {
+  return <img src="asset/cloud.ico" width={24} height={24}></img>;
+}
+
 function Setting() {
   const [name, setName] = useState("");
   const [currentRoom, setCurrentRoom] = useState();
@@ -56,7 +60,7 @@ function Setting() {
             <Box display="flex" p={2}>
               <Box textAlign={"center"}>
                 <IconButton>
-                  <img src="asset/cloud.ico" width={40}></img>
+                  <img src="asset/avatar.png" width={40}></img>
                 </IconButton>
 
                 <Typography>{name}</Typography>
@@ -76,7 +80,13 @@ function Setting() {
               Icon={DoorBackOutlinedIcon}
               text={"방 번호 변경"}
               action={CRModal.onOpen}
-              color="black"
+            />
+            <SettingCard
+              Icon={CloudIcon}
+              text={"클라우드 이동"}
+              action={() => {
+                window.open(import.meta.env.VITE_NAS_CLOUD_LINK);
+              }}
             />
             <SettingCard
               Icon={PowerSettingsNewIcon}
@@ -97,6 +107,7 @@ function Setting() {
             <TextField
               onChange={(e) => value.onChange(e.target.value)}
               value={value.value}
+              inputProps={{ maxLength: 4 }}
             />
             <Typography variant="caption" color="red">
               정확한 호수를 입력하지 않으면 서비스 제공에 불이익이 갈 수

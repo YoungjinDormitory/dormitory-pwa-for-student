@@ -59,8 +59,8 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IGymItem) => (
-        <Grid item xs={12} key={el.hlth_id}>
+      {data?.data.map((el: IGymItem, idx: number) => (
+        <Grid item xs={12} key={el.hlth_id + idx}>
           <GymCard {...el} />
         </Grid>
       ))}

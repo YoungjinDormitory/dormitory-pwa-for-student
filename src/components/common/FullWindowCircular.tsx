@@ -1,5 +1,4 @@
-import { CircularProgress, Paper, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 
 export default function FullWindowCircular({ visible }: { visible: boolean }) {
   return (
@@ -11,7 +10,7 @@ export default function FullWindowCircular({ visible }: { visible: boolean }) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        display: visible ? "block" : "none",
+        display: visible ? "flex" : "none",
       }}>
       <CircularProgress />
       <Typography variant="caption"> 로딩중입니다..</Typography>

@@ -28,12 +28,13 @@ function Header() {
   const { getUserData, logout } = useContext(AuthContext);
 
   useEffect(() => {
-    getUserData().then((data: any) => {
-      const nameObj = data.UserAttributes.filter(
-        (el: any) => el.Name === "name"
-      )[0];
-      setName(nameObj.Value);
-    });
+    getUserData &&
+      getUserData().then((data: any) => {
+        const nameObj = data.UserAttributes.filter(
+          (el: any) => el.Name === "name"
+        )[0];
+        setName(nameObj.Value);
+      });
   }, []);
 
   return (
@@ -81,7 +82,10 @@ function Header() {
               }}>
               {name && (
                 <Box display="flex" justifyContent={"end"}>
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      window.open(import.meta.env.VITE_NAS_CLOUD_LINK);
+                    }}>
                     <Avatar src="asset/cloud.ico"></Avatar>
                   </IconButton>
                   <Typography

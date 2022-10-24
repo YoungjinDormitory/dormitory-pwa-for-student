@@ -57,8 +57,8 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IOutItem) => (
-        <Grid item xs={12}>
+      {data?.data.map((el: IOutItem, idx: number) => (
+        <Grid item xs={12} key={el.stayout_id + idx}>
           <OutCard {...el} />
         </Grid>
       ))}

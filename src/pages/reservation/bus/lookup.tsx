@@ -57,8 +57,8 @@ function LookUp() {
           </LocalizationProvider>
         </Box>
       </Grid>
-      {data?.data.map((el: IBusItem) => (
-        <Grid item xs={12}>
+      {data?.data.map((el: IBusItem, idx: number) => (
+        <Grid item xs={12} key={el.bus_req_id + idx}>
           <BusCard {...el} />
         </Grid>
       ))}

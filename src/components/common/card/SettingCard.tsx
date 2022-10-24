@@ -2,15 +2,22 @@ import { Box, IconButton, SvgIconTypeMap, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface Props {
-  Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-    muiName: string;
-  };
+  Icon:
+    | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+        muiName: string;
+      })
+    | (() => JSX.Element);
   text: string;
-  color: string;
+  color?: string;
   action: () => unknown;
 }
 
-export default function SettingCard({ Icon, text, action, color }: Props) {
+export default function SettingCard({
+  Icon,
+  text,
+  action,
+  color = "black",
+}: Props) {
   return (
     <Box
       display="flex"

@@ -8,10 +8,12 @@ import { CognitoUser } from "amazon-cognito-identity-js";
 import UserPool from "../utils/service/UserPool";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import FullWindowCircular from "../components/common/FullWindowCircular";
 
 // FindPassword 비밀번호 찾기 페이지
 function FindPassword() {
   const navigate = useNavigate();
+  const [circularVisible, setCircularVisible] = useState<boolean>(false);
 
   const idProps = useInput("", "본인 학번");
   const codeProps = useInput("", "6자리 코드");
@@ -19,9 +21,11 @@ function FindPassword() {
   const confirmPasswordProps = useInput("", "비밀번호 확인");
 
   const forgotPassword = (Username: string) => {
+    setCircularVisible(true);
     const user = new CognitoUser({ Username, Pool: UserPool });
     user.forgotPassword({
       onSuccess(res) {
+        setCircularVisible(false);
         setStep((prev) => ({ ...prev, one: true }));
       },
       onFailure(err) {
@@ -31,13 +35,16 @@ function FindPassword() {
   };
 
   const confirmForgotPassword = (Username: string) => {
+    setCircularVisible(true);
     const user = new CognitoUser({ Username, Pool: UserPool });
     user.confirmPassword(codeProps.value, newPasswordProps.value, {
       onSuccess(res) {
+        setCircularVisible(false);
         alert("성공!");
         navigate("/login");
       },
       onFailure(err) {
+        setCircularVisible(false);
         alert("코드가 달라 이메일을 재전송하였습니다.");
         forgotPassword(idProps.value);
       },
@@ -46,7 +53,11 @@ function FindPassword() {
   const [step, setStep] = useState({
     one: false,
   });
-
+  const passwordValidation = (value: string) => {
+    const regex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    return regex.test(value);
+  };
   return (
     <>
       <LoginBox.Title title="비밀번호 찾기" />
@@ -77,7 +88,10 @@ function FindPassword() {
           <Typography variant="caption" gutterBottom>
             이메일에 도착한 코드와 새 비밀번호를 입력해주세요.
           </Typography>
-          <PasswordOutlinedInput {...newPasswordProps} />
+          <PasswordOutlinedInput
+            {...newPasswordProps}
+            validator={passwordValidation}
+          />
           <PasswordOutlinedInput
             {...confirmPasswordProps}
             validator={(v) => newPasswordProps.value === v}
@@ -99,6 +113,7 @@ function FindPassword() {
           </Button>
         </>
       )}
+      <FullWindowCircular visible={circularVisible} />
     </>
   );
 }

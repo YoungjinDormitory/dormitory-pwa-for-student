@@ -1,16 +1,25 @@
 import { Button } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import FullWindowCircular from "../components/common/FullWindowCircular";
 import NormalOutlinedInput from "../components/common/NormalOutlinedInput";
 import PasswordOutlinedInput from "../components/common/PasswordOutlinedInput";
 import { LoginBox } from "../components/layout";
 import useInput from "../hooks/useInput";
 import { eMailValidation, hpNumValidation } from "../utils/helper/validation";
+import { mSignUp } from "../utils/query/mutation/user";
 import UserPool from "../utils/service/UserPool";
 
 //SignUp 회원 가입 페이지
 function SignUp() {
-  const [emailCertificate, setEmailCertificate] = useState<boolean>(false);
+  const [circularVisible, setCircularVisible] = useState<boolean>(false);
+  const { mutate } = useMutation(["signup"], mSignUp, {
+    onSuccess: () => {
+      alert("인증 메일을 보냈습니다.");
+      navigate("/login");
+    },
+  });
 
   //회원가입에 필요한 state들
   const idProps = useInput("", "학번");
@@ -24,6 +33,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const onSubmit = async () => {
+    setCircularVisible(true);
     UserPool.signUp(
       idProps.value,
       passwordProps.value,
@@ -38,11 +48,17 @@ function SignUp() {
       ],
       null as any,
       (err, data) => {
+        setCircularVisible(false);
         if (err) {
-          console.log(err);
         } else {
-          console.log(data);
-          navigate("/login");
+          mutate({
+            std_id: idProps.value,
+            std_name: nameProps.value,
+            password: passwordProps.value,
+            ph_num: phNumProps.value,
+            room_num: roomNumProps.value,
+            e_mail: emailProps.value,
+          });
         }
       }
     );
@@ -81,7 +97,6 @@ function SignUp() {
       <NormalOutlinedInput {...nameProps} />
       <NormalOutlinedInput
         {...emailProps}
-        disabled={emailCertificate}
         validator={() => eMailValidation(emailProps.value)}
         hintMessage={"이메일 형식을 확인해주세요 *@g.yju.ac.kr"}
       />
@@ -120,6 +135,7 @@ function SignUp() {
         fullWidth>
         회원가입
       </Button>
+      <FullWindowCircular visible={circularVisible} />
     </>
   );
 }
