@@ -13,9 +13,9 @@ function MealCard({ data }: Props) {
   const [dinnerArr, setDinnerArr] = useState<Array<string>>();
 
   useLayoutEffect(() => {
-    setBreakFastArr(data.breakfast.split(","));
-    setLunchArr(data.lunch.split(","));
-    setDinnerArr(data.dinner.split(","));
+    setBreakFastArr(data.breakfast.split("\n"));
+    setLunchArr(data.lunch.split("\n"));
+    setDinnerArr(data.dinner.split("\n"));
   }, []);
 
   return (

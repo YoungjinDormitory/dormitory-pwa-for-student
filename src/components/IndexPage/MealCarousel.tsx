@@ -6,10 +6,19 @@ import { getMeal } from "../../utils/query/query/meal";
 import { MealCard } from "../common/card";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function MealCarousel() {
-  const { data } = useQuery(["getMeal"], getMeal);
+const initailValue = {
+  menu_id: "test",
+  breakfast: "현미찰밥\n소고기뭇국\n간장된장조림\n고추불고기\n배추김치",
+  lunch: "흰쌀밥\n미역국\n간장된장조림\n제육불고기\n배추김치",
+  dinner: "흰쌀밥\n설렁탕\n만두\n야채모둠\n깍두기",
+  date: new Date(),
+  adm_id: null,
+};
 
-  if (!data) {
+export default function MealCarousel() {
+  const { data, isLoading } = useQuery(["getMeal"], getMeal);
+
+  if (!data && !isLoading) {
     return (
       <Paper
         sx={{
@@ -24,6 +33,8 @@ export default function MealCarousel() {
         <Typography variant="caption"> 로딩중입니다..</Typography>
       </Paper>
     );
+  } else if (!data && isLoading) {
+    return <MealCard data={initailValue} />;
   }
 
   return (

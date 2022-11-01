@@ -58,7 +58,7 @@ function LookUp() {
         </Box>
       </Grid>
       {data?.data.map((el: IAsItem, idx: number) => (
-        <Grid item xs={12} key={el.std_id + idx}>
+        <Grid item xs={12} key={el.as_id + idx}>
           <ASCard {...el} />
         </Grid>
       ))}
