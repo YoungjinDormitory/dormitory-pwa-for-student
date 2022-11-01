@@ -17,8 +17,8 @@ const initailValue = {
 
 export default function MealCarousel() {
   const { data, isLoading } = useQuery(["getMeal"], getMeal);
-
-  if (!data && !isLoading) {
+  console.log(data?.data.length, isLoading);
+  if (!data && isLoading) {
     return (
       <Paper
         sx={{
@@ -33,7 +33,7 @@ export default function MealCarousel() {
         <Typography variant="caption"> 로딩중입니다..</Typography>
       </Paper>
     );
-  } else if (!data && isLoading) {
+  } else if (data?.data.length === 0 && !isLoading) {
     return <MealCard data={initailValue} />;
   }
 
